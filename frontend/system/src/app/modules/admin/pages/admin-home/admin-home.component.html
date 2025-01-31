@@ -1,0 +1,73 @@
+<div class="row">
+    <div class="col-12 rounded d-flex align-items-center" style="height: 10vh; padding-left: 10vw; background-image: url({{getHeader()}});">
+        <span class="h3" [ngClass]="{'text-light': theme === 'dark', 'text-primary': theme === 'light'}">SEJA BEM VINDO</span>
+    </div>
+</div>
+<div class="row mt-2">
+    <div class="col-xl-5 col-12">
+        <div class="card" [ngClass]="{'bg-dark border-secondary': theme === 'dark', 'bg-light': theme === 'light'}">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-xl-3 col-6 d-flex justify-content-center align-content-center mb-3" *ngFor="let item of listMenuUser">
+                        <button class="btn w-100 me-2" [ngClass]="item.class">
+                        <i class="fa-solid" [ngClass]="item.icon"></i> {{ item.label }}
+                        </button>
+                    </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <hr>
+    </div>
+    <div class="col-12">
+        <span class="h5">Notícias</span>
+    </div>
+    <div class="col-xl-4 col-12 mt-4">
+        <div class="card shadow w-100" [ngClass]="{'bg-dark border-black text-secondary': theme === 'dark', 'bg-light border-primary text-dark': theme === 'light'}">
+            <img src="https://files.sunoresearch.com.br/p/uploads/2017/12/financas-pessoais.jpg.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">TÍTULO DA NÓTICIA</h5>
+                <p class="card-text">Descrição abreviada</p>
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-6 h-25 d-flex align-items-end">
+                        <i class="fa-solid fa-calendar-days"><span style="font-size: smaller;">&nbsp;01/01/2024 12:00</span></i>
+                    </div>
+                    <div class="col-6 h-25 d-flex align-items-end justify-content-end">
+                        <i class="fa-solid fa-comment"><span style="font-size: smaller;">&nbsp;01234</span></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-8 col-12 mt-4">
+        <div class="card h-100 mb-3 shadow" [ngClass]="{'bg-dark border-black text-secondary': theme === 'dark', 'bg-light border-primary text-dark': theme === 'light'}">
+            <div class="row h-100 g-0">
+                <div class="col-md-4">
+                    <img src="https://umamenteprospera.com.br/wp-content/uploads/2024/08/licoes-de-financas-pessoais.jpg" style="object-fit: cover;" class="img-fluid rounded-start" alt="...">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body h-100">
+                        <div class="row h-100">
+                            <div class="col-12 h-75">
+                                <h5 class="card-title">TITULO NOTICIA</h5>
+                                <p class="card-text">Descrição completa da noticia</p>
+                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                            </div>
+                            <div class="col-6 h-25 d-flex align-items-end">
+                                <i class="fa-solid fa-calendar-days"><span style="font-size: smaller;">&nbsp;01/01/2024 12:00</span></i>
+                            </div>
+                            <div class="col-6 h-25 d-flex align-items-end justify-content-end">
+                                <i class="fa-solid fa-comment"><span style="font-size: smaller;">&nbsp;01234</span></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

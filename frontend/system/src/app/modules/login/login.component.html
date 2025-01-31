@@ -1,0 +1,49 @@
+<div class="container-fluid bg-login-admin" style="background-color: #012a56;">
+  <div class="row" style="height: 100vh;">
+    <div class="col-xl-12 col-12 layout-login" >
+      <div class="card bg-tr pt-5" style="width: 18rem; border-width: 0px;">
+        <div class="card-title text-center">
+          <div class="row">
+            <a href="http://localhost:5500/index.html">
+              <div class="col-12">
+                <img src="assets/img/logo/logo-bit-light.png" class="card-img-top w-50" >
+              </div>
+              <div class="col-12">
+                <span class="h1 text-light">{{page}}</span>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="card-body">
+          <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
+            <nz-form-item>
+              <nz-form-control nzErrorTip="Por favor! Informe o e-mail">
+                <nz-input-group nzPrefixIcon="user">
+                  <input type="email" nz-input formControlName="userName" placeholder="Username" autocomplete="username" />
+                </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-control nzErrorTip="Por Favor! Informe a senha">
+                <nz-input-group nzPrefixIcon="lock">
+                  <input type="password" nz-input formControlName="password" placeholder="Password" autocomplete="current-password" />
+                </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
+            <div nz-row class="login-form-margin">
+              <div nz-col [nzSpan]="24">
+                <a class="login-form-forgot text-light">Esqueceu a senha?</a>
+              </div>
+            </div>
+            <div nz-row class="login-form-margin">
+              <div nz-col [nzSpan]="24">
+                <a class="login-form-forgot text-light" routerLink="cadastro">Cadastre-se</a>
+              </div>
+            </div>
+            <button type="submit" nz-button class="login-form-button login-form-margin shadow" [nzType]="'primary'">Logar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
