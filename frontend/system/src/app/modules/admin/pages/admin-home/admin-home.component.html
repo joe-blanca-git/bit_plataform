@@ -4,16 +4,19 @@
     </div>
 </div>
 <div class="row mt-2">
+    <div class="col-xl-7 col-0">
+
+    </div>
     <div class="col-xl-5 col-12">
         <div class="card" [ngClass]="{'bg-dark border-secondary': theme === 'dark', 'bg-light': theme === 'light'}">
             <div class="card-body">
-                <div class="row">
-                    <div class="col-xl-3 col-6 d-flex justify-content-center align-content-center mb-3" *ngFor="let item of listMenuUser">
+                <div class="row h-100 align-items-end">
+                    <div class="col-xl-3 col-6 d-flex justify-content-center align-content-center align-items-center mb-3 h-100" *ngFor="let item of listMenuUser">
                         <button class="btn w-100 me-2" [ngClass]="item.class">
                         <i class="fa-solid" [ngClass]="item.icon"></i> {{ item.label }}
                         </button>
                     </div>
-                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -48,7 +51,7 @@
         <div class="card h-100 mb-3 shadow" [ngClass]="{'bg-dark border-black text-secondary': theme === 'dark', 'bg-light border-primary text-dark': theme === 'light'}">
             <div class="row h-100 g-0">
                 <div class="col-md-4">
-                    <img src="https://umamenteprospera.com.br/wp-content/uploads/2024/08/licoes-de-financas-pessoais.jpg" style="object-fit: cover;" class="img-fluid rounded-start" alt="...">
+                    <img src="https://umamenteprospera.com.br/wp-content/uploads/2024/08/licoes-de-financas-pessoais.jpg" style="object-fit: cover;" class="img-fluid rounded-start h-100" alt="...">
                 </div>
                 <div class="col-md-8">
                     <div class="card-body h-100">

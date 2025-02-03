@@ -28,13 +28,15 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { IconsProviderModule } from 'src/app/icons-provider.module';
 import { SideMenuComponent } from './shared/components/layout/side-menu/side-menu.component';
 import { FooterComponent } from './shared/components/layout/footer/footer.component';
+import { MovimentacoesComponent } from './shared/components/financeiro/movimentacoes/movimentacoes.component';
 
 @NgModule({
   declarations: [
     AdminAppComponent,
     AdminHomeComponent,
     SideMenuComponent,
-    FooterComponent
+    FooterComponent,
+    MovimentacoesComponent
   ],
   imports: [
     CommonModule,
