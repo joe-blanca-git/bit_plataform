@@ -33,12 +33,12 @@ export class AuthService extends BaseService {
 
 
   constructor(
-    private router: Router,
-    private http: HttpClient,
-    
+    protected override router: Router,
+    private http: HttpClient
   ) {
-    super();
+    super(router);
   }
+  
 
 
   login(email: string, password: string){

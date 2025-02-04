@@ -29,6 +29,8 @@ import { IconsProviderModule } from 'src/app/icons-provider.module';
 import { SideMenuComponent } from './shared/components/layout/side-menu/side-menu.component';
 import { FooterComponent } from './shared/components/layout/footer/footer.component';
 import { MovimentacoesComponent } from './shared/components/financeiro/movimentacoes/movimentacoes.component';
+import { AdminContaComponent } from './pages/admin-conta/admin-conta.component';
+import { AdminCadstroComponent } from './pages/admin-cadstro/admin-cadstro.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,9 @@ import { MovimentacoesComponent } from './shared/components/financeiro/movimenta
     AdminHomeComponent,
     SideMenuComponent,
     FooterComponent,
-    MovimentacoesComponent
+    MovimentacoesComponent,
+    AdminContaComponent,
+    AdminCadstroComponent
   ],
   imports: [
     CommonModule,

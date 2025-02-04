@@ -6,44 +6,96 @@ import { ThemeService } from '../../shared/services/themeService';
 @Component({
   selector: 'app-admin-home',
   templateUrl: './admin-home.component.html',
-  styleUrls: ['./admin-home.component.scss']
+  styleUrls: ['./admin-home.component.scss'],
 })
 export class AdminHomeComponent {
   theme: 'dark' | 'light' = 'dark';
+  isVisible = false;
+  isVisibleMov = false;
+  catType = 0; //1 = simples, 2 = completa
 
   listMenuUser = [
-    { label: 'Pagar', icon: 'fa-money-bill-1-wave', class: 'btn-outline-danger' },
-    { label: 'Receber', icon: 'fa-money-bill-1-wave', class: 'btn-outline-success' },
-    { label: 'Novo', icon: 'fa-square-plus', class: 'btn-outline-primary' },
-    { label: 'PDV', icon: 'fa-cash-register', class: 'btn-outline-primary' }
+    {
+      label: 'Pagar',
+      icon: 'fa-money-bill-1-wave',
+      class: 'btn-outline-danger',
+      value: 'P'
+    },
+    {
+      label: 'Receber',
+      icon: 'fa-money-bill-1-wave',
+      class: 'btn-outline-success',
+      value: 'R'
+    },
+    {
+      label: 'Registrar',
+      icon: 'fa-money-bill-1-wave',
+      class: 'btn-outline-primary',
+      value: 'N'
+    },
+    { label: 'PDV', 
+      icon: 'fa-cash-register', 
+      class: 'btn-outline-primary',
+      value: 'PDV'
+    },
   ];
 
+  constructor(
+    private themeService: ThemeService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
-    constructor(
-      private themeService: ThemeService,
-      private router: Router,
-      private route: ActivatedRoute,
-    ) {}
+  ngOnInit(): void {
+    this.themeService.theme$.subscribe((theme) => {
+      this.theme = theme;
+    });
 
-    ngOnInit(): void {
-      this.themeService.theme$.subscribe(theme => {
-        this.theme = theme; 
-      });
-  
-      this.changeTheme();
-    }
+    this.changeTheme();
+  }
 
-    changeTheme() {
-      this.themeService.changeTheme();
-    }
-    
-
-  getHeader() :string{
-    if (this.theme === 'dark') {
-      return 'assets/img/bg/header-admin.png';
-    }else{
-      return 'assets/img/bg/header-admin-light.png';
+  showMenu(label: any){    
+    if (label === 'N') {
+      this.isVisible = true;
     }
   }
   
+  showMov(cat: number){
+    this.catType = cat;
+    this.isVisibleMov = true;
+    this.handleOk();
+  }
+
+  closeMov(event: boolean){
+    if (!event) {
+      this.clearVariables();
+    }
+
+  }
+
+  changeTheme() {
+    this.themeService.changeTheme();
+  }
+
+  getHeader(): string {
+    if (this.theme === 'dark') {
+      return 'assets/img/bg/header-admin.png';
+    } else {
+      return 'assets/img/bg/header-admin-light.png';
+    }
+  }
+
+  handleOk(): void {
+    this.isVisible = false;
+  }
+
+  handleCancel(): void {
+    this.isVisible = false;
+    this.clearVariables();
+  }
+
+  clearVariables(){
+    this.catType = 0;
+    this.isVisibleMov = false;
+  }
 }

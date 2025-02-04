@@ -36,7 +36,6 @@
   }
   
   nz-header {
-    background: #fff;
     padding: 0;
   }
   
@@ -47,7 +46,6 @@
   
   .inner-content {
     padding: 24px;
-    background: #fff;
     min-height: 100vh;
     height: 100% !important;
   }
@@ -86,4 +84,24 @@
     padding: 0;
   }
   
-  
+  ::ng-deep .ant-modal-body{
+    padding: 0 !important;
+    border: none !important;
+  }
+
+  ::ng-deep .ant-modal-header{
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+  }
+
+  ::ng-deep .ant-modal-footer{
+    padding: 0 !important;
+    border: none !important;
+  }
+
+  ::ng-deep .ant-modal-content {
+    padding: 0 !important;
+    margin: 0 !important;
+    background: #188fff00;
+  }

@@ -29,7 +29,9 @@ export class AdminAppComponent {
 
   ngOnInit() {
     this.themeService.theme$.subscribe(theme => {
-      this.theme = theme; 
+      setTimeout(() => {
+        this.theme = theme;
+      });
     });
 
     this.changeTheme();

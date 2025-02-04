@@ -1,1 +1,330 @@
-<p>movimentacoes works!</p>
+<nz-modal
+  [(nzVisible)]="isVisible"
+  [nzTitle]="header"
+  [nzFooter]="null"
+  nzCloseIcon=""
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+  [nzWidth]="900"
+>
+  <ng-container *nzModalContent>
+    <div
+      class="row p-4"
+      [ngClass]="{
+        'bg-dark  text-secondary': theme === 'dark',
+        'bg-light text-dark': theme === 'light'
+      }"
+    >
+      <div
+        class="col-12 border rounded"
+        [ngClass]="{
+          'border-secondary': theme === 'dark',
+          'border-primary': theme === 'light'
+        }"
+      >
+        <form [formGroup]="newMovForm" class="needs-validation" novalidate>
+          <div class="row g-3 m-0 p-0">
+            <div class="col-md-6">
+              <label for="Pessoa" class="form-label">Pessoa Origem</label><br />
+              <nz-select
+                class="w-100"
+                formControlName="Cliente"
+                nzShowSearch
+                nzAllowClear
+                [nzDropdownRender]="renderTemplate"
+                [ngClass]="{ 'is-invalid': isInvalid('Cliente') }"
+                [ngModel]="selectedClient"
+              >
+                <nz-option
+                  *ngFor="let item of listClientes"
+                  [nzLabel]="item.id + ' - ' + item.nome"
+                  [nzValue]="item.id"
+                >
+                </nz-option>
+              </nz-select>
+              <div *ngIf="isInvalid('Cliente')" class="text-danger">
+                A Pessoa de origem é obrigatória!
+              </div>
+              <ng-template #renderTemplate>
+                <div class="dropdown-container">
+                  <div class="options-container">
+                    <nz-option
+                      *ngFor="let item of listClientes"
+                      [nzLabel]="item.id + ' - ' + item.nome"
+                      [nzValue]="item.id"
+                    >
+                    </nz-option>
+                  </div>
+                  <div class="footer-container">
+                    <input type="text" nz-input #inputElement />
+                    <button
+                      class="btn btn-sm btn-outline-primary mt-2"
+                      (click)="addPeople(inputElement)"
+                    >
+                      <i class="fa-solid fa-square-plus"></i> Cadastrar
+                    </button>
+                  </div>
+                </div>
+              </ng-template>
+            </div>
+
+            <div class="col-md-3">
+              <label for="Categoria" class="form-label">Categoria</label>
+              <nz-select
+                class="w-100"
+                formControlName="Categoria"
+                nzShowSearch
+                nzAllowClear
+                [nzDropdownRender]="renderTemplate2"
+                [ngClass]="{ 'is-invalid': isInvalid('Categoria') }"
+                [ngModel]="selectedCategory"
+              >
+                <nz-option
+                  *ngFor="let item of listCategorias"
+                  [nzLabel]="item.id + ' - ' + item.name"
+                  [nzValue]="item.id"
+                >
+                </nz-option>
+              </nz-select>
+              <div *ngIf="isInvalid('Categoria')" class="text-danger">
+                A Categoria é obrigatória!
+              </div>
+              <ng-template #renderTemplate2>
+                <div class="dropdown-container">
+                  <div class="options-container">
+                    <nz-option
+                      *ngFor="let item of listCategorias"
+                      [nzLabel]="item.id + ' - ' + item.name"
+                      [nzValue]="item.id"
+                    >
+                    </nz-option>
+                  </div>
+                  <div class="footer-container">
+                    <input type="text" nz-input #inputElement />
+                    <button
+                      class="btn btn-sm btn-outline-primary mt-2"
+                      (click)="addCategory(inputElement)"
+                    >
+                      <i class="fa-solid fa-square-plus"></i> Cadastrar
+                    </button>
+                  </div>
+                </div>
+              </ng-template>
+            </div>
+
+            <div class="col-md-3">
+              <label for="Conta" class="form-label">Conta</label>
+              <nz-select
+                class="w-100"
+                formControlName="Conta"
+                nzShowSearch
+                nzAllowClear
+                [nzDropdownRender]="renderTemplate"
+                [ngClass]="{ 'is-invalid': isInvalid('Conta') }"
+                [ngModel]="selectedAccount"
+              >
+                <nz-option
+                  *ngFor="let item of listConta"
+                  [nzLabel]="item.id + ' - ' + item.name"
+                  [nzValue]="item.id"
+                >
+                </nz-option>
+              </nz-select>
+              <div *ngIf="isInvalid('Conta')" class="text-danger">
+                A Categoria é obrigatória!
+              </div>
+              <ng-template #renderTemplate>
+                <div class="dropdown-container">
+                  <div class="options-container">
+                    <nz-option
+                      *ngFor="let item of listCategorias"
+                      [nzLabel]="item.id + ' - ' + item.name"
+                      [nzValue]="item.id"
+                    >
+                    </nz-option>
+                  </div>
+                  <div class="footer-container">
+                    <input type="text" nz-input #inputElement />
+                    <button
+                      class="btn btn-sm btn-outline-primary mt-2"
+                      (click)="addAccount(inputElement)"
+                    >
+                      <i class="fa-solid fa-square-plus"></i> Cadastrar
+                    </button>
+                  </div>
+                </div>
+              </ng-template>
+            </div>
+
+            <div class="col-md-6">
+              <label for="Descricao" class="form-label">Descrição</label>
+              <input
+                nz-input
+                name="Descricao"
+                id="Descricao"
+                formControlName="Descricao"
+                type="text"
+              />
+            </div>
+
+            <div class="col-md-3" *ngIf="!isUpdate">
+              <label for="Descricao" class="form-label">Status</label><br />
+              <nz-radio-group
+                class="w-100"
+                [(ngModel)]="statusMov"
+                nzButtonStyle="solid"
+                name="Status"
+                formControlName="Status"
+              >
+                <label
+                  class="w-50 text-center no-wrap"
+                  nz-radio-button
+                  nzValue="P"
+                  >Pago</label
+                >
+                <label
+                  class="w-50 text-center no-wrap"
+                  nz-radio-button
+                  nzValue="A"
+                  >Aberto</label
+                >
+              </nz-radio-group>
+            </div>
+
+            <div class="col-md-3">
+              <label for="Valor" class="form-label">Valor (R$)</label>
+              <input
+                nz-input
+                name="Valor"
+                id="Valor"
+                formControlName="Valor"
+                type="number"
+                [ngClass]="{ 'is-invalid': isInvalid('Valor') }"
+                placeholder="0,00"
+                (ngModelChange)="onParcelasChange()"
+              />
+              <div class="invalid-feedback">Valor é obrigatório</div>
+            </div>
+          </div>
+          <!-- <div *ngIf="isSnParc || isUpdate" class="row g-3 m-0 p-0">
+            <div class="col-12">
+              <hr />
+            </div>
+            <div class="col-9"></div>
+            <div class="col-3 mt-0">
+              <label for="Parcelas" class="form-label">Parcelas</label><br />
+              <nz-input-number
+                style="width: 100%"
+                formControlName="Parcelas"
+                ngModel="1"
+                [nzMin]="1"
+                [nzMax]="999"
+                [nzStep]="1"
+                (ngModelChange)="onParcelasChange()"
+              ></nz-input-number>
+            </div>
+            <div class="col-12">
+              <div class="table-responsive rounded hidden-sm">
+                <table
+                  class="w-100 h-100 m-0 p-0"
+                  [ngClass]="{
+                    'table-custom': theme === 'dark',
+                    'table-custom-light': theme === 'light'
+                  }"
+                >
+                  <thead>
+                    <tr>
+                      <th scope="col">Nr.</th>
+                      <th scope="col">Vencimento</th>
+                      <th scope="col">Valor</th>
+                      <th scope="col" class="text-center">Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="
+                        let item of listParcelas
+                          | paginate
+                            : { itemsPerPage: 5, currentPage: currentPage }
+                      "
+                    >
+                      <td>{{ item.Nr }}</td>
+                      <td>{{ item.DataVenc }}</td>
+                      <td>
+                        {{ item.Valor | currency : "BRL" : "symbol" : "1.2-2" }}
+                      </td>
+                      <td class="text-center">
+                        <button class="btn btn-sm btn-warning me-1">
+                          <i class="fa-solid fa-square-pen"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger">
+                          <i class="fa-solid fa-trash"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div class="d-flex justify-content-center mt-3 text-light">
+                  <pagination-controls
+                    (pageChange)="currentPage = $event"
+                    class="text-light"
+                    previousLabel="Anterior"
+                    nextLabel="Próximo"
+                  >
+                  </pagination-controls>
+                </div>
+              </div>
+            </div>
+          </div> -->
+          <div class="col-12 text-end mt-3 pt-3 border-top">
+            <button
+              [disabled]="clienteNotFound"
+              class="btn"
+              [ngClass]="{
+                'btn-danger': movType === 2,
+                'btn-success': movType === 1
+              }"
+              type="submit"
+              (click)="saveMov()"
+            >
+              <i class="fa-solid fa-floppy-disk"></i> Salvar
+              {{ movType === 1 ? "Receita" : movType === 2 ? "Despesa" : "" }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #header>
+    <div
+      class="row bg-dark p-4"
+      [ngClass]="{
+        'bg-dark  text-secondary': theme === 'dark',
+        'bg-light text-dark': theme === 'light'
+      }"
+    >
+      <div class="col-10 d">Nova Movimentação Financeira {{ cat }}</div>
+      <div class="col-2 d-flex justify-content-end pe-0 me-0">
+        <button class="btn btn-danger btn-sm" (click)="handleCancel()">
+          <i class="fa-solid fa-square-xmark"></i>
+        </button>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #footer>
+    <div
+      class="row bg-dark p-4"
+      [ngClass]="{
+        'bg-dark  text-secondary': theme === 'dark',
+        'bg-light text-dark': theme === 'light'
+      }"
+    >
+      <div class="col-12 d-flex justify-content-end pe-0 me-0">
+        <button class="btn btn-sm btn-success">
+          <i class="fa-solid fa-floppy-disk"></i>&nbsp; Salvar
+        </button>
+      </div>
+    </div>
+  </ng-template>
+</nz-modal>
