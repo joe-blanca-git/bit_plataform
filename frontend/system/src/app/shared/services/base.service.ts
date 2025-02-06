@@ -77,11 +77,9 @@ export  class BaseService{
                 return throwError(() => 'Falha na comunicação - tente novamente mais tarde');
             } else if (response.status === 400) {
                 CustomError.push("Erros de validação");
-            } else if (response.status === 401) {
-                console.log('ento');
-                
+            } else if (response.status === 401) {                
                 this.LocalStorage.limparDadosLocaisUsuario();
-                //this.router.navigate(['/admin/login-form']);
+                this.router.navigate(['/admin/login-form']);
                 return throwError(() => '401 - Sem autorização');
             } else if (response.status === 403) {
                 this.router.navigate(['/admin/login-form']);

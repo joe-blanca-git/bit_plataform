@@ -24,6 +24,28 @@
       >
         <form [formGroup]="newMovForm" class="needs-validation" novalidate>
           <div class="row g-3 m-0 p-0">
+            <div class="col-md-12" *ngIf="!isUpdate">
+              <label for="Descricao" class="form-label">Tipo de Movimentação Financeira</label><br />
+              <nz-radio-group
+                [(ngModel)]="movType"
+                nzButtonStyle="solid"
+                name="MovType"
+                formControlName="MovType"
+              >
+                <label
+                  class="text-center no-wrap"
+                  nz-radio-button
+                  nzValue="1"
+                  >Receita</label
+                >
+                <label
+                  class="text-center no-wrap"
+                  nz-radio-button
+                  nzValue="2"
+                  >Despesa</label
+                >
+              </nz-radio-group>
+            </div>
             <div class="col-md-6">
               <label for="Pessoa" class="form-label">Pessoa Origem</label><br />
               <nz-select
@@ -206,7 +228,7 @@
               <div class="invalid-feedback">Valor é obrigatório</div>
             </div>
           </div>
-          <!-- <div *ngIf="isSnParc || isUpdate" class="row g-3 m-0 p-0">
+          <div *ngIf="isSnParc || isUpdate" class="row g-3 m-0 p-0">
             <div class="col-12">
               <hr />
             </div>
@@ -224,9 +246,9 @@
               ></nz-input-number>
             </div>
             <div class="col-12">
-              <div class="table-responsive rounded hidden-sm">
+              <div class="table-responsive  hidden-sm">
                 <table
-                  class="w-100 h-100 m-0 p-0"
+                  class="w-100 h-100 m-0 p-0 table-bordered"
                   [ngClass]="{
                     'table-custom': theme === 'dark',
                     'table-custom-light': theme === 'light'
@@ -234,9 +256,9 @@
                 >
                   <thead>
                     <tr>
-                      <th scope="col">Nr.</th>
-                      <th scope="col">Vencimento</th>
-                      <th scope="col">Valor</th>
+                      <th scope="col" class="text-center">Nr.</th>
+                      <th scope="col" class="text-center">Vencimento</th>
+                      <th scope="col" class="text-center">Valor</th>
                       <th scope="col" class="text-center">Ações</th>
                     </tr>
                   </thead>
@@ -248,9 +270,9 @@
                             : { itemsPerPage: 5, currentPage: currentPage }
                       "
                     >
-                      <td>{{ item.Nr }}</td>
-                      <td>{{ item.DataVenc }}</td>
-                      <td>
+                      <td  class="text-center">{{ item.Nr }}</td>
+                      <td  class="text-center">{{ item.DataVenc }}</td>
+                      <td  class="text-center">
                         {{ item.Valor | currency : "BRL" : "symbol" : "1.2-2" }}
                       </td>
                       <td class="text-center">
@@ -276,20 +298,14 @@
                 </div>
               </div>
             </div>
-          </div> -->
-          <div class="col-12 text-end mt-3 pt-3 border-top">
+          </div>
+          <div class="col-12 text-end mt-3 mb-3 pt-3 border-top">
             <button
-              [disabled]="clienteNotFound"
-              class="btn"
-              [ngClass]="{
-                'btn-danger': movType === 2,
-                'btn-success': movType === 1
-              }"
+              class="btn btn-primary"
               type="submit"
               (click)="saveMov()"
             >
               <i class="fa-solid fa-floppy-disk"></i> Salvar
-              {{ movType === 1 ? "Receita" : movType === 2 ? "Despesa" : "" }}
             </button>
           </div>
         </form>

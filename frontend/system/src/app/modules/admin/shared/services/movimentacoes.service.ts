@@ -1,0 +1,46 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { catchError, map } from 'rxjs';
+import { BaseService } from 'src/app/shared/services/base.service';
+
+
+@Injectable({
+  providedIn: 'root'
+})
+export class MovimentacoesService extends BaseService {
+  constructor(public httpClient: HttpClient, router: Router) {
+    super(router); 
+  }
+
+  postNewMov(body: any) {
+    const userData = localStorage.getItem('BIT.user');
+  
+    if (!userData) {
+      throw new Error('Dados do usuário não encontrados');
+    }
+  
+    const parsedData = JSON.parse(userData);
+    const { id, empresa } = parsedData;
+  
+    if (!id || !empresa) {
+      throw new Error('Usuário ou empresa não definidos no objeto armazenado.');
+    }
+  
+    const updatedBody = {
+      ...body,
+      id_user_inc: id,
+      id_empresa: empresa
+    };
+  
+    const url = this.urlPostNewMov;
+ 
+    return this.httpClient
+      .post(url, updatedBody, this.ObterAuthHeaderJson())
+      .pipe(
+        map((data) => this.extractData(data)),
+        catchError(this.serviceError)
+      );
+  }
+
+}

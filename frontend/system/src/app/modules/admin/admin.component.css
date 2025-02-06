@@ -105,3 +105,7 @@
     margin: 0 !important;
     background: #188fff00;
   }
+
+  ::ng-deep .ngx-pagination a, .ngx-pagination button{
+    color: rgb(62, 62, 248) !important;
+  }

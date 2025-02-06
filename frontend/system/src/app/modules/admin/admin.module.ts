@@ -31,6 +31,7 @@ import { FooterComponent } from './shared/components/layout/footer/footer.compon
 import { MovimentacoesComponent } from './shared/components/financeiro/movimentacoes/movimentacoes.component';
 import { AdminContaComponent } from './pages/admin-conta/admin-conta.component';
 import { AdminCadstroComponent } from './pages/admin-cadstro/admin-cadstro.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,8 @@ import { AdminCadstroComponent } from './pages/admin-cadstro/admin-cadstro.compo
     NzCheckboxModule,
     NzRadioModule,
     NzSpinModule,    
+    NgxPaginationModule
+    
   ]
 })
 export class AdminModule { }
