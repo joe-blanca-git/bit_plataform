@@ -18,7 +18,7 @@ export class AdminAppComponent {
   userLabel: string = '';
   visibleMenu = false;
   
-  theme: 'dark' | 'light' = 'dark';
+  theme: 'dark' | 'light' = 'light';
 
   constructor(
     private themeService: ThemeService,

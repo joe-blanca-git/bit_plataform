@@ -12,7 +12,7 @@ import { NoticiasResponseModel } from '../../shared/models/noticia.model';
   styleUrls: ['./admin-home.component.scss'],
 })
 export class AdminHomeComponent {
-  theme: 'dark' | 'light' = 'dark';
+  theme: 'dark' | 'light' = 'light';
   isVisible = false;
   isVisibleMov = false;
   catType = 1; //1 = simples, 2 = completa
@@ -47,8 +47,6 @@ export class AdminHomeComponent {
     private themeService: ThemeService,
     private noticiasService: NoticiasService,
     private notification: NotificationService,
-    private router: Router,
-    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -56,7 +54,6 @@ export class AdminHomeComponent {
       this.theme = theme;
     });
 
-    this.changeTheme();
     this.getNoticias();
   }
 
@@ -84,13 +81,11 @@ export class AdminHomeComponent {
   getImage(imagens: string | null | undefined, link: string): string {
     try {
       if (!imagens || !link) {
-        return 'assets/img/default.jpg'; // Retorna uma imagem padrão se estiver vazio
+        return 'assets/img/default.jpg';
       }
   
-      // Extrai o domínio do link
       const domain = new URL(link).origin;
   
-      // Remove caracteres de escape e desserializa corretamente
       const jsonStr = imagens.replace(/\\"/g, '"').replace(/\\/g, '');
       const imgObj = JSON.parse(jsonStr);
   
@@ -100,12 +95,9 @@ export class AdminHomeComponent {
   
     } catch (error) {
       console.error('Erro ao converter imagens:', error);
-      return 'assets/img/default.jpg'; // Retorna uma imagem padrão em caso de erro
+      return 'assets/img/default.jpg';
     }
   }
-  
-  
-  
 
   showMenu(label: any){    
     if (label === 'N') {

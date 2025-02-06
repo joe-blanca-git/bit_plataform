@@ -32,6 +32,8 @@ import { MovimentacoesComponent } from './shared/components/financeiro/movimenta
 import { AdminContaComponent } from './pages/admin-conta/admin-conta.component';
 import { AdminCadstroComponent } from './pages/admin-cadstro/admin-cadstro.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { AdminMovimentacoesComponent } from './pages/admin-movimentacoes/admin-movimentacoes.component';
+import { MovimentacoesGraficoAnoComponent } from './shared/components/financeiro/movimentacoes-grafico-ano/movimentacoes-grafico-ano.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,9 @@ import { NgxPaginationModule } from 'ngx-pagination';
     FooterComponent,
     MovimentacoesComponent,
     AdminContaComponent,
-    AdminCadstroComponent
+    AdminCadstroComponent,
+    AdminMovimentacoesComponent,
+    MovimentacoesGraficoAnoComponent,
   ],
   imports: [
     CommonModule,

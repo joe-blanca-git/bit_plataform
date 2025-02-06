@@ -1,111 +1,113 @@
+
 .trigger {
-    font-size: 18px;
-    line-height: 64px;
-    padding: 0 24px;
-    cursor: pointer;
-    transition: color 0.3s;
-  }
-  
-  .trigger:hover {
-    color: #1890ff;
-  }
-  
-  .logo {
-    height: 32px;
-    background: rgba(255, 255, 255, 0);
-    margin: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: start;
-  }
-  
-  .logo img {
-    max-width: 40%;
-    object-fit: contain;
-  }
-  
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 16px;
-  }
-  
-  .trigger {
-    cursor: pointer;
-  }
-  
-  nz-header {
-    padding: 0;
-  }
-  
-  nz-content {
-    margin: 0 16px;
-    height: 100% !important;
-  }
-  
-  .inner-content {
-    padding: 24px;
-    min-height: 100vh;
-    height: 100% !important;
-  }
-  
-  nz-footer {
-    text-align: center;
-  }
-  
-  ::ng-deep .ant-layout-sider-light {
-    background-color: #e9e6e6;
-  }
-  
-  :ng-deep .ant-menu {
-    background-color: #e9e6e6 !important;
-  }
-  
-  ::ng-deep .ant-layout-sider {
-    background: #101010 !important;
-  }
-  
-  ::ng-deep .ant-layout-sider-light {
-    background: #e9e6e6 !important;
-  }
-  
-  ::ng-deep .ant-menu-sub.ant-menu-inline{
-    background-color: #24242400;
-    color: #949494;
-  }
-  
-  ::ng-deep .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected{
-    background-color: #666565 !important;
-    color: #313131;
-  }
-  
-  ::ng-deep .ant-drawer-body {
-    padding: 0;
-  }
-  
-  ::ng-deep .ant-modal-body{
-    padding: 0 !important;
-    border: none !important;
-  }
+  font-size: 18px;
+  line-height: 64px;
+  padding: 0 24px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
 
-  ::ng-deep .ant-modal-header{
-    padding: 0 !important;
-    margin: 0 !important;
-    border: none !important;
-  }
+.trigger:hover {
+  color: #1890ff;
+}
 
-  ::ng-deep .ant-modal-footer{
-    padding: 0 !important;
-    border: none !important;
-  }
+.logo {
+  height: 32px;
+  background: rgba(255, 255, 255, 0);
+  margin: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
 
-  ::ng-deep .ant-modal-content {
-    padding: 0 !important;
-    margin: 0 !important;
-    background: #188fff00;
-  }
+.logo img {
+  max-width: 40%;
+  object-fit: contain;
+}
 
-  ::ng-deep .ngx-pagination a, .ngx-pagination button{
-    color: rgb(62, 62, 248) !important;
-  }
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+}
+
+.trigger {
+  cursor: pointer;
+}
+
+nz-header {
+  padding: 0;
+}
+
+nz-content {
+  margin: 0 16px;
+  height: 100% !important;
+}
+
+.inner-content {
+  padding: 24px;
+  min-height: 100vh;
+  height: 100% !important;
+}
+
+nz-footer {
+  text-align: center;
+}
+
+::ng-deep .ant-layout-sider-light {
+  background-color: #e9e6e6;
+}
+
+:ng-deep .ant-menu {
+  background-color: #e9e6e6 !important;
+}
+
+::ng-deep .ant-layout-sider {
+  background: #101010 !important;
+}
+
+::ng-deep .ant-layout-sider-light {
+  background: #e9e6e6 !important;
+}
+
+::ng-deep .ant-menu-sub.ant-menu-inline {
+  background-color: #24242400;
+  color: #949494;
+}
+
+::ng-deep .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+  background-color: #666565 !important;
+  color: #313131;
+}
+
+::ng-deep .ant-drawer-body {
+  padding: 0;
+}
+
+::ng-deep .ant-modal-body {
+  padding: 0 !important;
+  border: none !important;
+}
+
+::ng-deep .ant-modal-header {
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+}
+
+::ng-deep .ant-modal-footer {
+  padding: 0 !important;
+  border: none !important;
+}
+
+::ng-deep .ant-modal-content {
+  padding: 0 !important;
+  margin: 0 !important;
+  background: #188fff00;
+}
+
+::ng-deep .ngx-pagination a,
+.ngx-pagination button {
+  color: rgb(62, 62, 248) !important;
+}
