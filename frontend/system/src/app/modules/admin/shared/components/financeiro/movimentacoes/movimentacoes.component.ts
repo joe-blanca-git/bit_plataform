@@ -16,6 +16,7 @@ import { ListaService } from '../../../services/lista.service';
 import { ClienteService } from '../../../services/cliente.service';
 import * as moment from 'moment';
 import { MovimentacoesService } from '../../../services/movimentacoes.service';
+import { DataFormatterService } from 'src/app/shared/services/data-formatter-service.service';
 
 @Component({
   selector: 'app-movimentacoes',
@@ -24,8 +25,10 @@ import { MovimentacoesService } from '../../../services/movimentacoes.service';
 })
 export class MovimentacoesComponent implements OnChanges {
   @Input('statusModal') isVisible: boolean = false;
-  @Input('typeMov') movType: number = 0;
+  @Input('typeMov') movType: string = '';
+  @Input('snUpdate') isUpdate: boolean = false;
   @Input('catMov') catType!: number;
+  @Input('dataUpdate') dataUpdate!: any;
   @Output() closeEvent = new EventEmitter<boolean>();
   @Output() saveSuccess = new EventEmitter<boolean>();
 
@@ -35,7 +38,6 @@ export class MovimentacoesComponent implements OnChanges {
   statusMov = 'P';
 
   isConfirmLoading = false;
-  isUpdate = false;
   isSnParc = false;
   checkType = 1;
 
@@ -67,15 +69,18 @@ export class MovimentacoesComponent implements OnChanges {
     private router: Router,
     private listaService: ListaService,
     private clienteService: ClienteService,
-    private movimentacoesService: MovimentacoesService
+    private movimentacoesService: MovimentacoesService,
+    private formateDateService: DataFormatterService
   ) {
     this.newMovForm = this._fb.group({
+      Id: [0],
       Cliente: [null, [Validators.required, Validators.minLength(4)]],
       Categoria: ['', [Validators.required]],
       Conta: ['', [Validators.required]],
       Origem: [1, [Validators.required]],
       Descricao: [''],
       Valor: ['', [Validators.required]],
+      ValorPendente: [''],
       Status: ['P', [Validators.required]],
       MovType: [0, [Validators.required]],
       Parcelas: [1, [Validators.required]],
@@ -86,11 +91,11 @@ export class MovimentacoesComponent implements OnChanges {
     this.themeService.theme$.subscribe((theme) => {
       this.theme = theme;
     });
-
     this.loadData();
   }
 
-  loadData() {
+  loadData() {    
+
     this.loadLista('financeiro_origem', '');
     this.loadLista('financeiro_categoria', '');
     this.loadLista('financeiro_conta', '');
@@ -98,6 +103,18 @@ export class MovimentacoesComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    
+    
+    if (changes['isUpdate'] && changes['isUpdate'].currentValue !== undefined) {
+      if (this.isUpdate === true) {        
+        this.selectedClient = this.dataUpdate.cliente_id;
+        this.selectedCategory = this.dataUpdate.categoria_id;
+        this.selectedAccount = this.dataUpdate.conta_id;
+        this.newMovForm.patchValue({Id: this.dataUpdate.Id, Valor: this.dataUpdate.ValorTotal,ValorPendente: this.dataUpdate.ValorPendente, Descricao: this.dataUpdate.Descricao});
+        this.listParcelas = this.dataUpdate.Parcelas;
+      }
+    }
+
     if (changes['catType'] && changes['catType'].currentValue !== undefined) {
       if (this.catType === 1) {
         this.cat = ' Simples';
@@ -117,49 +134,94 @@ export class MovimentacoesComponent implements OnChanges {
     const valor = this.newMovForm.get('Valor')?.value;
     const status = this.newMovForm.get('Status')?.value;
     const tipoMov = this.newMovForm.get('MovType')?.value;
+    const idMov = this.newMovForm.get('Id')?.value;    
 
     let mov = {};
     if (cliente && categoria && valor) {
-      if (tipoMov > 0) {
-        mov = {
-          id_pessoa_cliente: cliente,
-          categoria_id: categoria,
-          origem_id: origem,
-          descricao: descricao,
-          tipo: tipoMov,
-          conta: conta,
-          parcelas:
-            this.listParcelas && this.listParcelas.length > 0
-              ? this.listParcelas.map((parcela) => ({
-                  dt_venc: moment(parcela.DataVenc, 'DD/MM/YYYY').format(
-                    'YYYY-MM-DD HH:mm:ss'
-                  ),
-                  valor: parcela.Valor,
-                  status: status,
-                }))
-              : [
-                  {
-                    dt_venc: new Date()
-                      .toISOString()
-                      .slice(0, 19)
-                      .replace('T', ' '),
-                    valor: parseFloat(valor) || 0,
-                    status: status,
-                  },
-                ],
-        };
-      } else {
-        
-        this.notification.createBasicNotification(
-          'error',
-          'bg-danger',
-          'text-light',
-          'Informe o tipo de movimentação financeira!'
-        );
-        return;
-      }
 
-      this.movimentacoesService.postNewMov(mov).subscribe({
+      if (!this.isUpdate) {
+        if (tipoMov > 0) {
+          mov = {
+            id_pessoa_cliente: cliente,
+            categoria_id: categoria,
+            origem_id: origem,
+            descricao: descricao,
+            tipo: tipoMov,
+            conta: conta,
+            parcelas:
+              this.listParcelas && this.listParcelas.length > 0
+                ? this.listParcelas.map((parcela) => ({
+                    dt_venc: moment(parcela.DataVencimento, 'DD/MM/YYYY').format(
+                      'YYYY-MM-DD HH:mm:ss'
+                    ),
+                    valor: parcela.Valor,
+                    status: status,
+                  }))
+                : [
+                    {
+                      dt_venc: moment().format('YYYY-MM-DD HH:mm:ss'),
+                      valor: parseFloat(valor) || 0,
+                      status: status,
+                    },
+                  ],
+          };
+        } else { 
+          this.notification.createBasicNotification(
+            'error',
+            'bg-danger',
+            'text-light',
+            'Informe o tipo de movimentação financeira!'
+          );
+          return;
+        }
+
+        this.movimentacoesService.postNewMov(mov).subscribe({
+          next: (response) => {
+            this.notification.createBasicNotification(
+              'success',
+              'bg-success',
+              'text-light',
+              response.message
+            );
+            this.saveSuccess.emit(true);
+          },
+          error: (error) => {
+            this.notification.createBasicNotification(
+              'error',
+              'bg-danger',
+              'text-light',
+              error.error
+            );
+            this.saveSuccess.emit(false);
+          },
+          complete: () => {
+            this.newMovForm.reset();
+            this.isVisible = false;
+            this.closeEvent.emit(false);
+          },
+        });
+      } else {
+        if (tipoMov > 0) {
+          mov = {
+            idMov: idMov,
+            id_pessoa_cliente: cliente,
+            categoria_id: categoria,
+            descricao: descricao,
+            tipo: tipoMov,
+            conta: conta
+          };
+        } else {
+          
+          this.notification.createBasicNotification(
+            'error',
+            'bg-danger',
+            'text-light',
+            'Informe o tipo de movimentação financeira!'
+          );
+          return;
+        }
+
+      this.movimentacoesService.putNewMov(mov).subscribe({
         next: (response) => {
           this.notification.createBasicNotification(
             'success',
@@ -184,6 +246,10 @@ export class MovimentacoesComponent implements OnChanges {
           this.closeEvent.emit(false);
         },
       });
+
+
+      }
+
     } else {
       this.newMovForm.markAllAsTouched();
       this.saveSuccess.emit(false);
@@ -381,7 +447,7 @@ export class MovimentacoesComponent implements OnChanges {
           return {
             Id: index + 1,
             Nr: index + 1,
-            DataVenc: vencimento,
+            DataVencimento: vencimento,
             Valor: parseFloat(valorParcela.toFixed(2)),
           };
         });
@@ -406,15 +472,22 @@ export class MovimentacoesComponent implements OnChanges {
   }
 
   handleOk(): void {
-    this.isSnParc = false;
-    this.isVisible = false;
+    this.clear();
     this.closeEvent.emit(false);
   }
 
   handleCancel(): void {
+    this.clear();
+    this.closeEvent.emit(false);
+  }
+
+  clear(){
     this.isSnParc = false;
     this.isVisible = false;
-    this.closeEvent.emit(false);
+    this.newMovForm.reset();
+    this.selectedAccount = null;
+    this.selectedClient = null;
+    this.selectedCategory = null;
   }
 
   processarErro(erro: any) {
@@ -437,5 +510,9 @@ export class MovimentacoesComponent implements OnChanges {
         erro
       );
     }
+  }
+
+  formatData(date:any): string{
+    return this.formateDateService.formatarData(date);
   }
 }

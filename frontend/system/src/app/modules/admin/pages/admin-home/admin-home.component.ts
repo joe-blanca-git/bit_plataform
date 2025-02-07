@@ -62,9 +62,7 @@ export class AdminHomeComponent {
   getNoticias() {
     this.noticiasService.getNoticia()?.subscribe({
       next: (response: NoticiasResponseModel) => {
-        this.listNoticias = this.shuffleArray(response.items);
-        console.log(this.listNoticias);
-        
+        this.listNoticias = this.shuffleArray(response.items);        
       },
       error: (e) => this.processarErro(e),
     });

@@ -23,29 +23,36 @@
         }"
       >
         <form [formGroup]="newMovForm" class="needs-validation" novalidate>
+          <input
+            visible="false"
+            nz-input
+            name="Id"
+            id="Id"
+            formControlName="Id"
+            type="hidden"
+          />
+
           <div class="row g-3 m-0 p-0">
-            <div class="col-md-12" *ngIf="!isUpdate">
-              <label for="Descricao" class="form-label">Tipo de Movimentação Financeira</label><br />
+
+            <div class="col-md-12">
+              <label for="Descricao" class="form-label"
+                >Tipo de Movimentação Financeira</label
+              ><br />
               <nz-radio-group
                 [(ngModel)]="movType"
                 nzButtonStyle="solid"
                 name="MovType"
                 formControlName="MovType"
               >
-                <label
-                  class="text-center no-wrap"
-                  nz-radio-button
-                  nzValue="1"
+                <label class="text-center no-wrap" nz-radio-button nzValue="1"
                   >Receita</label
                 >
-                <label
-                  class="text-center no-wrap"
-                  nz-radio-button
-                  nzValue="2"
+                <label class="text-center no-wrap" nz-radio-button nzValue="2"
                   >Despesa</label
                 >
               </nz-radio-group>
             </div>
+
             <div class="col-md-6">
               <label for="Pessoa" class="form-label">Pessoa Origem</label><br />
               <nz-select
@@ -214,72 +221,111 @@
             </div>
 
             <div class="col-md-3">
-              <label for="Valor" class="form-label">Valor (R$)</label>
+              <label for="Valor" class="form-label">Valor Total (R$)</label>
               <input
+                [readOnly]="isUpdate"
                 nz-input
                 name="Valor"
                 id="Valor"
                 formControlName="Valor"
                 type="number"
-                [ngClass]="{ 'is-invalid': isInvalid('Valor') }"
+                [ngClass]="{ 'bg-secondary-light': isUpdate, 'is-invalid': isInvalid('Valor') }"
                 placeholder="0,00"
                 (ngModelChange)="onParcelasChange()"
               />
               <div class="invalid-feedback">Valor é obrigatório</div>
             </div>
+
+            <div class="col-md-3" *ngIf="isUpdate">
+              <label for="ValorPendente" class="form-label">Valor Pendente (R$)</label>
+              <input
+                [readOnly]="isUpdate"
+                nz-input
+                name="ValorPendente"
+                id="ValorPendente"
+                formControlName="ValorPendente"
+                type="number"
+                [ngClass]="{'bg-secondary-light': isUpdate}"
+                placeholder="0,00"
+              />
+            </div>
           </div>
+
           <div *ngIf="isSnParc || isUpdate" class="row g-3 m-0 p-0">
             <div class="col-12">
               <hr />
             </div>
-            <div class="col-9"></div>
+            <div class="col-9"><small class="text-secondary">*Para alterar valores e parcelas acesse <a routerLink="/admin/financeiro/contas">Gerencimaneto de Contas a Pagar/Receber</a></small></div>
             <div class="col-3 mt-0">
               <label for="Parcelas" class="form-label">Parcelas</label><br />
               <nz-input-number
+                [nzReadOnly]="isUpdate"
                 style="width: 100%"
                 formControlName="Parcelas"
                 ngModel="1"
                 [nzMin]="1"
                 [nzMax]="999"
                 [nzStep]="1"
+                [ngClass]="{'bg-secondary-light': isUpdate}"
                 (ngModelChange)="onParcelasChange()"
               ></nz-input-number>
             </div>
             <div class="col-12">
-              <div class="table-responsive  hidden-sm">
+              <div class="hidden-sm">
                 <table
-                  class="w-100 h-100 m-0 p-0 table-bordered"
-                  [ngClass]="{
-                    'table-custom': theme === 'dark',
-                    'table-custom-light': theme === 'light'
-                  }"
+                  class="table table-hover rounded border table-responsive"
+                  [ngClass]="{'table-dark': theme === 'dark','table-light': theme === 'light'}"
                 >
                   <thead>
                     <tr>
-                      <th scope="col" class="text-center">Nr.</th>
-                      <th scope="col" class="text-center">Vencimento</th>
-                      <th scope="col" class="text-center">Valor</th>
-                      <th scope="col" class="text-center">Ações</th>
+                      <th scope="col" class="text-primary">Vencimento</th>
+                      <th scope="col" class="text-primary">Valor</th>
+                      <th scope="col" class="text-primary" [width]="200"></th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr
                       *ngFor="
-                        let item of listParcelas | paginate : { itemsPerPage: 5, currentPage: currentPage }
+                        let item of listParcelas
+                          | paginate
+                            : { itemsPerPage: 5, currentPage: currentPage }
                       "
                     >
-                      <td  class="text-center">{{ item.Nr }}</td>
-                      <td  class="text-center">{{ item.DataVenc }}</td>
-                      <td  class="text-center">
+                      <td
+                        [ngClass]="{
+                          'text-secondary': theme === 'dark',
+                          'table-light': theme === 'light'
+                        }"
+                      >
+                        {{ formatData(item.DataVencimento) }}
+                      </td>
+                      <td
+                        [ngClass]="{
+                          'text-secondary': theme === 'dark',
+                          'table-light': theme === 'light'
+                        }"
+                      >
                         {{ item.Valor | currency : "BRL" : "symbol" : "1.2-2" }}
                       </td>
-                      <td class="text-center">
-                        <button class="btn btn-sm btn-warning me-1">
-                          <i class="fa-solid fa-square-pen"></i>
-                        </button>
-                        <button class="btn btn-sm btn-danger">
-                          <i class="fa-solid fa-trash"></i>
-                        </button>
+                      <td
+                        [ngClass]="{
+                          'text-secondary': theme === 'dark',
+                          'table-light': theme === 'light'
+                        }"
+                        [width]="100"
+                      >
+                        <div *ngIf="!isUpdate" class="row justify-content-center mt-1 mb-1">
+                          <div class="col-auto">
+                            <button class="btn btn-sm btn-outline-danger">
+                              <i class="fa-solid fa-trash-alt"></i>
+                            </button>
+                          </div>
+                          <div class="col-auto">
+                            <button class="btn btn-sm btn-outline-primary">
+                              <i class="fa-solid fa-pen"></i>
+                            </button>
+                          </div>
+                        </div>
                       </td>
                     </tr>
                   </tbody>
@@ -297,13 +343,10 @@
               </div>
             </div>
           </div>
+
           <div class="col-12 text-end mt-3 mb-3 pt-3 border-top">
-            <button
-              class="btn btn-primary"
-              type="submit"
-              (click)="saveMov()"
-            >
-              <i class="fa-solid fa-floppy-disk"></i> Salvar
+            <button class="btn btn-primary" type="submit" (click)="saveMov()">
+              <i class="fa-solid fa-floppy-disk"></i> Salvar <span *ngIf="!isUpdate">Novo</span> <span *ngIf="isUpdate">Alterações</span>
             </button>
           </div>
         </form>

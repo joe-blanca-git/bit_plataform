@@ -5,18 +5,12 @@ import { Injectable } from '@angular/core';
 })
 export class DataFormatterService {
 
-  formatarData(data: string, abrev: boolean): string {
-    const [dia, mes, ano] = data.split('/');
-    const dataFormatada = new Date(`${mes}/${dia}/${ano}`);
-    
-    const diaFormatado = String(dataFormatada.getDate()).padStart(2, '0');
-    const mesAbreviado = dataFormatada.toLocaleString('default', { month: 'short' });
-    const anoFormatado = dataFormatada.getFullYear(); 
+  formatarData(data: string): string {
+    const date = new Date(data);
+    const dia = String(date.getDate()).padStart(2, '0');
+    const mes = String(date.getMonth() + 1).padStart(2, '0');
+    const ano = date.getFullYear();
 
-    if (abrev) {
-      return `${diaFormatado}-${mesAbreviado}`;
-    }
-
-    return `${diaFormatado}/${String(dataFormatada.getMonth() + 1).padStart(2, '0')}/${anoFormatado}`;
+    return `${dia}/${mes}/${ano}`;
   }
 }

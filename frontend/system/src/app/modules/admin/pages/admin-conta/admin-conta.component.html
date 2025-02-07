@@ -1,1 +1,138 @@
-<p>admin-conta works!</p>
+<div class="row">
+  <div
+    class="header-container d-flex align-items-center"
+    [ngStyle]="{ 'background-image': 'url(' + getHeader() + ')' }"
+  >
+    <span
+      class="welcome-text"
+      [ngClass]="{
+        'text-light': theme === 'dark',
+        'text-primary': theme === 'light'
+      }"
+    >
+      CONTAS PAGAR/RECEBER
+    </span>
+  </div>
+</div>
+<div class="row mt-2">
+  <div class="col-12">
+    <div class="row">
+      <div class="col-xl-2">
+        <div
+          class="card bg-success-light"
+          [ngClass]="{
+            'text-secondary': theme === 'dark',
+            'text-dark': theme === 'light'
+          }"
+        >
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12 text-success">
+                <b class="mt-1"
+                  ><i class="fa-solid fa-money-bill-wave"></i> Receber</b
+                >
+              </div>
+              <div class="col-12 text-end">
+                <hr class="mt-0" />
+                <span class="">{{ this.formatValor(totalReceber) }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-2">
+        <div
+          class="card bg-danger-light"
+          [ngClass]="{
+            'text-secondary': theme === 'dark',
+            'text-dark': theme === 'light'
+          }"
+        >
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12 text-danger">
+                <b class="mt-1"
+                  ><i class="fa-solid fa-money-bill"></i> Pagar</b
+                >
+              </div>
+              <div class="col-12 text-end">
+                <hr class="mt-0" />
+                <span class="">{{ this.formatValor(totalPagar) }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-2">
+        <div
+          class="card bg-primary-light"
+          [ngClass]="{
+            'text-secondary': theme === 'dark',
+            'text-dark': theme === 'light'
+          }"
+        >
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12 text-primary">
+                <b class="mt-1"
+                  ><i class="fa-solid fa-circle-dollar-to-slot"></i> Saldo Futuro</b
+                >
+              </div>
+              <div class="col-12 text-end">
+                <hr class="mt-0" />
+                <span class="">{{ this.formatValor(saldoFuturo) }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 hidden-sm">
+        <app-movimentacoes-grafico-ano
+          *ngIf="listMovimentacoes.length > 0"
+          [data]="listMovimentacoes"
+        >
+        </app-movimentacoes-grafico-ano>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 mt-0">
+    <hr />
+  </div>
+  <div class="col-6 d-flex justify-content-start align-items-center">
+    <!-- <nz-range-picker
+      class="rounded text-secondary"
+      [ngClass]="{
+        'bg-dark-light text-secondary': theme === 'dark',
+        'bg-light text-secondary': theme === 'light'
+      }"
+      [(ngModel)]="date"
+      (ngModelChange)="onChange($event)"
+    ></nz-range-picker> -->
+  </div>
+  <div class="col-6 d-flex justify-content-end align-items-center">
+    <div class="input-group me-2" style="width: 50%">
+      <span
+        class="input-group-text"
+        id="basic-addon1"
+        [ngClass]="{
+          'bg-dark-light text-secondary': theme === 'dark',
+          'bg-light': theme === 'light'
+        }"
+      >
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </span>
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Pesquisar"
+        [ngClass]="{
+          'bg-dark-light text-secondary': theme === 'dark',
+          'bg-light': theme === 'light'
+        }"
+        aria-label="Pesquisar"
+        aria-describedby="basic-addon1"
+        (input)="filtrarMovimentacoes($event)"
+      />
+    </div>
+  </div>
+</div>

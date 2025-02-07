@@ -8,6 +8,8 @@ export  class BaseService{
   constructor(
     protected router : Router
    ) { }
+
+   
     public LocalStorage = new LocalStorageUtils();
     protected UrlServiceV1: string = environment.apiUrlv1;
 
@@ -29,7 +31,9 @@ export  class BaseService{
 
     //financeiro
     public urlPostNewMov = this.UrlServiceV1 + 'admin/financeiro/mov/postMov.php';
-    public urlGetMov = this.UrlServiceV1 + 'admin/financeiro/mov/getMov.php?user={{idUser}}&empresa={{idEmpresa}}&tipo={{tipo}}'
+    public urlPutMov = this.UrlServiceV1 + 'admin/financeiro/mov/putMov.php';
+    public urlDeleteMov = this.UrlServiceV1 + 'admin/financeiro/mov/deleteMov.php?user={{idUser}}&empresa={{idEmpresa}}&idMov={{idMov}}';
+    public urlGetMov = this.UrlServiceV1 + 'admin/financeiro/mov/getMov.php?user={{idUser}}&empresa={{idEmpresa}}'
     public urlGetHome = this.UrlServiceV1 + 'admin/financeiro/mov/getHome.php?user={{idUser}}&empresa={{idEmpresa}}'
 
     //shared url
@@ -69,28 +73,23 @@ export  class BaseService{
         let CustomError: string[] = [];
        
         
-        if (response instanceof HttpErrorResponse) {
-            console.log(response.status);
-            
+        if (response instanceof HttpErrorResponse) {            
 
             if (response.statusText === "Unknown Error") {
                 return throwError(() => 'Falha na comunicação - tente novamente mais tarde');
             } else if (response.status === 400) {
                 CustomError.push("Erros de validação");
-            } else if (response.status === 401) {                
-                this.LocalStorage.limparDadosLocaisUsuario();
-                this.router.navigate(['/admin/login-form']);
+            } else if (response.status === 401) {      
                 return throwError(() => '401 - Sem autorização');
             } else if (response.status === 403) {
-                this.router.navigate(['/admin/login-form']);
+                this.router.navigate(['/login']);
                 return throwError(() => '403 - Sem autorização');
             } else if (response.status === 409) { 
                 return throwError(() => '409 - Usuário já existe');
             } else if (response.status === 500) {
                 return throwError(() => 'Erro interno do servidor, tente novamente mais tarde.');
             }
-        }
-    
+        }        
         return throwError(() => response);
     }
     

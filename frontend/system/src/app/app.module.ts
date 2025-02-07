@@ -31,7 +31,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { IconsProviderModule } from './icons-provider.module';
 import { LoginComponent } from './modules/login/login.component';
-import { AuthService } from './shared/services/auth.service';
+import { AuthGuardService, AuthService } from './shared/services/auth.service';
 import { ThemeService } from './modules/admin/shared/services/themeService';
 import { NotificationService } from './shared/services/notification.service';
 
@@ -75,6 +75,7 @@ registerLocaleData(pt);
     ThemeService,
     AuthService,
     NotificationService,
+    AuthGuardService,
     { provide: NZ_I18N, useValue: pt_BR }
   ],
   bootstrap: [AppComponent]

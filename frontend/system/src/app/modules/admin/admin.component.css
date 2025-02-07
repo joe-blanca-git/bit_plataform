@@ -109,5 +109,9 @@ nz-footer {
 
 ::ng-deep .ngx-pagination a,
 .ngx-pagination button {
-  color: rgb(62, 62, 248) !important;
+  color: rgb(115, 115, 255) !important;
+}
+
+::ng-deep .ant-picker-input> input{
+  color: rgb(115, 115, 255) !important;
 }

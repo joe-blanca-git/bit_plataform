@@ -5,6 +5,8 @@ import { ThemeService } from '../../shared/services/themeService';
 import { ValorFormatterService } from 'src/app/shared/services/valor-formatter-service.service';
 import { DataFormatterService } from 'src/app/shared/services/data-formatter-service.service';
 import { getISOWeek } from 'date-fns';
+import { MovimentacoesService } from '../../shared/services/movimentacoes.service';
+import { MovModel } from '../../shared/models/mov.model';
 
 
 @Component({
@@ -16,7 +18,10 @@ export class AdminMovimentacoesComponent {
   theme: 'dark' | 'light' = 'light';
   isVisible = false;
   isVisibleMov = false;
+  isVisibleGraf = false;
+  isUpdate = false;
   catType = 1; //1 = simples, 2 = completa
+  movType = ''; //1 = receita, 2 = despesa
   currentPage = 1;
   currentQtde = 5;
   totalReceita = 0;
@@ -32,176 +37,20 @@ export class AdminMovimentacoesComponent {
     }
   ];
 
-  listMovimentacoes = [
-    {
-      data_inc: '01/01/2024',
-      tipo: 1,
-      origem: 'Bit-Admin',
-      origem_id: 1,
-      pessoa: 'João Silva',
-      pessoa_id: 21,
-      descricao: 'Gastos com supermercados do final de semana',
-      conta: 'Banco Inter',
-      conta_id: 1,
-      valor_total: 123123.00,
-      parcels: [
-        { data_venc: '01/01/2025', valor_parc: 12313.00, status: 'A' },
-        { data_venc: '01/01/2025', valor_parc: 12313.00, status: 'P' },
-      ]
-    },
-    {
-      data_inc: '05/02/2024',
-      tipo: 2,
-      origem: 'Bit-Shop',
-      origem_id: 2,
-      pessoa: 'Maria Oliveira',
-      pessoa_id: 34,
-      descricao: 'Compra de material de escritório',
-      conta: 'Banco Inter',
-      conta_id: 1,
-      valor_total: 500.00,
-      parcels: [
-        { data_venc: '05/03/2024', valor_parc: 250.00, status: 'A' },
-        { data_venc: '05/04/2024', valor_parc: 250.00, status: 'P' },
-      ]
-    },
-    {
-      data_inc: '10/02/2024',
-      tipo: 1,
-      origem: 'Bit-Service',
-      origem_id: 3,
-      pessoa: 'Carlos Mendes',
-      pessoa_id: 45,
-      descricao: 'Pagamento de serviço de manutenção',
-      conta: 'Banco Inter',
-      conta_id: 1,
-      valor_total: 800.00,
-      parcels: [
-        { data_venc: '10/03/2024', valor_parc: 800.00, status: 'A' },
-      ]
-    },
-    {
-      data_inc: '15/02/2024',
-      tipo: 2,
-      origem: 'Bit-Admin',
-      origem_id: 1,
-      pessoa: 'Fernanda Souza',
-      pessoa_id: 56,
-      descricao: 'Reembolso de despesas de viagem',
-      conta: 'Banco Inter',
-      conta_id: 1,
-      valor_total: 1500.00,
-      parcels: [
-        { data_venc: '15/03/2024', valor_parc: 750.00, status: 'P' },
-        { data_venc: '15/04/2024', valor_parc: 750.00, status: 'A' },
-      ]
-    },
-    {
-      data_inc: '20/02/2024',
-      tipo: 1,
-      origem: 'Bit-Shop',
-      origem_id: 2,
-      pessoa: 'Ricardo Lopes',
-      pessoa_id: 67,
-      descricao: 'Compra de equipamentos de informática',
-      conta: 'Banco Inter',
-      conta_id: 1,
-      valor_total: 3200.00,
-      parcels: [
-        { data_venc: '20/03/2024', valor_parc: 1600.00, status: 'A' },
-        { data_venc: '20/04/2024', valor_parc: 1600.00, status: 'P' },
-      ]
-    },
-    {
-      data_inc: '25/02/2024',
-      tipo: 2,
-      origem: 'Bit-Service',
-      origem_id: 3,
-      pessoa: 'Amanda Costa',
-      pessoa_id: 78,
-      descricao: 'Pagamento de consultoria',
-      conta: 'Banco Inter',
-      conta_id: 1,
-      valor_total: 1000.00,
-      parcels: [
-        { data_venc: '25/03/2024', valor_parc: 500.00, status: 'A' },
-        { data_venc: '25/04/2024', valor_parc: 500.00, status: 'P' },
-      ]
-    },
-    {
-      data_inc: '01/03/2024',
-      tipo: 1,
-      origem: 'Bit-Admin',
-      origem_id: 1,
-      pessoa: 'Luiz Fernando',
-      pessoa_id: 89,
-      descricao: 'Assinatura de software mensal',
-      conta: 'Banco Inter',
-      conta_id: 1,
-      valor_total: 300.00,
-      parcels: [
-        { data_venc: '01/04/2024', valor_parc: 300.00, status: 'A' },
-      ]
-    },
-    {
-      data_inc: '05/03/2024',
-      tipo: 2,
-      origem: 'Bit-Shop',
-      origem_id: 2,
-      pessoa: 'Gabriela Martins',
-      pessoa_id: 90,
-      descricao: 'Compra de móveis para escritório',
-      conta: 'Banco Inter',
-      conta_id: 1,
-      valor_total: 2500.00,
-      parcels: [
-        { data_venc: '05/04/2024', valor_parc: 1250.00, status: 'P' },
-        { data_venc: '05/05/2024', valor_parc: 1250.00, status: 'A' },
-      ]
-    },
-    {
-      data_inc: '10/03/2024',
-      tipo: 1,
-      origem: 'Bit-Service',
-      origem_id: 3,
-      pessoa: 'Eduardo Lima',
-      pessoa_id: 101,
-      descricao: 'Manutenção de equipamentos',
-      conta: 'Banco Inter',
-      conta_id: 1,
-      valor_total: 1200.00,
-      parcels: [
-        { data_venc: '10/04/2024', valor_parc: 600.00, status: 'A' },
-        { data_venc: '10/05/2024', valor_parc: 600.00, status: 'P' },
-      ]
-    },
-    {
-      data_inc: '15/03/2024',
-      tipo: 2,
-      origem: 'Bit-Admin',
-      origem_id: 1,
-      pessoa: 'Patrícia Almeida',
-      pessoa_id: 112,
-      descricao: 'Despesas com evento corporativo',
-      conta: 'Banco Inter',
-      conta_id: 1,
-      valor_total: 5000.00,
-      parcels: [
-        { data_venc: '15/04/2024', valor_parc: 2500.00, status: 'P' },
-        { data_venc: '15/05/2024', valor_parc: 2500.00, status: 'A' },
-      ]
-    }
-  ];
+  listMovimentacoes: MovModel[] = [];
 
-  listaFiltrada = [...this.listMovimentacoes];
+  listaFiltrada:MovModel[] = [...this.listMovimentacoes];
 
   date = null;
+
+  dataForUpdate: any;
   
   constructor(
     private themeService: ThemeService,
     private notification: NotificationService,
     private formateValueService: ValorFormatterService,
     private formateDateService: DataFormatterService,
+    private movimentacoesService: MovimentacoesService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
@@ -211,8 +60,19 @@ export class AdminMovimentacoesComponent {
       this.theme = theme;
     });
 
-    this.calcTotais();
+    this.loadMovimentacoes();
 
+  }
+
+  loadMovimentacoes(){
+    this.movimentacoesService.getMov()?.subscribe({
+      next: (v:any[]) => {
+        this.listMovimentacoes = v.sort((a, b) => b.Id - a.Id);
+        this.listaFiltrada = [...this.listMovimentacoes];       
+      },
+      error: (e) => this.processarErro(e),
+      complete: () => {this.calcTotais();} 
+    });
   }
 
   onChange(result: Date[]): void {
@@ -227,34 +87,79 @@ export class AdminMovimentacoesComponent {
     const input = (event.target as HTMLInputElement).value.toLowerCase().trim();
   
     this.listaFiltrada = this.listMovimentacoes.filter(mov => {
-      const tipoTexto = mov.tipo === 1 ? 'receita' : 'despesa';
+      const tipoTexto = mov.Tipo === '1' ? 'receita' : 'despesa';
   
-      return Object.values(mov).some(valor => 
-        String(valor).toLowerCase().includes(input)
+      return Object.values(mov).some(ValorTotal => 
+        String(ValorTotal).toLowerCase().includes(input)
       ) || tipoTexto.includes(input);
     });
   }
-  
-  
-  
-  
 
-  calcTotais(): void {
+  calcTotais(): void {   
     this.totalReceita = this.listMovimentacoes
-      .filter(mov => mov.tipo === 1)
-      .reduce((acc, mov) => acc + mov.valor_total, 0);
+      .filter(mov => mov.Tipo === '1')
+      .reduce((acc, mov) => acc + mov.ValorTotal, 0);
   
     this.totalDespesa = this.listMovimentacoes
-      .filter(mov => mov.tipo === 2)
-      .reduce((acc, mov) => acc + mov.valor_total, 0);
+      .filter(mov => mov.Tipo === '2')
+      .reduce((acc, mov) => acc + mov.ValorTotal, 0);
   
     this.saldo = this.totalReceita - this.totalDespesa;
+  }
+
+  deleteMov(idMov: number): void {   
+    if (idMov) {
+      this.movimentacoesService.deleteNewMov(idMov).subscribe({
+        next: (response) => {
+          this.notification.createBasicNotification(
+            'success',
+            'bg-success',
+            'text-light',
+            response.message
+          );
+          this.loadMovimentacoes();
+        },
+        error: (error) => {
+          this.notification.createBasicNotification(
+            'error',
+            'bg-danger',
+            'text-light',
+            error.error
+          );
+        },
+        complete: () => {
+          this.isVisible = false;
+        },
+      });
+    }
+  }
+
+  showUpdate(typeMov: string, data:any){
+    this.movType = typeMov;
+    this.catType = 2;
+    this.isUpdate = true;
+    this.dataForUpdate = data;
+    this.isVisibleMov = true;
+    
+  }
+
+  showMov(cat: number){
+    this.catType = cat;
+    this.isVisibleMov = true;
+    this.handleOk();
   }
   
   showMenu(label: any) {
     if (label === 'N') {
       this.isVisible = true;
     }
+  }
+
+  closeMov(event: boolean){
+    if (!event) {
+      this.clearVariables();
+    }
+
   }
 
   changeTheme() {
@@ -274,8 +179,8 @@ export class AdminMovimentacoesComponent {
     }
   }
 
-  getTipo(id:number): string{
-    if (id === 1) {
+  getTipo(id:string): string{
+    if (id === '1') {
       return 'Receita'
     } else {
       return 'Despesa'
@@ -286,7 +191,44 @@ export class AdminMovimentacoesComponent {
     return this.formateValueService.formatarValor(valor);
   }
 
-  formatData(date:string, abrev: boolean): string{
-    return this.formateDateService.formatarData(date,abrev);
+  formatData(date:any): string{
+    return this.formateDateService.formatarData(date);
+  }
+
+  handleOk(): void {
+    this.isVisible = false;
+  }
+
+  handleCancel(): void {
+    this.isVisible = false;
+    this.clearVariables();
+  }
+
+  clearVariables(){
+    this.catType = 0;
+    this.isVisibleMov = false;
+    this.isUpdate = false;
+  }
+
+  processarErro(erro: any) {    
+    if (erro.error) {
+      if (erro.messages) {
+        for (let e of erro.messages) {
+          this.notification.createBasicNotification(
+            'error',
+            'bg-danger',
+            'text-light',
+            e
+          );
+        }
+      }
+    } else {
+      this.notification.createBasicNotification(
+        'error',
+        'bg-danger',
+        'text-light',
+        erro
+      );
+    }
   }
 }
