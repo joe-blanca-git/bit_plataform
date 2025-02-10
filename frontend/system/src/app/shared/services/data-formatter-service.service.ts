@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -6,11 +7,12 @@ import { Injectable } from '@angular/core';
 export class DataFormatterService {
 
   formatarData(data: string): string {
-    const date = new Date(data);
-    const dia = String(date.getDate()).padStart(2, '0');
-    const mes = String(date.getMonth() + 1).padStart(2, '0');
-    const ano = date.getFullYear();
+    if (!data) return 'Data inválida';
 
-    return `${dia}/${mes}/${ano}`;
+    const date = moment(data, ['YYYY-MM-DD HH:mm:ss', 'YYYY-MM-DDTHH:mm:ss'], true);
+
+    if (!date.isValid()) return 'Data inválida'; 
+
+    return date.format('DD/MM'); 
   }
 }

@@ -17,6 +17,7 @@ export class MovModel {
   ValorPendente!: number;
   StatusConta!: string;
   DataInclusao!: Date;
+  Parcelas!: Parcelas[];
 }
 
 export class Parcelas {
@@ -24,4 +25,5 @@ export class Parcelas {
   DataInclusao!: Date;
   DataVencimento!: Date;
   Valor!: number;
+  StatusParcela!: string;
 }

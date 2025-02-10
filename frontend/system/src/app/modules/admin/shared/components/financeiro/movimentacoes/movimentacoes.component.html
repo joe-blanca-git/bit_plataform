@@ -235,27 +235,27 @@
               />
               <div class="invalid-feedback">Valor é obrigatório</div>
             </div>
-
-            <div class="col-md-3" *ngIf="isUpdate">
-              <label for="ValorPendente" class="form-label">Valor Pendente (R$)</label>
-              <input
-                [readOnly]="isUpdate"
-                nz-input
-                name="ValorPendente"
-                id="ValorPendente"
-                formControlName="ValorPendente"
-                type="number"
-                [ngClass]="{'bg-secondary-light': isUpdate}"
-                placeholder="0,00"
-              />
-            </div>
           </div>
 
           <div *ngIf="isSnParc || isUpdate" class="row g-3 m-0 p-0">
             <div class="col-12">
               <hr />
             </div>
-            <div class="col-9"><small class="text-secondary">*Para alterar valores e parcelas acesse <a routerLink="/admin/financeiro/contas">Gerencimaneto de Contas a Pagar/Receber</a></small></div>
+            <div class="col-6"><small class="text-secondary">*Para alterar valores e parcelas acesse <a routerLink="/admin/financeiro/contas">Gerencimaneto de Contas a Pagar/Receber</a></small></div>
+            <div class="col-3 mt-0">
+              <label  *ngIf="!isUpdate" for="ValorEntrada" class="form-label">Valor Entrada</label>
+              <input
+                *ngIf="!isUpdate"
+                nz-input
+                name="ValorEntrada"
+                id="ValorEntrada"
+                formControlName="ValorEntrada"
+                type="number"
+                [ngClass]="{'bg-secondary-light': isUpdate}"
+                placeholder="0,00"
+                (ngModelChange)="onParcelasChange()"
+              />
+            </div>
             <div class="col-3 mt-0">
               <label for="Parcelas" class="form-label">Parcelas</label><br />
               <nz-input-number
@@ -280,7 +280,6 @@
                     <tr>
                       <th scope="col" class="text-primary">Vencimento</th>
                       <th scope="col" class="text-primary">Valor</th>
-                      <th scope="col" class="text-primary" [width]="200"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -306,26 +305,6 @@
                         }"
                       >
                         {{ item.Valor | currency : "BRL" : "symbol" : "1.2-2" }}
-                      </td>
-                      <td
-                        [ngClass]="{
-                          'text-secondary': theme === 'dark',
-                          'table-light': theme === 'light'
-                        }"
-                        [width]="100"
-                      >
-                        <div *ngIf="!isUpdate" class="row justify-content-center mt-1 mb-1">
-                          <div class="col-auto">
-                            <button class="btn btn-sm btn-outline-danger">
-                              <i class="fa-solid fa-trash-alt"></i>
-                            </button>
-                          </div>
-                          <div class="col-auto">
-                            <button class="btn btn-sm btn-outline-primary">
-                              <i class="fa-solid fa-pen"></i>
-                            </button>
-                          </div>
-                        </div>
                       </td>
                     </tr>
                   </tbody>

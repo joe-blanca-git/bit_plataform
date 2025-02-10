@@ -80,7 +80,7 @@ export class MovimentacoesComponent implements OnChanges {
       Origem: [1, [Validators.required]],
       Descricao: [''],
       Valor: ['', [Validators.required]],
-      ValorPendente: [''],
+      ValorEntrada: [''],
       Status: ['P', [Validators.required]],
       MovType: [0, [Validators.required]],
       Parcelas: [1, [Validators.required]],
@@ -103,8 +103,6 @@ export class MovimentacoesComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    
-    
     if (changes['isUpdate'] && changes['isUpdate'].currentValue !== undefined) {
       if (this.isUpdate === true) {        
         this.selectedClient = this.dataUpdate.cliente_id;
@@ -229,6 +227,7 @@ export class MovimentacoesComponent implements OnChanges {
             'text-light',
             response.message
           );
+          this.clear();
           this.saveSuccess.emit(true);
         },
         error: (error) => {
@@ -238,10 +237,10 @@ export class MovimentacoesComponent implements OnChanges {
             'text-light',
             error.error
           );
+          this.clear();
           this.saveSuccess.emit(false);
         },
         complete: () => {
-          this.newMovForm.reset();
           this.isVisible = false;
           this.closeEvent.emit(false);
         },
@@ -427,34 +426,66 @@ export class MovimentacoesComponent implements OnChanges {
     setTimeout(() => {
       if (!this.isUpdate) {
         const valorTotal = this.newMovForm.get('Valor')?.value;
+        const valorEntrada = this.newMovForm.get('ValorEntrada')?.value || 0;
         const qtdParcelas = this.newMovForm.get('Parcelas')?.value || 1;
-
-        if (
-          valorTotal === null ||
-          valorTotal === undefined ||
-          valorTotal === 0 ||
-          valorTotal === ''
-        ) {
+        const valorFinal = valorTotal - valorEntrada;
+  
+        if (!valorTotal || valorTotal === 0) {
           this.newMovForm.get('Valor')?.markAsTouched();
           return;
         }
-
-        const valorParcela = valorTotal / qtdParcelas;
-        this.listParcelas = Array.from({ length: qtdParcelas }, (_, index) => {
-          const vencimento = moment()
-            .add((index + 1) * 30, 'days')
-            .format('DD/MM/YYYY');
-          return {
-            Id: index + 1,
-            Nr: index + 1,
-            DataVencimento: vencimento,
-            Valor: parseFloat(valorParcela.toFixed(2)),
-          };
-        });
+  
+        let parcelas = [];        
+        if (valorEntrada > 0 && Number(qtdParcelas) === 1) {
+          // Cria a primeira parcela com a entrada e vencimento atual          
+          parcelas.push({
+            Id: 1,
+            Nr: 1,
+            DataVencimento: moment().format('YYYY-MM-DD HH:mm:ss'),
+            Valor: parseFloat(valorEntrada.toFixed(2)),
+          });
+  
+          // Cria a segunda parcela com o saldo restante e vencimento em 30 dias
+          if (valorFinal > 0) {
+            parcelas.push({
+              Id: 2,
+              Nr: 2,
+              DataVencimento: moment().add(30, 'days').format('YYYY-MM-DD HH:mm:ss'),
+              Valor: parseFloat(valorFinal.toFixed(2)),
+            });
+          }
+        } else {
+          // Caso normal (mais de uma parcela)
+          const qtdRestante = valorEntrada > 0 ? qtdParcelas - 1 : qtdParcelas;
+          const valorParcela = qtdRestante > 0 ? valorFinal / qtdRestante : 0;
+  
+          // Se houver entrada, cria a primeira parcela com a entrada
+          if (valorEntrada > 0) {
+            parcelas.push({
+              Id: 1,
+              Nr: 1,
+              DataVencimento: moment().format('YYYY-MM-DD HH:mm:ss'),
+              Valor: parseFloat(valorEntrada.toFixed(2)),
+            });
+          }
+  
+          // Cria as parcelas restantes
+          for (let i = 0; i < qtdRestante; i++) {
+            parcelas.push({
+              Id: parcelas.length + 1,
+              Nr: parcelas.length + 1,
+              DataVencimento: moment().add((i + 1) * 30, 'days').format('YYYY-MM-DD HH:mm:ss'),
+              Valor: parseFloat(valorParcela.toFixed(2)),
+            });
+          }
+        }
+  
+        this.listParcelas = parcelas;
       }
     }, 0);
   }
-
+  
+  
   changeTheme() {
     this.themeService.changeTheme();
   }
@@ -488,6 +519,7 @@ export class MovimentacoesComponent implements OnChanges {
     this.selectedAccount = null;
     this.selectedClient = null;
     this.selectedCategory = null;
+    this.listParcelas = [];
   }
 
   processarErro(erro: any) {

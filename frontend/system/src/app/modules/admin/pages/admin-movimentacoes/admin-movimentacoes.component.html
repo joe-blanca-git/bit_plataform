@@ -17,9 +17,9 @@
 <div class="row mt-2">
   <div class="col-12">
     <div class="row">
-      <div class="col-xl-2">
+      <div class="col-xl-2 col-4 text-sm">
         <div
-          class="card bg-success-light"
+          class="card bg-brand-light"
           [ngClass]="{
             'text-secondary': theme === 'dark',
             'text-dark': theme === 'light'
@@ -40,9 +40,9 @@
           </div>
         </div>
       </div>
-      <div class="col-xl-2">
+      <div class="col-xl-2 col-4 text-sm">
         <div
-          class="card bg-danger-light"
+          class="card bg-brand-light"
           [ngClass]="{
             'text-secondary': theme === 'dark',
             'text-dark': theme === 'light'
@@ -63,9 +63,9 @@
           </div>
         </div>
       </div>
-      <div class="col-xl-2">
+      <div class="col-xl-2 col-4 text-sm">
         <div
-          class="card bg-primary-light"
+          class="card bg-brand-light"
           [ngClass]="{
             'text-secondary': theme === 'dark',
             'text-dark': theme === 'light'
@@ -111,8 +111,8 @@
       (ngModelChange)="onChange($event)"
     ></nz-range-picker> -->
   </div>
-  <div class="col-6 d-flex justify-content-end align-items-center">
-    <div class="input-group me-2" style="width: 50%">
+  <div class="col-xl-6 col-12 d-flex justify-content-end align-items-center">
+    <div class="input-group me-2 group-search">
       <span
         class="input-group-text"
         id="basic-addon1"
@@ -136,12 +136,11 @@
         (input)="filtrarMovimentacoes($event)"
       />
     </div>
-    <button class="btn btn-sm btn-primary" (click)="showMenu('N')">
+    <button class="btn btn-sm btn-primary hidden-sm" (click)="showMenu('N')">
       <i class="fa-solid fa-money-bill">&nbsp;</i>Novo
     </button>
   </div>
-
-  <div class="col-12 mt-2">
+  <div class="col-12 mt-2 text-sm">
     <div
       class="card"
       [ngClass]="{
@@ -150,8 +149,9 @@
       }"
     >
       <div class="card-body">
-        <table
-          class="table table-hover rounded border table-responsive"
+        <div class="table-responsive">
+          <table
+          class="table table-hover rounded border"
           [ngClass]="{
             'table-dark': theme === 'dark',
             'table-light': theme === 'light'
@@ -159,12 +159,11 @@
         >
           <thead>
             <tr>
-              <th scope="col" class="text-primary bg-secondary-light">Data</th>
-              <th scope="col" class="text-primary">Tipo</th>
-              <th scope="col" class="text-primary">Origem</th>
-              <!-- <th scope="col" class="text-primary">Pessoa</th> -->
-              <th scope="col" class="text-primary">Descricao</th>
-              <th scope="col" class="text-primary">Conta</th>
+              <th scope="col" class="text-primary"><span class="hidden-sm">Tipo</span></th>
+              <th scope="col" class="text-primary">Data</th>
+              <th scope="col" class="text-primary hidden-sm">Origem</th>
+              <th scope="col" class="text-primary  hidden-sm">Descricao</th>
+              <th scope="col" class="text-primary hidden-sm">Conta</th>
               <th scope="col" class="text-primary">Valor</th>
               <th scope="col" class="text-primary">Status</th>
               <th scope="col" class="text-primary"></th>
@@ -178,28 +177,20 @@
                     : { itemsPerPage: currentQtde, currentPage: currentPage }
               "
             >
-              <td
-                class="bg-secondary-light"
-                [ngClass]="{
-                  'text-secondary': theme === 'dark',
-                  'table-light': theme === 'light'
-                }"
-              >
+
+              <td [ngClass]="{ 'text-secondary': theme === 'dark', 'table-light': theme === 'light' }" >
+                <i class="fa-solid" [ngClass]="{'fa-square-plus text-success': item.Tipo === '1','fa-square-minus text-danger': item.Tipo === '2'}"></i> 
+                <span class="hidden-sm">&nbsp;{{ getTipo(item.Tipo) }}</span>
+              </td>
+
+              <td class="col-sm-table" [ngClass]="{ 'text-secondary': theme === 'dark', 'table-light': theme === 'light' }">
                 <i class="fa-solid fa-calendar text-secondary"></i>&nbsp;{{ formatData(item.DataInclusao) }}
               </td>
 
-              <td
-                [ngClass]="{
-                  'text-secondary': theme === 'dark',
-                  'table-light': theme === 'light'
-                }"
-              >
-               <i class="fa-solid" [ngClass]="{'fa-money-bill-wave text-success': item.Tipo === '1','fa-money-bill text-danger': item.Tipo === '2'}"></i> 
-               
-               {{ getTipo(item.Tipo) }}
-              </td>
+
 
               <td
+                class=" hidden-sm"
                 [ngClass]="{
                   'text-secondary': theme === 'dark',
                   'table-light': theme === 'light'
@@ -219,6 +210,7 @@
 
               <td
                 [title]="item.Descricao"
+                class="hidden-sm"
                 [ngClass]="{
                   'text-secondary': theme === 'dark',
                   'table-light': theme === 'light'
@@ -228,6 +220,7 @@
               </td>
 
               <td
+                class="hidden-sm"
                 [ngClass]="{
                   'text-secondary': theme === 'dark',
                   'table-light': theme === 'light'
@@ -265,13 +258,13 @@
                 }"
               >
                 <div class="row">
-                  <div class="col-auto">
-                    <button class="btn btn-sm btn-outline-danger" (click)="deleteMov(item.Id)">
+                  <div class="col-auto m-0 p-0">
+                    <button class="btn btn-sm btn-outline-danger btn-size-table" (click)="deleteMov(item.Id)">
                       <i class="fa-solid fa-trash-alt"></i>
                     </button>
                   </div>
-                  <div class="col-auto">
-                    <button class="btn btn-sm btn-outline-primary" (click)="showUpdate(item.Tipo, item)">
+                  <div class="col-auto m-0 p-0 ms-2">
+                    <button class="btn btn-sm btn-outline-primary btn-size-table" (click)="showUpdate(item.Tipo, item)">
                       <i class="fa-solid fa-pen" ></i>
                     </button>
                   </div>
@@ -281,26 +274,12 @@
             </tr>
           </tbody>
         </table>
+        </div>
         <div class="row">
           <div class="col-6">
-            <div class="input-group" style="width: 30%">
-              <span
-                [ngClass]="{
-                  'bg-dark-light text-secondary': theme === 'dark',
-                  'bg-light ': theme === 'light'
-                }"
-                class="input-group-text"
-                >Mostrar:</span
-              >
-              <select
-                [ngClass]="{
-                  'bg-dark-light text-secondary': theme === 'dark',
-                  'bg-light ': theme === 'light'
-                }"
-                class="form-select"
-                id="current"
-                (change)="changeQtde($event)"
-              >
+            <div class="input-group group-show-table">
+              <span [ngClass]="{'bg-dark-light text-secondary': theme === 'dark', 'bg-light ': theme === 'light'}" class="input-group-text text-sm">Mostrar:</span>
+              <select [ngClass]="{'bg-dark-light text-secondary': theme === 'dark', 'bg-light ': theme === 'light'}" class="form-select text-sm" id="current" (change)="changeQtde($event)">
                 <option value="5">5</option>
                 <option value="10">10</option>
                 <option value="25">25</option>
@@ -308,10 +287,10 @@
               </select>
             </div>
           </div>
-          <div class="col-6 d-flex justify-content-end">
+          <div class="col-xl-6 col-12 mt-4 mt-xl-0">
             <pagination-controls
               (pageChange)="currentPage = $event"
-              class="text-light"
+              class="text-light text-center"
               previousLabel="Anterior"
               nextLabel="Próximo"
             >
