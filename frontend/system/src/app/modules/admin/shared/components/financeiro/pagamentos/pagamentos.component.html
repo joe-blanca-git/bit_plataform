@@ -1,0 +1,128 @@
+<nz-modal
+  [(nzVisible)]="isVisible"
+  [nzTitle]="header"
+  [nzFooter]="null"
+  nzCloseIcon=""
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+  [nzWidth]="900"
+>
+  <ng-container *nzModalContent>
+    <div class="row p-4" [ngClass]="{'bg-dark  text-secondary': theme === 'dark','bg-light text-dark': theme === 'light'}">
+        <div class="col-12 border rounded" [ngClass]="{'border-secondary': theme === 'dark','border-primary': theme === 'light'}">
+            <div class="row text-sm">
+                <div class="col-xl-5 col-12">
+                    <b class="text-primary">Nome</b><br>
+                    <span class="text-uppercase">{{dadoPagamento.cliente_name}}</span>
+                </div>
+                <div class="col-xl-2 col-4">
+                    <b class="text-primary">Origem</b><br>
+                    <span class="text-uppercase">{{dadoPagamento.Origem}}</span>
+                </div>
+                <div class="col-xl-2 col-4">
+                    <b class="text-primary">Tipo</b><br>
+                    <span class="text-uppercase">
+                        <i class="fa-solid" [ngClass]="{'fa-square-plus text-success': dadoPagamento.Tipo === '1','fa-square-minus text-danger': dadoPagamento.Tipo === '2'}"></i> 
+                        <span >&nbsp;{{ getTipo(dadoPagamento.Tipo) }}</span>
+                    </span>
+                </div>
+                <div class="col-xl-2 col-4">
+                    <b class="text-primary">Status</b><br>
+                    <span class="text-uppercase"><i class="fa-solid fa-dot-circle text-danger"></i> pendente</span>
+                </div>
+                <div class="col-12 mt-2">
+                    <b class="text-primary">Descrição</b><br>
+                    <span class="text-uppercase">{{dadoPagamento.Descricao}}</span>
+                </div>
+                <div class="col-12">
+                    <hr>
+                </div>
+                <div class="col-12 mb-2 text-sm">
+                    <div class="table-responsive p-2">
+                        <table class="table table-hover rounded border" [ngClass]="{'table-dark': theme === 'dark','table-light': theme === 'light'}">
+                        <thead>
+                        <tr>
+                            <th scope="col" class="text-primary"><span>Vencimento</span></th>
+                            <th scope="col" class="text-primary">Valor</th>
+                            <th scope="col" class="text-primary">Status</th>
+                            <th scope="col" class="text-primary text-center"><span>{{dadoPagamento.Tipo === 'Receita' ? 'Pagar' : 'Receber'}}</span></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor=" let item of dadoPagamento.Parcelas | paginate : { itemsPerPage: currentQtde, currentPage: currentPage }">
+            
+                            <td class="col-sm-table" [ngClass]="{ 'text-secondary': theme === 'dark', 'table-light': theme === 'light' }">
+                                <i class="fa-solid fa-calendar text-secondary"></i>&nbsp;{{ formatData(item.DataVencimento) }}
+                            </td> 
+
+                            <td [ngClass]="{ 'text-secondary': theme === 'dark', 'table-light': theme === 'light' }">
+                                {{ formatValor(item.Valor) }}
+                            </td>
+
+                            <td class="col-sm-table" [ngClass]="{ 'text-secondary': theme === 'dark', 'table-light': theme === 'light' }">
+                                <i class="fa-solid fa-dot-circle" [ngClass]="{'text-success': item.StatusParcela === 'Pago','text-danger': item.StatusParcela === 'Pendente'}"></i>
+                                &nbsp;{{ item.StatusParcela }}
+                            </td> 
+            
+                            <td class="text-center" [ngClass]="{ 'text-secondary': theme === 'dark', 'table-light': theme === 'light' }">
+                              <button class="btn btn-sm btn-size-table" 
+                                  [title]="item.Tipo === 'Receita' ? 'Pagar' : 'Receber'"
+                                  [disabled]="item.StatusParcela === 'Pago'"
+                                  [ngClass]="{'btn-outline-secondary': item.StatusParcela === 'Pago','btn-outline-success': item.StatusParcela === 'Pendente'}">
+                                  <i class="fa-solid fa-money-bill-transfer"></i>
+                              </button>
+                            </td>
+            
+                        </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12 col-12 mt-4 mt-xl-0 d-flex justify-content-end">
+                        <pagination-controls
+                            (pageChange)="currentPage = $event"
+                            class="text-light text-center"
+                            previousLabel="Anterior"
+                            nextLabel="Próximo"
+                        >
+                        </pagination-controls>
+                        </div>
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </div>
+  </ng-container>
+  <ng-template #header>
+    <div
+      class="row bg-dark p-4"
+      [ngClass]="{
+        'bg-dark  text-secondary': theme === 'dark',
+        'bg-light text-dark': theme === 'light'
+      }"
+    >
+      <div class="col-10 d"><span>{{dadoPagamento.Tipo === 'Receita' ? 'Pagar' : 'Receber'}}</span></div>
+      <div class="col-2 d-flex justify-content-end pe-0 me-0">
+        <button class="btn btn-danger btn-sm" (click)="handleCancel()">
+          <i class="fa-solid fa-square-xmark"></i>
+        </button>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #footer>
+    <div
+      class="row bg-dark p-4"
+      [ngClass]="{
+        'bg-dark  text-secondary': theme === 'dark',
+        'bg-light text-dark': theme === 'light'
+      }"
+    >
+      <div class="col-12 d-flex justify-content-end pe-0 me-0">
+        <button class="btn btn-sm btn-success">
+          <i class="fa-solid fa-floppy-disk"></i>&nbsp; Salvar
+        </button>
+      </div>
+    </div>
+  </ng-template>
+</nz-modal>
+<app-novo-pagamento [statusModal]="true"></app-novo-pagamento>

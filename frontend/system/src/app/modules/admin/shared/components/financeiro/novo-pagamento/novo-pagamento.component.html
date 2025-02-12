@@ -1,0 +1,57 @@
+<nz-modal
+  [(nzVisible)]="isVisible"
+  [nzTitle]="header"
+  [nzFooter]="null"
+  nzCloseIcon=""
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+  [nzWidth]="400"
+>
+  <ng-container *nzModalContent>
+    <div class="row p-4" [ngClass]="{'bg-dark  text-secondary': theme === 'dark','bg-light text-dark': theme === 'light'}">
+        <div class="col-12">
+            <span>Código: </span>
+        </div>
+        <div class="col-12 border rounded" [ngClass]="{'border-secondary': theme === 'dark','border-primary': theme === 'light'}">
+            <form action="">
+                <div class="row text-sm">
+                    <div class="col-12">
+                        
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+  </ng-container>
+  <ng-template #header>
+    <div
+      class="row bg-dark p-4"
+      [ngClass]="{
+        'bg-dark  text-secondary': theme === 'dark',
+        'bg-light text-dark': theme === 'light'
+      }"
+    >
+      <div class="col-10 d"><span>Registrar</span></div>
+      <div class="col-2 d-flex justify-content-end pe-0 me-0">
+        <button class="btn btn-danger btn-sm" (click)="handleCancel()">
+          <i class="fa-solid fa-square-xmark"></i>
+        </button>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #footer>
+    <div
+      class="row bg-dark p-4"
+      [ngClass]="{
+        'bg-dark  text-secondary': theme === 'dark',
+        'bg-light text-dark': theme === 'light'
+      }"
+    >
+      <div class="col-12 d-flex justify-content-end pe-0 me-0">
+        <button class="btn btn-sm btn-success">
+          <i class="fa-solid fa-floppy-disk"></i>&nbsp; Salvar
+        </button>
+      </div>
+    </div>
+  </ng-template>
+</nz-modal>

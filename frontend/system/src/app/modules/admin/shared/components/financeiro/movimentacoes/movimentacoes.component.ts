@@ -149,7 +149,7 @@ export class MovimentacoesComponent implements OnChanges {
             parcelas:
               this.listParcelas && this.listParcelas.length > 0
                 ? this.listParcelas.map((parcela) => ({
-                    dt_venc: moment(parcela.DataVencimento, 'DD/MM/YYYY').format(
+                    dt_venc: moment(parcela.DataVencimento).format(
                       'YYYY-MM-DD HH:mm:ss'
                     ),
                     valor: parcela.Valor,
@@ -163,6 +163,8 @@ export class MovimentacoesComponent implements OnChanges {
                     },
                   ],
           };
+          console.log(mov);
+          
         } else { 
           this.notification.createBasicNotification(
             'error',
@@ -483,11 +485,6 @@ export class MovimentacoesComponent implements OnChanges {
         this.listParcelas = parcelas;
       }
     }, 0);
-  }
-  
-  
-  changeTheme() {
-    this.themeService.changeTheme();
   }
 
   isInvalid(controlName: string): boolean {

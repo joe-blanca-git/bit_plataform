@@ -34,6 +34,8 @@ import { AdminCadstroComponent } from './pages/admin-cadstro/admin-cadstro.compo
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AdminMovimentacoesComponent } from './pages/admin-movimentacoes/admin-movimentacoes.component';
 import { MovimentacoesGraficoAnoComponent } from './shared/components/financeiro/movimentacoes-grafico-ano/movimentacoes-grafico-ano.component';
+import { PagamentosComponent } from './shared/components/financeiro/pagamentos/pagamentos.component';
+import { NovoPagamentoComponent } from './shared/components/financeiro/novo-pagamento/novo-pagamento.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +48,8 @@ import { MovimentacoesGraficoAnoComponent } from './shared/components/financeiro
     AdminCadstroComponent,
     AdminMovimentacoesComponent,
     MovimentacoesGraficoAnoComponent,
+    PagamentosComponent,
+    NovoPagamentoComponent,
   ],
   imports: [
     CommonModule,

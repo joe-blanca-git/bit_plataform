@@ -27,6 +27,9 @@ export class AdminMovimentacoesComponent {
   totalReceita = 0;
   totalDespesa = 0;
   saldo = 0;
+  totalReceber = 0;
+  totalPagar = 0;
+  previsto = 0;
 
   listMenuUser = [
     {
@@ -103,8 +106,17 @@ export class AdminMovimentacoesComponent {
     this.totalDespesa = this.listMovimentacoes
       .filter(mov => mov.Tipo === '2')
       .reduce((acc, mov) => acc + mov.ValorTotal, 0);
+
+    this.totalReceber = this.listMovimentacoes
+      .filter(mov => mov.Tipo === '1')
+      .reduce((acc, mov) => acc + mov.ValorPendente, 0);
+
+    this.totalPagar = this.listMovimentacoes
+      .filter(mov => mov.Tipo === '2')
+      .reduce((acc, mov) => acc + mov.ValorPendente, 0);
   
     this.saldo = this.totalReceita - this.totalDespesa;
+    this.previsto = this.totalReceber - this.totalPagar;
   }
 
   deleteMov(idMov: number): void {   

@@ -16,6 +16,10 @@ import * as moment from 'moment';
 export class AdminContaComponent {
   theme: 'dark' | 'light' = 'light';
 
+  isVisibleModal = false;
+
+  dadosPagamento: any [] = [];
+
   currentPage = 1;
   currentQtde = 5;
   totalReceber = 0;
@@ -54,18 +58,23 @@ export class AdminContaComponent {
   }
 
   recebeMov(data: any){
-    console.log(data);
-    
+    this.dadosPagamento = data;
+    this.showReceber();
+  }
+
+  showReceber(){
+    this.isVisibleModal = true;
+  }
+
+  closeReceber(){
+    this.isVisibleModal = false;
   }
 
   loadMovimentacoes(){
     this.movimentacoesService.getMov()?.subscribe({
       next: (v:any[]) => {
-        
-        
         this.listMovimentacoes = v.sort((a, b) => b.Id - a.Id).filter((i:any) => i.StatusConta === 'Pendente');
         this.listaFiltrada = [...this.listMovimentacoes];
-        console.log(this.listaFiltrada);       
       },
       error: (e) => this.processarErro(e),
       complete: () => {this.calcTotais();} 
@@ -111,16 +120,16 @@ export class AdminContaComponent {
 
   getMenorDataPendente(parcelas: any[]): string {
     if (!parcelas || parcelas.length === 0) return 'Sem vencimento';
-  
+    
     const menorData = parcelas
-      //.filter(p => p.StatusParcela === 'Pendente') 
+      .filter(p => p.StatusParcela === 'Pendente') 
       .map(p => moment(p.DataVencimento, ['YYYY-MM-DD HH:mm:ss', 'YYYY-MM-DDTHH:mm:ss'], true))
       .filter(date => date.isValid()) 
       .sort((a, b) => a.valueOf() - b.valueOf()) 
   
     return menorData.length === 0 
       ? 'Sem vencimento' 
-      : menorData[0].format('DD/MM/YYYY'); 
+      : menorData[0].format('DD/MM'); 
   }
 
   formatValor(valor:number){

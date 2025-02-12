@@ -10,80 +10,156 @@
         'text-primary': theme === 'light'
       }"
     >
-      MOVIMENTAÇÕES
+      RECEITAS/DESPESAS
     </span>
   </div>
 </div>
 <div class="row mt-2">
   <div class="col-12">
     <div class="row">
-      <div class="col-xl-2 col-4 text-sm">
-        <div
-          class="card bg-brand-light"
-          [ngClass]="{
-            'text-secondary': theme === 'dark',
-            'text-dark': theme === 'light'
-          }"
-        >
-          <div class="card-body">
-            <div class="row">
-              <div class="col-12 text-success">
-                <b class="mt-1"
-                  ><i class="fa-solid fa-money-bill-wave"></i> Receitas</b
-                >
-              </div>
-              <div class="col-12 text-end">
-                <hr class="mt-0" />
-                <span class="">{{ this.formatValor(totalReceita) }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-2 col-4 text-sm">
-        <div
-          class="card bg-brand-light"
-          [ngClass]="{
-            'text-secondary': theme === 'dark',
-            'text-dark': theme === 'light'
-          }"
-        >
-          <div class="card-body">
-            <div class="row">
-              <div class="col-12 text-danger">
-                <b class="mt-1"
-                  ><i class="fa-solid fa-money-bill"></i> Despesas</b
-                >
-              </div>
-              <div class="col-12 text-end">
-                <hr class="mt-0" />
-                <span class="">{{ this.formatValor(totalDespesa) }}</span>
+      <div class="col-xl-6 col-12">
+        <div class="row">
+          <div class="col-xl-4 col-4 text-sm">
+            <div
+              class="card bg-brand-light"
+              [ngClass]="{
+                'text-secondary': theme === 'dark',
+                'text-dark': theme === 'light'
+              }"
+            >
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-12 text-success">
+                    <b class="mt-1"
+                      ><i class="fa-solid fa-money-bill-wave"></i> Receitas</b
+                    >
+                  </div>
+                  <div class="col-12 text-end">
+                    <hr class="mt-0" />
+                    <span class="">{{ this.formatValor(totalReceita) }}</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="col-xl-2 col-4 text-sm">
-        <div
-          class="card bg-brand-light"
-          [ngClass]="{
-            'text-secondary': theme === 'dark',
-            'text-dark': theme === 'light'
-          }"
-        >
-          <div class="card-body">
-            <div class="row">
-              <div class="col-12 text-primary">
-                <b class="mt-1"
-                  ><i class="fa-solid fa-circle-dollar-to-slot"></i> Saldo</b
-                >
-              </div>
-              <div class="col-12 text-end">
-                <hr class="mt-0" />
-                <span class="">{{ this.formatValor(saldo) }}</span>
+          <div class="col-xl-4 col-4 text-sm">
+            <div
+              class="card bg-brand-light"
+              [ngClass]="{
+                'text-secondary': theme === 'dark',
+                'text-dark': theme === 'light'
+              }"
+            >
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-12 text-danger">
+                    <b class="mt-1"
+                      ><i class="fa-solid fa-money-bill"></i> Despesas</b
+                    >
+                  </div>
+                  <div class="col-12 text-end">
+                    <hr class="mt-0" />
+                    <span class="">{{ this.formatValor(totalDespesa) }}</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+          <div class="col-xl-4 col-4 text-sm">
+            <div
+              class="card bg-brand-light"
+              [ngClass]="{
+                'text-secondary': theme === 'dark',
+                'text-dark': theme === 'light'
+              }"
+            >
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-12 text-primary">
+                    <b class="mt-1"
+                      ><i class="fa-solid fa-circle-dollar-to-slot"></i> Saldo</b
+                    >
+                  </div>
+                  <div class="col-12 text-end">
+                    <hr class="mt-0" />
+                    <span class="">{{ this.formatValor(saldo) }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-4 col-4 text-sm mt-2">
+            <div
+              class="card bg-brand-light"
+              [ngClass]="{
+                'text-secondary': theme === 'dark',
+                'text-dark': theme === 'light'
+              }"
+            >
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-12 text-success">
+                    <b class="mt-1"
+                      ><i class="fa-solid fa-square-plus"></i> Receber</b
+                    >
+                  </div>
+                  <div class="col-12 text-end">
+                    <hr class="mt-0" />
+                    <span class="">{{ this.formatValor(totalReceber) }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 col-4 text-sm mt-2">
+            <div
+              class="card bg-brand-light"
+              [ngClass]="{
+                'text-secondary': theme === 'dark',
+                'text-dark': theme === 'light'
+              }"
+            >
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-12 text-danger">
+                    <b class="mt-1"
+                      ><i class="fa-solid fa-square-minus"></i> Pagar</b
+                    >
+                  </div>
+                  <div class="col-12 text-end">
+                    <hr class="mt-0" />
+                    <span class="">{{ this.formatValor(totalPagar) }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 col-4 text-sm mt-2">
+            <div
+              class="card bg-brand-light"
+              [ngClass]="{
+                'text-secondary': theme === 'dark',
+                'text-dark': theme === 'light'
+              }"
+            >
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-12 text-primary">
+                    <b class="mt-1"
+                      ><i class="fa-solid fa-circle-dollar-to-slot"></i> Previsto</b
+                    >
+                  </div>
+                  <div class="col-12 text-end">
+                    <hr class="mt-0" />
+                    <span class="">{{ this.formatValor(previsto) }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
         </div>
       </div>
       <div class="col-6 hidden-sm">
@@ -137,7 +213,7 @@
       />
     </div>
     <button class="btn btn-sm btn-primary hidden-sm" (click)="showMenu('N')">
-      <i class="fa-solid fa-money-bill">&nbsp;</i>Novo
+      <i class="fa-solid fa-square-plus">&nbsp;</i>Novo
     </button>
   </div>
   <div class="col-12 mt-2 text-sm">
@@ -186,8 +262,6 @@
               <td class="col-sm-table" [ngClass]="{ 'text-secondary': theme === 'dark', 'table-light': theme === 'light' }">
                 <i class="fa-solid fa-calendar text-secondary"></i>&nbsp;{{ formatData(item.DataInclusao) }}
               </td>
-
-
 
               <td
                 class=" hidden-sm"
@@ -239,17 +313,17 @@
               </td>
 
               <td
-              [ngClass]="{
-                'text-secondary': theme === 'dark',
-                'table-light': theme === 'light'
-              }"
-            >
-            <span>
-              <i class="fa-solid fa-dot-circle" [ngClass]="item.StatusConta === 'Pendente' ? 'text-danger' : 'text-success'"></i>
-              {{ item.StatusConta}}
-            </span>
-            
-            </td>
+                  [ngClass]="{
+                    'text-secondary': theme === 'dark',
+                    'table-light': theme === 'light'
+                  }"
+                >
+                <span>
+                  <i class="fa-solid fa-dot-circle" [ngClass]="item.StatusConta === 'Pendente' ? 'text-danger' : 'text-success'"></i>
+                  {{ item.StatusConta}}
+                </span>
+                
+              </td>
 
               <td
                 [ngClass]="{
@@ -350,3 +424,4 @@
       </div>
     </ng-template>
   </nz-modal>
+<button class="btn btn-primary shadow float-btn-1 hidden-xl" (click)="showMenu('N')" ><i class="fa-solid fa-square-plus"></i></button>

@@ -243,7 +243,7 @@
             </div>
             <div class="col-6"><small class="text-secondary">*Para alterar valores e parcelas acesse <a routerLink="/admin/financeiro/contas">Gerencimaneto de Contas a Pagar/Receber</a></small></div>
             <div class="col-3 mt-0">
-              <label  *ngIf="!isUpdate" for="ValorEntrada" class="form-label">Valor Entrada</label>
+              <label  *ngIf="!isUpdate" for="ValorEntrada" class="form-label"><span class="hidden-sm">Valor</span> Entrada</label>
               <input
                 *ngIf="!isUpdate"
                 nz-input

@@ -4,6 +4,7 @@ export class MovModel {
   User_Inc_Name!: string;
   id_empresa!: number;
   cliente_id!: number;
+  cliente_name!: string;
   Empresa!: string;
   Conta!: string;
   categoria_id!: number;
