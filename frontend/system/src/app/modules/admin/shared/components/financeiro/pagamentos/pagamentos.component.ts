@@ -22,6 +22,9 @@ export class PagamentosComponent {
 
   theme: 'dark' | 'light' = 'dark';
 
+  isVisibleNovoPagamento = false;
+  dadosNovoPagamento : any;
+
   currentQtde = 10;
   currentPage = 1;
 
@@ -43,6 +46,19 @@ export class PagamentosComponent {
     this.themeService.theme$.subscribe((theme) => {
       this.theme = theme;
     });
+  }
+
+  novoPagamento(data: any){    
+    this.dadosNovoPagamento = data;
+    this.showNovoPagamento();
+  }
+
+  showNovoPagamento(){
+    this.isVisibleNovoPagamento = true;
+  }
+
+  closeNovoPagamento(){
+    this.isVisibleNovoPagamento = false;
   }
 
   handleOk(): void {

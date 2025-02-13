@@ -66,6 +66,7 @@
             
                             <td class="text-center" [ngClass]="{ 'text-secondary': theme === 'dark', 'table-light': theme === 'light' }">
                               <button class="btn btn-sm btn-size-table" 
+                                  (click)="novoPagamento(item)"
                                   [title]="item.Tipo === 'Receita' ? 'Pagar' : 'Receber'"
                                   [disabled]="item.StatusParcela === 'Pago'"
                                   [ngClass]="{'btn-outline-secondary': item.StatusParcela === 'Pago','btn-outline-success': item.StatusParcela === 'Pendente'}">
@@ -125,4 +126,4 @@
     </div>
   </ng-template>
 </nz-modal>
-<app-novo-pagamento [statusModal]="true"></app-novo-pagamento>
+<app-novo-pagamento (closeEvent)="closeNovoPagamento()" [dadoPagamento]="dadosNovoPagamento" [statusModal]="isVisibleNovoPagamento"></app-novo-pagamento>

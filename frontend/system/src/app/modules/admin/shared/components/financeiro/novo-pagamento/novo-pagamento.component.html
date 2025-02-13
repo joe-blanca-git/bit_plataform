@@ -1,37 +1,93 @@
 <nz-modal
   [(nzVisible)]="isVisible"
   [nzTitle]="header"
-  [nzFooter]="null"
+  [nzFooter]="footer"
   nzCloseIcon=""
   (nzOnCancel)="handleCancel()"
   (nzOnOk)="handleOk()"
-  [nzWidth]="400"
+  [nzWidth]="600"
 >
   <ng-container *nzModalContent>
     <div class="row p-4" [ngClass]="{'bg-dark  text-secondary': theme === 'dark','bg-light text-dark': theme === 'light'}">
-        <div class="col-12">
-            <span>Código: </span>
+        <div class="col-6">
+            <span class="text-primary"><b>Conta:</b></span> {{dadoPagamento.Id}}
         </div>
-        <div class="col-12 border rounded" [ngClass]="{'border-secondary': theme === 'dark','border-primary': theme === 'light'}">
-            <form action="">
-                <div class="row text-sm">
-                    <div class="col-12">
-                        
+        <div class="col-6 rounded bg-info">
+          <span class="text-primary"><b>Total:</b></span> {{formatValor(dadoPagamento.Valor)}}
+        </div>
+        <div class="col-12 border rounded mt-2" [ngClass]="{'border-secondary': theme === 'dark','border-primary': theme === 'light'}">
+            <form [formGroup]="novoPagamentoForm" action="">
+                <div class="row text-sm mt-2">
+
+                  <div class="col-md-12 mt-2">
+                    <label for="Valor" class="form-label"><span class="text-primary"><b>Valor(R$) </b></span></label>
+                      <input
+                        [ngModel]="dadoPagamento.Valor"
+                        nz-input
+                        name="Valor"
+                        id="Valor"
+                        formControlName="Valor"
+                        type="number"
+                        [ngClass]="{'is-invalid': isInvalid('Valor')}"
+                        placeholder="0,00"
+                      />
+                      <div class="invalid-feedback">Valor é obrigatório</div>
+                  </div>
+                  <div class="col-12 mt-2 mb-2" >
+                    <div class="row p-2" [ngClass]="{'border border-2 border-danger rounded m-2' : isFormaPgtoInvalid}">
+                      <div class="col-2">
+                        <input type="radio" (change)="onChangeFormaPagto($event)"  class="btn-check" formControlName="options" id="option1" value="1" autocomplete="off" checked>
+                        <label class="btn btn-outline-primary btn-sm me-2 w-100 p-0" for="option1">
+                          <i class="fa-solid fa-money-bill"></i><br>
+                          <span><b>Dinheiro</b></span>
+                        </label>
+                      </div>
+                      <div class="col-2">
+                        <input type="radio" (change)="onChangeFormaPagto($event)"  class="btn-check" formControlName="options" id="option2" value="2" autocomplete="off">
+                        <label class="btn btn-outline-primary btn-sm me-2 w-100 p-0" for="option2">
+                          <i class="fa-solid fa-credit-card"></i><br>
+                          <span><b>Crédito</b></span>
+                        </label>
+                      </div>
+                      <div class="col-2">
+                        <input type="radio" (change)="onChangeFormaPagto($event)"  class="btn-check" formControlName="options" id="option3" value="3" autocomplete="off">
+                        <label class="btn btn-outline-primary btn-sm me-2 w-100 p-0" for="option3">
+                          <i class="fa-regular fa-credit-card-alt"></i><br>
+                          <span><b>Débito</b></span>
+                        </label>
+                      </div>
+                      <div class="col-2">
+                        <input type="radio" (change)="onChangeFormaPagto($event)"  class="btn-check" formControlName="options" id="option4" value="4" autocomplete="off">
+                        <label class="btn btn-outline-primary btn-sm me-2 w-100 p-0" for="option4">
+                          <i class="fa-brands fa-pix"></i><br>
+                          <span><b>Pix</b></span>
+                        </label>
+                      </div>
+                      <div class="col-2">
+                        <input type="radio" (change)="onChangeFormaPagto($event)"  class="btn-check" formControlName="options" id="option5" value="5" autocomplete="off">
+                        <label class="btn btn-outline-primary btn-sm me-2 w-100 p-0" for="option5">
+                          <i class="fa-solid fa-money-bill-transfer"></i><br>
+                          <span><b>T.E.D</b></span>
+                        </label>
+                      </div>
+                      <div class="col-2">
+                        <input type="radio" (change)="onChangeFormaPagto($event)"  class="btn-check" formControlName="options" id="option6" value="6" autocomplete="off">
+                        <label class="btn btn-outline-primary btn-sm me-2 w-100 p-0" for="option6">
+                          <i class="fa-solid fa-money-check-dollar"></i><br>
+                          <span><b>Cheque</b></span>
+                        </label>
+                      </div>
                     </div>
+                  </div>
                 </div>
             </form>
         </div>
     </div>
   </ng-container>
   <ng-template #header>
-    <div
-      class="row bg-dark p-4"
-      [ngClass]="{
-        'bg-dark  text-secondary': theme === 'dark',
-        'bg-light text-dark': theme === 'light'
-      }"
+    <div class="row pt-2 pe-2" [ngClass]="{ 'bg-dark  text-secondary': theme === 'dark', 'bg-light text-dark': theme === 'light' }"
     >
-      <div class="col-10 d"><span>Registrar</span></div>
+      <div class="col-10"><span>Registrar Pagamento</span></div>
       <div class="col-2 d-flex justify-content-end pe-0 me-0">
         <button class="btn btn-danger btn-sm" (click)="handleCancel()">
           <i class="fa-solid fa-square-xmark"></i>
@@ -41,15 +97,15 @@
   </ng-template>
   <ng-template #footer>
     <div
-      class="row bg-dark p-4"
+      class="row bg-dark pb-2 pe-2"
       [ngClass]="{
         'bg-dark  text-secondary': theme === 'dark',
         'bg-light text-dark': theme === 'light'
       }"
     >
       <div class="col-12 d-flex justify-content-end pe-0 me-0">
-        <button class="btn btn-sm btn-success">
-          <i class="fa-solid fa-floppy-disk"></i>&nbsp; Salvar
+        <button class="btn btn-sm btn-success" (click)="registrarPagamento()">
+          <i class="fa-solid fa-dollar-sign"></i>&nbsp; Registrar
         </button>
       </div>
     </div>
