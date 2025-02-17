@@ -13,7 +13,7 @@
             <span class="text-primary"><b>Conta:</b></span> {{dadoPagamento.Id}}
         </div>
         <div class="col-6 rounded bg-info">
-          <span class="text-primary"><b>Total:</b></span> {{formatValor(dadoPagamento.Valor)}}
+          <span class="text-primary"><b>Restante:</b></span> {{formatValor(dadoPagamento.Valor - dadoPagamento.ValorPago)}}
         </div>
         <div class="col-12 border rounded mt-2" [ngClass]="{'border-secondary': theme === 'dark','border-primary': theme === 'light'}">
             <form [formGroup]="novoPagamentoForm" action="">
@@ -22,7 +22,7 @@
                   <div class="col-md-12 mt-2">
                     <label for="Valor" class="form-label"><span class="text-primary"><b>Valor(R$) </b></span></label>
                       <input
-                        [ngModel]="dadoPagamento.Valor"
+                        [ngModel]="dadoPagamento.Valor - dadoPagamento.ValorPago"
                         nz-input
                         name="Valor"
                         id="Valor"

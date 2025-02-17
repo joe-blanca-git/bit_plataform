@@ -196,7 +196,7 @@
                     'fa-square-plus text-success': item.Tipo === '1',
                     'fa-square-minus text-danger': item.Tipo === '2'
                   }"
-                ></i>
+                ></i>&nbsp;
 
                 <span class="hidden-sm">{{ getTipo(item.Tipo) }}</span>
               </td>
@@ -241,7 +241,7 @@
                         'btn-outline-success': item.Tipo === '1',
                         'btn-outline-danger': item.Tipo === '2'
                       }"
-                      (click)="recebeMov(item)"
+                      (click)="movPagamento(item)"
                     >
                       <i class="fa-solid fa-money-bill-transfer"></i>
                     </button>
@@ -279,4 +279,4 @@
   </div>
 </div>
 
-<app-pagamentos (closeEvent)="closeReceber()" [dadoPagamento]="dadosPagamento" [statusModal]="isVisibleModal"></app-pagamentos>
+<app-pagamentos (closeEvent)="closePagto()" [dadoPagamento]="dadosPagamento" [statusModal]="isVisibleModal"></app-pagamentos>

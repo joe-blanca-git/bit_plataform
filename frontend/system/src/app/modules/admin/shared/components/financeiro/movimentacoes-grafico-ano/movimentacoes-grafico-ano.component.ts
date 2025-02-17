@@ -10,6 +10,7 @@ import * as moment from 'moment';
 export class MovimentacoesGraficoAnoComponent {
   @ViewChild('grFinanceiroAno', { static: true }) element!: ElementRef;
   @Input('data') data: any;
+  @Input('isShowInfo') info: boolean = false;
 
   ngOnInit(): void {
     Chart.register(...registerables);
@@ -63,15 +64,18 @@ export class MovimentacoesGraficoAnoComponent {
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
+        plugins: { 
+          legend: { display: false
+
+          } },
         scales: {
           x: {
             grid: { display: false },
-            ticks: { display: false }
+            ticks: { display: this.info }
           },
           y: {
-            grid: { display: false },
-            ticks: { display: false }
+            grid: { display: this.info },
+            ticks: { display: this.info }
           },
         },
       },

@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NotificationService } from 'src/app/shared/services/notification.service';
-import { ThemeService } from '../../shared/services/themeService';
+import { ThemeService } from '../../../shared/services/themeService';
 import { ValorFormatterService } from 'src/app/shared/services/valor-formatter-service.service';
 import { DataFormatterService } from 'src/app/shared/services/data-formatter-service.service';
 import { getISOWeek } from 'date-fns';
-import { MovimentacoesService } from '../../shared/services/movimentacoes.service';
-import { MovModel } from '../../shared/models/mov.model';
+import { MovimentacoesService } from '../../../shared/services/movimentacoes.service';
+import { MovModel } from '../../../shared/models/mov.model';
 
 
 @Component({
@@ -101,11 +101,11 @@ export class AdminMovimentacoesComponent {
   calcTotais(): void {   
     this.totalReceita = this.listMovimentacoes
       .filter(mov => mov.Tipo === '1')
-      .reduce((acc, mov) => acc + mov.ValorTotal, 0);
+      .reduce((acc, mov) => acc + mov.ValorPago, 0);
   
     this.totalDespesa = this.listMovimentacoes
       .filter(mov => mov.Tipo === '2')
-      .reduce((acc, mov) => acc + mov.ValorTotal, 0);
+      .reduce((acc, mov) => acc + mov.ValorPago, 0);
 
     this.totalReceber = this.listMovimentacoes
       .filter(mov => mov.Tipo === '1')

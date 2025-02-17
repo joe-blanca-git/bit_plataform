@@ -1,20 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BaseService } from 'src/app/shared/services/base.service';
-import { Observable, throwError } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
-import { ClienteModel } from '../models/cliente.model';
 import { Router } from '@angular/router';
+import { Observable, catchError, map } from 'rxjs';
+import { BaseService } from 'src/app/shared/services/base.service';
+import { FornecedorModel } from '../models/fornecedor.model';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-export class ClienteService extends BaseService {
+export class FornecedorService extends BaseService {
   constructor(public httpClient: HttpClient, router: Router) {
     super(router); 
   }
 
-  getCliente(): Observable<ClienteModel[]> | null {  
+  getFornecedor(): Observable<FornecedorModel[]> | null {  
     const userData = localStorage.getItem('BIT.user');
   
     if (!userData) {
@@ -31,12 +30,12 @@ export class ClienteService extends BaseService {
         return null;
       }
   
-      const url = this.urlGetCliente
+      const url = this.urlGetCFornecedor
         .replace('{{idUser}}', encodeURIComponent(id))
         .replace('{{idEmpresa}}', encodeURIComponent(empresa));
       
         return this.httpClient
-          .get<ClienteModel[]>(url, super.ObterAuthHeaderJson())
+          .get<FornecedorModel[]>(url, super.ObterAuthHeaderJson())
           .pipe(catchError(super.serviceError));
     } catch (error) {
       console.error('Erro ao analisar o JSON do localStorage:', error);
@@ -44,7 +43,7 @@ export class ClienteService extends BaseService {
     }
   }
 
-  postCliente(body: any){
+  postFornecedor(body: any){
     const userData = localStorage.getItem('BIT.user');
   
     if (!userData) {
@@ -64,7 +63,7 @@ export class ClienteService extends BaseService {
       id_empresa: empresa
     } 
 
-    const url = this.urlPostCliente;
+    const url = this.urlPostFornecedor;
 
     return this.httpClient
     .post(url, updatedBody, this.ObterAuthHeaderJson())
@@ -73,5 +72,4 @@ export class ClienteService extends BaseService {
       catchError(this.serviceError)
     );
   }
-
 }

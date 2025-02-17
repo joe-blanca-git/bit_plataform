@@ -3,9 +3,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { DataFormatterService } from 'src/app/shared/services/data-formatter-service.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { ValorFormatterService } from 'src/app/shared/services/valor-formatter-service.service';
-import { MovimentacoesService } from '../../shared/services/movimentacoes.service';
-import { ThemeService } from '../../shared/services/themeService';
-import { MovModel } from '../../shared/models/mov.model';
+import { MovimentacoesService } from '../../../shared/services/movimentacoes.service';
+import { ThemeService } from '../../../shared/services/themeService';
+import { MovModel } from '../../../shared/models/mov.model';
 import * as moment from 'moment';
 
 @Component({
@@ -57,16 +57,18 @@ export class AdminContaComponent {
     this.loadMovimentacoes();
   }
 
-  recebeMov(data: any){
+  movPagamento(data: any){
+    console.log(data);
+    
     this.dadosPagamento = data;
-    this.showReceber();
+    this.showPagto();
   }
 
-  showReceber(){
+  showPagto(){
     this.isVisibleModal = true;
   }
 
-  closeReceber(){
+  closePagto(){
     this.isVisibleModal = false;
   }
 

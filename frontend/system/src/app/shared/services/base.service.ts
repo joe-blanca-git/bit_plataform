@@ -24,16 +24,24 @@ export  class BaseService{
 
     //cadastro
     public urlGetCliente = this.UrlServiceV1 + 'admin/cadastro/cliente/getCliente.php?user={{idUser}}&empresa={{idEmpresa}}&cliente={{cliente}}';
-    public urlPosCliente = this.UrlServiceV1 + 'admin/cadastro/cliente/postCliente.php';
+    public urlPostCliente = this.UrlServiceV1 + 'admin/cadastro/cliente/postCliente.php';
+    public urlGetCFornecedor = this.UrlServiceV1 + 'admin/cadastro/fornecedor/getFornecedor.php?user={{idUser}}&empresa={{idEmpresa}}&fornecedor={{fornecedor}}';
+    public urlPostFornecedor = this.UrlServiceV1 + 'admin/cadastro/fornecedor/postFornecedor.php';
     public urlGetLista = this.UrlServiceV1 + 'admin/shared/listas/getLista.php?user={{idUser}}&empresa={{idEmpresa}}&tabela={{tabela}}&tipo={{tipo}}';
     public urlPostLista = this.UrlServiceV1 + 'admin/cadastro/lista/postLista.php'
+
+    public urlGetProduto = this.UrlServiceV1 + 'admin/cadastro/produto/getProduto.php?user={{idUser}}&empresa={{idEmpresa}}&fornecedor={{idFornecedor}}&produto={{idProduto}}'
+    public urlGetCategoriaProduto = this.UrlServiceV1 + 'admin/cadastro/produto/getCategoriaProduto.php?user={{idUser}}&empresa={{idEmpresa}}&fornecedor={{idFornecedor}}&produto={{idProduto}}'
+    public urlPostProduto = this.UrlServiceV1 + 'admin/cadastro/produto/postProduto.php';
 
 
     //financeiro
     public urlPostNewMov = this.UrlServiceV1 + 'admin/financeiro/mov/postMov.php';
+    public urlPostNewMovPag = this.UrlServiceV1 + 'admin/financeiro/mov/postMovPag.php';
     public urlPutMov = this.UrlServiceV1 + 'admin/financeiro/mov/putMov.php';
     public urlDeleteMov = this.UrlServiceV1 + 'admin/financeiro/mov/deleteMov.php?user={{idUser}}&empresa={{idEmpresa}}&idMov={{idMov}}';
     public urlGetMov = this.UrlServiceV1 + 'admin/financeiro/mov/getMov.php?user={{idUser}}&empresa={{idEmpresa}}'
+    public urlGetFluxo = this.UrlServiceV1 + 'admin/financeiro/mov/getFluxoCaixa.php?user={{idUser}}&empresa={{idEmpresa}}'
     public urlGetHome = this.UrlServiceV1 + 'admin/financeiro/mov/getHome.php?user={{idUser}}&empresa={{idEmpresa}}'
 
     //shared url
@@ -80,9 +88,9 @@ export  class BaseService{
             } else if (response.status === 400) {
                 CustomError.push("Erros de validação");
             } else if (response.status === 401) {      
+                window.location.href = '/login';
                 return throwError(() => '401 - Sem autorização');
             } else if (response.status === 403) {
-                this.router.navigate(['/login']);
                 return throwError(() => '403 - Sem autorização');
             } else if (response.status === 409) { 
                 return throwError(() => '409 - Usuário já existe');

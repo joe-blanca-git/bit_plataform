@@ -141,4 +141,49 @@ export class MovimentacoesService extends BaseService {
       }
   }
 
+  getMovId(idMov: number){
+    console.log(idMov);
+    
+    const userData = localStorage.getItem('BIT.user');
+  
+    if (!userData) {
+      console.error('Dados do usuário não encontrados');
+      return null;
+    }
+  
+    try {
+      const parsedData = JSON.parse(userData);
+      const { id, empresa } = parsedData;
+  
+      if (!id || !empresa) {
+        console.error('Usuário ou empresa não definidos no objeto armazenado.');
+        return null;
+      }
+  
+      let url = this.urlGetMov
+        .replace('{{idUser}}', encodeURIComponent(id))
+        .replace('{{idEmpresa}}', encodeURIComponent(empresa));
+      
+        if (idMov>0) {
+          url = url + '&idMov=' + idMov;
+        }
+
+        return this.httpClient.get<MovModel[]>(url, this.ObterAuthHeaderJson()).pipe(
+          map((response) => {
+            if (!response || Object.keys(response).length === 0) {
+              console.warn('A resposta está vazia.');
+              return [];
+            }
+            return response;
+          }),
+          catchError((err) => {
+            return throwError(err);
+          })
+        );
+
+      } catch (error) {
+        return null;
+      }
+  }
+
 }

@@ -17,6 +17,7 @@ import { ClienteService } from '../../../services/cliente.service';
 import * as moment from 'moment';
 import { MovimentacoesService } from '../../../services/movimentacoes.service';
 import { DataFormatterService } from 'src/app/shared/services/data-formatter-service.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-movimentacoes',
@@ -70,7 +71,9 @@ export class MovimentacoesComponent implements OnChanges {
     private listaService: ListaService,
     private clienteService: ClienteService,
     private movimentacoesService: MovimentacoesService,
-    private formateDateService: DataFormatterService
+    private formateDateService: DataFormatterService,
+    private location: Location
+    
   ) {
     this.newMovForm = this._fb.group({
       Id: [0],
@@ -81,7 +84,6 @@ export class MovimentacoesComponent implements OnChanges {
       Descricao: [''],
       Valor: ['', [Validators.required]],
       ValorEntrada: [''],
-      Status: ['P', [Validators.required]],
       MovType: [0, [Validators.required]],
       Parcelas: [1, [Validators.required]],
     });
@@ -102,6 +104,20 @@ export class MovimentacoesComponent implements OnChanges {
     this.loadCliente();
   }
 
+  ngOnChangeUrl(){
+    
+    
+    const tipoMovText = this.movType === '1' ? 'receitas' : this.movType === '2' ? 'despesas' : '';
+
+    if (tipoMovText) {
+      const currentUrl = new URL(window.location.href);
+      currentUrl.searchParams.set('tipoMov', tipoMovText);
+  
+      this.location.replaceState(currentUrl.pathname + currentUrl.search);
+    }
+
+  }
+  
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['isUpdate'] && changes['isUpdate'].currentValue !== undefined) {
       if (this.isUpdate === true) {        
@@ -130,9 +146,9 @@ export class MovimentacoesComponent implements OnChanges {
     const origem = 1;
     const descricao = this.newMovForm.get('Descricao')?.value;
     const valor = this.newMovForm.get('Valor')?.value;
-    const status = this.newMovForm.get('Status')?.value;
     const tipoMov = this.newMovForm.get('MovType')?.value;
     const idMov = this.newMovForm.get('Id')?.value;    
+
 
     let mov = {};
     if (cliente && categoria && valor) {
@@ -158,12 +174,10 @@ export class MovimentacoesComponent implements OnChanges {
                 : [
                     {
                       dt_venc: moment().format('YYYY-MM-DD HH:mm:ss'),
-                      valor: parseFloat(valor) || 0,
-                      status: status,
+                      valor: parseFloat(valor) || 0                    
                     },
                   ],
           };
-          console.log(mov);
           
         } else { 
           this.notification.createBasicNotification(
@@ -294,11 +308,21 @@ export class MovimentacoesComponent implements OnChanges {
       return;
     }
     const currentUrl = this.router.url;
-    const tipoMov = currentUrl.endsWith('receitas')
+    const tipoMov = currentUrl.endsWith('receita')
       ? '1'
-      : currentUrl.endsWith('despesas')
+      : currentUrl.endsWith('despesa')
       ? '2'
       : '';
+
+    if (!tipoMov) {
+      this.notification.createBasicNotification(
+        'error',
+        'bg-danger',
+        'text-light',
+        'Selecione Receita ou Despesa antes de cadastrar uma categoria!'
+      );
+      return;
+    }
 
     const category = {
       name: _nome,
@@ -315,10 +339,7 @@ export class MovimentacoesComponent implements OnChanges {
           r.message
         );
 
-        // this.loadLista('financeiro_categoria', tipoMov).then((lista) => {
-        //   this.listCategorias = lista;
-        // });
-
+        this.loadLista('financeiro_categoria', tipoMov)
         input.value = '';
       },
       error: (e) => {
@@ -352,6 +373,17 @@ export class MovimentacoesComponent implements OnChanges {
       ? '2'
       : '';
 
+      
+    if (!tipoMov) {
+      this.notification.createBasicNotification(
+        'error',
+        'bg-danger',
+        'text-light',
+        'Selecione Receita ou Despesa antes de cadastrar uma conta!'
+      );
+      return;
+    }
+
     const account = {
       name: _nome,
       tipo: '',
@@ -367,10 +399,7 @@ export class MovimentacoesComponent implements OnChanges {
           r.message
         );
 
-        // this.loadLista('financeiro_conta', '').then((lista) => {
-        //   this.listConta = lista;
-        // });
-
+        this.loadLista('financeiro_conta', tipoMov);
         input.value = '';
       },
       error: (e) => {
@@ -510,6 +539,7 @@ export class MovimentacoesComponent implements OnChanges {
   }
 
   clear(){
+    const currentUrl = new URL(window.location.href);
     this.isSnParc = false;
     this.isVisible = false;
     this.newMovForm.reset();
@@ -517,6 +547,7 @@ export class MovimentacoesComponent implements OnChanges {
     this.selectedClient = null;
     this.selectedCategory = null;
     this.listParcelas = [];
+    this.location.replaceState(currentUrl.pathname);
   }
 
   processarErro(erro: any) {

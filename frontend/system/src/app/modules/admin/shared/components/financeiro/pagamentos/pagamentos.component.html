@@ -44,8 +44,9 @@
                         <tr>
                             <th scope="col" class="text-primary"><span>Vencimento</span></th>
                             <th scope="col" class="text-primary">Valor</th>
+                            <th scope="col" class="text-primary">Restante</th>
                             <th scope="col" class="text-primary">Status</th>
-                            <th scope="col" class="text-primary text-center"><span>{{dadoPagamento.Tipo === 'Receita' ? 'Pagar' : 'Receber'}}</span></th>
+                            <th scope="col" class="text-primary text-center"><span>{{dadoPagamento.Tipo === '2' ? 'Pagar' : 'Receber'}}</span></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -58,6 +59,11 @@
                             <td [ngClass]="{ 'text-secondary': theme === 'dark', 'table-light': theme === 'light' }">
                                 {{ formatValor(item.Valor) }}
                             </td>
+                            
+
+                            <td [ngClass]="{ 'text-secondary': theme === 'dark', 'table-light': theme === 'light' }">
+                              {{ formatValor(item.Valor - item.ValorPago) }}
+                            </td>
 
                             <td class="col-sm-table" [ngClass]="{ 'text-secondary': theme === 'dark', 'table-light': theme === 'light' }">
                                 <i class="fa-solid fa-dot-circle" [ngClass]="{'text-success': item.StatusParcela === 'Pago','text-danger': item.StatusParcela === 'Pendente'}"></i>
@@ -67,9 +73,9 @@
                             <td class="text-center" [ngClass]="{ 'text-secondary': theme === 'dark', 'table-light': theme === 'light' }">
                               <button class="btn btn-sm btn-size-table" 
                                   (click)="novoPagamento(item)"
-                                  [title]="item.Tipo === 'Receita' ? 'Pagar' : 'Receber'"
+                                  [title]="dadoPagamento.Tipo === '2' ? 'Pagar' : 'Receber'"
                                   [disabled]="item.StatusParcela === 'Pago'"
-                                  [ngClass]="{'btn-outline-secondary': item.StatusParcela === 'Pago','btn-outline-success': item.StatusParcela === 'Pendente'}">
+                                  [ngClass]="{'btn-outline-danger': dadoPagamento.Tipo === '2','btn-outline-success':  dadoPagamento.Tipo === '1'}">
                                   <i class="fa-solid fa-money-bill-transfer"></i>
                               </button>
                             </td>
@@ -126,4 +132,4 @@
     </div>
   </ng-template>
 </nz-modal>
-<app-novo-pagamento (closeEvent)="closeNovoPagamento()" [dadoPagamento]="dadosNovoPagamento" [statusModal]="isVisibleNovoPagamento"></app-novo-pagamento>
+<app-novo-pagamento (closeEvent)="closeNovoPagamento()" (saveSuccess)="refreshMovimentacao()" [dadoPagamento]="dadosNovoPagamento" [statusModal]="isVisibleNovoPagamento"></app-novo-pagamento>

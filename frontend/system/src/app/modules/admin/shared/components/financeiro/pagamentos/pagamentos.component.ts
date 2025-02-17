@@ -8,6 +8,7 @@ import { ListaService } from '../../../services/lista.service';
 import { MovimentacoesService } from '../../../services/movimentacoes.service';
 import { ThemeService } from '../../../services/themeService';
 import { ValorFormatterService } from 'src/app/shared/services/valor-formatter-service.service';
+import { MovModel } from '../../../models/mov.model';
 
 @Component({
   selector: 'app-pagamentos',
@@ -28,15 +29,10 @@ export class PagamentosComponent {
   currentQtde = 10;
   currentPage = 1;
 
-  listParcelas = [];
-
   constructor(
     private themeService: ThemeService,
     private _fb: FormBuilder,
     private notification: NotificationService,
-    private router: Router,
-    private listaService: ListaService,
-    private clienteService: ClienteService,
     private movimentacoesService: MovimentacoesService,
     private formateDateService: DataFormatterService,
     private formateValueService: ValorFormatterService
@@ -53,6 +49,19 @@ export class PagamentosComponent {
     this.showNovoPagamento();
   }
 
+  refreshMovimentacao() {
+    this.movimentacoesService.getMovId(Number(this.dadosNovoPagamento.IdMovimento))?.subscribe({
+      next: (v: any[]) => { 
+        if (v.length > 0 && v[0].Parcelas) {
+          this.dadoPagamento.Parcelas = v[0].Parcelas;
+        } else {
+          this.dadoPagamento.Parcelas  = [];
+        }
+      },
+      error: (e) => this.processarErro(e),
+    });
+  }
+  
   showNovoPagamento(){
     this.isVisibleNovoPagamento = true;
   }

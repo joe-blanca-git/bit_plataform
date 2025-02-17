@@ -43,6 +43,7 @@
                 nzButtonStyle="solid"
                 name="MovType"
                 formControlName="MovType"
+                (ngModelChange)="ngOnChangeUrl()"
               >
                 <label class="text-center no-wrap" nz-radio-button nzValue="1"
                   >Receita</label
@@ -196,31 +197,7 @@
               />
             </div>
 
-            <div class="col-md-3" *ngIf="!isUpdate">
-              <label for="Descricao" class="form-label">Status</label><br />
-              <nz-radio-group
-                class="w-100"
-                [(ngModel)]="statusMov"
-                nzButtonStyle="solid"
-                name="Status"
-                formControlName="Status"
-              >
-                <label
-                  class="w-50 text-center no-wrap"
-                  nz-radio-button
-                  nzValue="P"
-                  >Pago</label
-                >
-                <label
-                  class="w-50 text-center no-wrap"
-                  nz-radio-button
-                  nzValue="A"
-                  >Aberto</label
-                >
-              </nz-radio-group>
-            </div>
-
-            <div class="col-md-3">
+            <div class="col-md-6">
               <label for="Valor" class="form-label">Valor Total (R$)</label>
               <input
                 [readOnly]="isUpdate"

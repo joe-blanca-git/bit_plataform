@@ -31,7 +31,7 @@
                 <div class="row">
                   <div class="col-12 text-success">
                     <b class="mt-1"
-                      ><i class="fa-solid fa-money-bill-wave"></i> Receitas</b
+                      ><i class="fa-solid fa-money-bill-wave"></i>&nbsp;Recebido</b
                     >
                   </div>
                   <div class="col-12 text-end">
@@ -54,7 +54,7 @@
                 <div class="row">
                   <div class="col-12 text-danger">
                     <b class="mt-1"
-                      ><i class="fa-solid fa-money-bill"></i> Despesas</b
+                      ><i class="fa-solid fa-money-bill"></i> Pago</b
                     >
                   </div>
                   <div class="col-12 text-end">
@@ -375,13 +375,14 @@
     </div>
   </div>
 </div>
-<app-movimentacoes [statusModal]="isVisibleMov" 
-[catMov]="catType" 
-[typeMov]="movType"
-[snUpdate]="isUpdate"
-[dataUpdate]="dataForUpdate"
-(closeEvent)="closeMov($event)"
-(saveSuccess)="loadMovimentacoes(); handleOk();"
+<app-movimentacoes 
+  [statusModal]="isVisibleMov" 
+  [catMov]="catType" 
+  [typeMov]="movType"
+  [snUpdate]="isUpdate"
+  [dataUpdate]="dataForUpdate"
+  (closeEvent)="closeMov($event)"
+  (saveSuccess)="loadMovimentacoes(); handleOk();"
 ></app-movimentacoes>
 
 <nz-modal 
@@ -398,12 +399,12 @@
             <div class="row">
                 <div class="col-6 d-flex justify-content-center">
                     <button class="btn btn-lg btn-outline-primary" 
-                    (click)="showMov(1)"><i class="fa-solid fa-money-bill-1"></i> 
+                    (click)="showMov(1)"><i class="fa-solid fa-money-bill-1"></i> &nbsp;
                     Simples</button>
                 </div>
                 <div class="col-6 d-flex justify-content-center">
                     <button class="btn btn-lg btn-outline-primary" 
-                      (click)="showMov(2)"><i class="fa-regular fa-money-bill-1"></i> 
+                      (click)="showMov(2)"><i class="fa-regular fa-money-bill-1"></i> &nbsp;
                       Parcelada
                     </button>
                 </div>

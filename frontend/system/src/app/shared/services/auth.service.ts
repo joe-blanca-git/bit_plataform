@@ -29,7 +29,7 @@ export class AuthService extends BaseService {
     return !!this._user;
   }
 
-  constructor(protected override router: Router, private http: HttpClient) {
+  constructor(public override router: Router, private http: HttpClient) {
     super(router);
   }
 
@@ -81,7 +81,7 @@ export class AuthGuardService {
       this.router.navigate([defaultPath]);
       return false;
     }
-
+    
     if (!isLoggedIn && !isAuthForm) {
       this.router.navigate(['/login']);
       return false;

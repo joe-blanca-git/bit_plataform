@@ -5,6 +5,7 @@ import { NotificationService } from 'src/app/shared/services/notification.servic
 import { ValorFormatterService } from 'src/app/shared/services/valor-formatter-service.service';
 import { MovimentacoesService } from '../../../services/movimentacoes.service';
 import { ThemeService } from '../../../services/themeService';
+import { PagamentosService } from '../../../services/pagamentos.service';
 
 @Component({
   selector: 'app-novo-pagamento',
@@ -27,9 +28,9 @@ export class NovoPagamentoComponent {
         private themeService: ThemeService,
         private _fb: FormBuilder,
         private notification: NotificationService,
-        private movimentacoesService: MovimentacoesService,
         private formateDateService: DataFormatterService,
-        private formateValueService: ValorFormatterService
+        private formateValueService: ValorFormatterService,
+        private pagamentosService: PagamentosService
       ) {
         this.novoPagamentoForm = this._fb.group({
           Valor: [null, Validators.required],
@@ -41,7 +42,7 @@ export class NovoPagamentoComponent {
       this.themeService.theme$.subscribe((theme) => {
         this.theme = theme;
       });
-
+      
     }
 
     registrarPagamento(){
@@ -63,12 +64,36 @@ export class NovoPagamentoComponent {
       
       const bodyJson = {
         valor: valor,
-        formaPgto: Number(formaPgto),
-        mov_id: this.dadoPagamento.IdMovimento,
-        mov_parc_id: this.dadoPagamento.IdParcela
+        forma: Number(formaPgto),
+        id_mov: this.dadoPagamento.IdMovimento,
+        id_parcela: this.dadoPagamento.IdParcela
       }      
 
-      //criar procedimento de pagamento
+      this.pagamentosService.postNewMovPag(bodyJson).subscribe({
+        next: (response) => {
+          this.notification.createBasicNotification(
+            'success',
+            'bg-success',
+            'text-light',
+            response.message
+          );
+          this.saveSuccess.emit(true);
+        },
+        error: (error) => {
+          this.notification.createBasicNotification(
+            'error',
+            'bg-danger',
+            'text-light',
+            error.error
+          );
+          this.saveSuccess.emit(false);
+        },
+        complete: () => {
+          this.novoPagamentoForm.reset();
+          this.isVisible = false;
+          this.closeEvent.emit(false);
+        },
+      })
       
     }
 
@@ -79,7 +104,6 @@ export class NovoPagamentoComponent {
         this.novoPagamentoForm.markAsUntouched();
       }
     }
-    
 
     handleOk(): void {
       this.clear();

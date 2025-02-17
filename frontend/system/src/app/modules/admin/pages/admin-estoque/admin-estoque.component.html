@@ -1,0 +1,210 @@
+<div class="row">
+    <div
+      class="header-container d-flex align-items-center"
+      [ngStyle]="{ 'background-image': 'url(' + getHeader() + ')' }"
+    >
+      <span
+        class="welcome-text"
+        [ngClass]="{
+          'text-light': theme === 'dark',
+          'text-primary': theme === 'light'
+        }"
+      >
+        ESTOQUE
+      </span>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col-12">
+      <div class="row">
+        <div class="col-xl-6 col-12">
+          <div class="row">
+            <div class="col-xl-4 col-4 text-sm">
+              <div
+                class="card shadow bg-brand-light"
+                [ngClass]="{
+                  'text-secondary': theme === 'dark',
+                  'text-dark': theme === 'light'
+                }"
+              >
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-12 text-success">
+                      <b class="mt-1"
+                        ><i class="fa-solid fa-boxes-packing"></i>&nbsp;Total</b
+                      >
+                    </div>
+                    <div class="col-12 text-end">
+                      <hr class="mt-0" />
+                      <span class="">{{ produtosTotal }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-4 col-4 text-sm">
+              <div
+                class="card shadow bg-brand-light"
+                [ngClass]="{
+                  'text-secondary': theme === 'dark',
+                  'text-dark': theme === 'light'
+                }"
+              >
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-12 text-warning">
+                      <b class="mt-1"
+                        ><i class="fa-solid fa-boxes-packing"></i> Baixo</b
+                      >
+                    </div>
+                    <div class="col-12 text-end">
+                      <hr class="mt-0" />
+                      <span class="">{{ produtosAlerta }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-4 col-4 text-sm">
+              <div
+                class="card shadow bg-brand-light"
+                [ngClass]="{
+                  'text-secondary': theme === 'dark',
+                  'text-dark': theme === 'light'
+                }"
+              >
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-12 text-danger">
+                      <b class="mt-1"
+                        ><i class="fa-solid fa-boxes-packing"></i> Zerado</b
+                      >
+                    </div>
+                    <div class="col-12 text-end">
+                      <hr class="mt-0" />
+                      <span class="">{{ produtosCritico }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+
+  
+  
+          </div>
+        </div>
+        <div class="col-6 hidden-sm">
+
+        </div>
+      </div>
+    </div>
+    <div class="col-12 mt-0">
+      <hr />
+    </div>
+    <div class="col-3 d-flex justify-content-start align-items-center">
+      <nz-radio-group [(ngModel)]="radioValue" nzButtonStyle="solid">
+        <label nz-radio-button nzValue="1">Mostrar Tudo</label>
+        <label nz-radio-button nzValue="2">Estoque baixo</label>
+        <label nz-radio-button nzValue="3">Estoque zerado</label>
+      </nz-radio-group>
+    </div>
+    <div class="col-3 d-flex justify-content-end align-items-center">
+      <nz-select class="w-100" nzShowSearch nzAllowClear nzPlaceHolder="Fornecedor" [(ngModel)]="selectedValue">
+        <nz-option nzLabel="Jack" nzValue="jack"></nz-option>
+        <nz-option nzLabel="Lucy" nzValue="lucy"></nz-option>
+        <nz-option nzLabel="Tom" nzValue="tom"></nz-option>
+      </nz-select>
+    </div>
+    <div class="col-xl-6 col-12 d-flex justify-content-end align-items-center">
+      <div class="input-group me-2 group-search">
+        <span
+          class="input-group-text"
+          id="basic-addon1"
+          [ngClass]="{
+            'bg-dark-light text-secondary': theme === 'dark',
+            'bg-light': theme === 'light'
+          }"
+        >
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </span>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Pesquisar"
+          [ngClass]="{
+            'bg-dark-light': theme === 'dark',
+            'bg-light': theme === 'light'
+          }"
+          aria-label="Pesquisar"
+          aria-describedby="basic-addon1"
+          (input)="filtrarEstoque($event)"
+        />
+        <ng-template #placeholdePesquiar>
+          <span class="text-secondary">Pesquisar</span>
+        </ng-template>
+        
+      </div>
+    </div>
+    <div class="col-12 mt-2 text-sm">
+      <div
+        class="card"
+        [ngClass]="{
+          'bg-dark-light': theme === 'dark',
+          'bg-light': theme === 'light'
+        }"
+      >
+        <div class="card-body">
+          <div class="table-responsive p-2">
+            <table
+            class="table table-hover rounded border"
+            [ngClass]="{
+              'table-dark': theme === 'dark',
+              'table-light': theme === 'light'
+            }"
+          >
+            <thead>
+              <tr>
+                <th scope="col" class="text-primary hidden-sm">Categoria</th>
+                <th scope="col" class="text-primary hidden-sm">EAN</th>
+                <th scope="col" class="text-primary  hidden-sm">Nome</th>
+                <th scope="col" class="text-primary hidden-sm">Un. Medida</th>
+                <th scope="col" class="text-primary">Embalagem</th>
+                <th scope="col" class="text-primary">Estoque</th>
+                <th scope="col" class="text-primary"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+
+              </tr>
+            </tbody>
+          </table>
+          </div>
+          <div class="row mt-2">
+            <div class="col-6">
+              <div class="input-group group-show-table">
+                <span [ngClass]="{'bg-dark-light text-secondary': theme === 'dark', 'bg-light ': theme === 'light'}" class="input-group-text text-sm">Mostrar:</span>
+                <select [ngClass]="{'bg-dark-light text-secondary': theme === 'dark', 'bg-light ': theme === 'light'}" class="form-select text-sm" id="current" (change)="changeQtde($event)">
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-xl-6 col-12 mt-4 mt-xl-0">
+              <pagination-controls
+                (pageChange)="currentPage = $event"
+                class="text-light text-center"
+                previousLabel="Anterior"
+                nextLabel="Próximo"
+              >
+              </pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
