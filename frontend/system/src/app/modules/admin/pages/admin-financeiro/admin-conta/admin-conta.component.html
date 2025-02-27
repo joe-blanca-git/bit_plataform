@@ -1,0 +1,278 @@
+<div class="row">
+  <div
+    class="header-container d-flex align-items-center"
+    [ngStyle]="{ 'background-image': 'url(' + getHeader() + ')' }"
+  >
+    <span
+      class="welcome-text"
+      [ngClass]="{
+        'text-light': theme === 'dark',
+        'text-primary': theme === 'light'
+      }"
+    >
+      RECEBER/PAGAR
+    </span>
+  </div>
+</div>
+<div class="row mt-2">
+  <div class="col-12">
+    <div class="row">
+      <div class="col-xl-2 col-4 text-sm">
+        <div
+          class="card shadow  bg-brand-light"
+          [ngClass]="{
+            'text-secondary': theme === 'dark',
+            'text-dark': theme === 'light'
+          }"
+        >
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12 text-success">
+                <b class="mt-1"
+                  ><i class="fa-solid fa-money-bill-wave"></i> Receber</b
+                >
+              </div>
+              <div class="col-12 text-end">
+                <hr class="mt-0" />
+                <span class="">{{ this.formatValor(totalReceber) }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-2 col-4 text-sm">
+        <div
+          class="card shadow  bg-brand-light"
+          [ngClass]="{
+            'text-secondary': theme === 'dark',
+            'text-dark': theme === 'light'
+          }"
+        >
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12 text-danger">
+                <b class="mt-1"
+                  ><i class="fa-solid fa-money-bill"></i> Pagar</b
+                >
+              </div>
+              <div class="col-12 text-end">
+                <hr class="mt-0" />
+                <span class="">{{ this.formatValor(totalPagar) }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-2 col-4 text-sm">
+        <div
+          class="card shadow  bg-brand-light"
+          [ngClass]="{
+            'text-secondary': theme === 'dark',
+            'text-dark': theme === 'light'
+          }"
+        >
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12 text-primary">
+                <b class="mt-1"
+                  ><i class="fa-solid fa-circle-dollar-to-slot"></i> Saldo</b
+                >
+              </div>
+              <div class="col-12 text-end">
+                <hr class="mt-0" />
+                <span class="">{{ this.formatValor(saldoFuturo) }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 hidden-sm">
+        <app-movimentacoes-grafico-ano 
+          *ngIf="listMovimentacoes.length > 0" 
+          [data]="listMovimentacoes"
+          
+          >
+
+        </app-movimentacoes-grafico-ano>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 mt-0">
+    <hr />
+  </div>
+  <div class="col-6 d-flex justify-content-start align-items-center">
+    <!-- <nz-range-picker
+      class="rounded text-secondary"
+      [ngClass]="{
+        'bg-dark-light text-secondary': theme === 'dark',
+        'bg-light text-secondary': theme === 'light'
+      }"
+      [(ngModel)]="date"
+      (ngModelChange)="onChange($event)"
+    ></nz-range-picker> -->
+  </div>
+  <div class="col-xl-6 col-12 d-flex justify-content-end align-items-center">
+    <div class="input-group me-2 group-search">
+      <span
+        class="input-group-text"
+        id="basic-addon1"
+        [ngClass]="{
+          'bg-dark-light text-secondary': theme === 'dark',
+          'bg-light': theme === 'light'
+        }"
+      >
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </span>
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Pesquisar"
+        [ngClass]="{
+          'bg-dark-light text-secondary': theme === 'dark',
+          'bg-light': theme === 'light'
+        }"
+        aria-label="Pesquisar"
+        aria-describedby="basic-addon1"
+        (input)="filtrarMovimentacoes($event)"
+      />
+    </div>
+  </div>
+  <div class="col-12 mt-2 text-sm">
+    <div
+      class="card"
+      [ngClass]="{
+        'bg-dark-light': theme === 'dark',
+        'bg-light': theme === 'light'
+      }"
+    >
+      <div class="card-body">
+        <div class="table-responsive p-2">
+          <table
+          class="table table-hover rounded border table-responsive"
+          [ngClass]="{
+            'table-dark': theme === 'dark',
+            'table-light': theme === 'light'
+          }"
+        >
+          <thead>
+            <tr>
+              <th scope="col" class="text-primary bg-secondary-light">
+                Venc.
+              </th>
+              <th scope="col" class="text-primary">Tipo</th>
+              <th scope="col" class="text-primary">Pessoa</th>
+              <th scope="col" class="text-primary">Valor</th>
+              <th scope="col" class="text-primary text-center">Receber/Pagar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="
+                let item of listaFiltrada
+                  | paginate
+                    : { itemsPerPage: currentQtde, currentPage: currentPage }
+              "
+            >
+              <td
+                class="bg-secondary-light"
+                [ngClass]="{
+                  'text-secondary': theme === 'dark',
+                  'table-light': theme === 'light'
+                }"
+              >
+                <i class="fa-solid fa-calendar text-secondary"></i>&nbsp;
+                {{ getMenorDataPendente(item.Parcelas) }}
+              </td>
+
+              <td
+                [ngClass]="{
+                  'text-secondary': theme === 'dark',
+                  'table-light': theme === 'light'
+                }"
+              >
+                <i
+                  class="fa-solid"
+                  [ngClass]="{
+                    'fa-square-plus text-success': item.Tipo === '1',
+                    'fa-square-minus text-danger': item.Tipo === '2'
+                  }"
+                ></i>&nbsp;
+
+                <span class="hidden-sm">{{ getTipo(item.Tipo) }}</span>
+              </td>
+
+              <td
+                [ngClass]="{
+                  'text-secondary': theme === 'dark',
+                  'table-light': theme === 'light'
+                }"
+              >
+                <span class="hidden-sm">{{ item.cliente_name.slice(0, 30) }}...</span>
+                <span class="hidden-xl">{{ item.cliente_name.slice(0, 10) }}...</span>
+              </td>
+
+              <td
+                [ngClass]="{
+                  'text-secondary': theme === 'dark',
+                  'table-light': theme === 'light'
+                }"
+              >
+                {{ formatValor(item.ValorTotal) }}
+              </td>
+                
+              <td
+                [ngClass]="{
+                  'text-secondary': theme === 'dark',
+                  'table-light': theme === 'light'
+                }"
+              >
+                <div class="row justify-content-center">
+                  <div class="col-auto">
+                    <button
+                      class="btn btn-sm btn-outline-primary btn-size-table"
+                      [title]="
+                        item.Tipo === '2'
+                          ? 'Pagar'
+                          : item.Tipo === '1'
+                          ? 'Receber'
+                          : ''
+                      "
+                      (click)="movPagamento(item)"
+                    >
+                      <i class="fa-solid fa-money-bill-transfer"></i>
+                    </button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <div class="input-group group-show-table">
+              <span [ngClass]="{'bg-dark-light text-secondary': theme === 'dark', 'bg-light ': theme === 'light'}" class="input-group-text text-sm">Mostrar:</span>
+              <select [ngClass]="{'bg-dark-light text-secondary': theme === 'dark', 'bg-light ': theme === 'light'}" class="form-select text-sm" id="current" (change)="changeQtde($event)">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-xl-6 col-12 mt-4 mt-xl-0">
+            <pagination-controls
+              (pageChange)="currentPage = $event"
+              class="text-light text-center"
+              previousLabel="Anterior"
+              nextLabel="Próximo"
+            >
+            </pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-pagamentos (closeEvent)="closePagto(); loadMovimentacoes();"  [dadoPagamento]="dadosPagamento" [statusModal]="isVisibleModal"></app-pagamentos>

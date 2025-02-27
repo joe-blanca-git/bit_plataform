@@ -18,7 +18,7 @@ export class AdminAppComponent {
   userLabel: string = '';
   visibleMenu = false;
   
-  theme: 'dark' | 'light' = 'dark';
+  theme: 'dark' | 'light' = 'light';
 
   constructor(
     private themeService: ThemeService,
@@ -29,7 +29,9 @@ export class AdminAppComponent {
 
   ngOnInit() {
     this.themeService.theme$.subscribe(theme => {
-      this.theme = theme; 
+      setTimeout(() => {
+        this.theme = theme;
+      });
     });
 
     this.changeTheme();

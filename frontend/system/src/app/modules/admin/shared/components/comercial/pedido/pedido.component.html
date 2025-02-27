@@ -1,0 +1,576 @@
+<nz-modal
+  [(nzVisible)]="isVisible"
+  [nzTitle]="header"
+  [nzFooter]="null"
+  nzCloseIcon=""
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+  [nzWidth]="'80vw'"
+>
+  <ng-container *nzModalContent>
+    <div class="row p-4" style="height: 70vh;" [ngClass]="{'bg-dark  text-secondary': theme === 'dark','bg-light text-dark': theme === 'light'}">
+      <nz-steps [nzCurrent]="current">
+        <nz-step nzTitle="Informações"></nz-step>
+        <nz-step nzTitle="Produtos"></nz-step>
+        <nz-step nzTitle="Financeiro"></nz-step>
+        <nz-step nzTitle="Resumo"></nz-step>
+      </nz-steps>
+      
+      <div class="steps-content p-3">
+        <form [formGroup]="pedidosForm">
+          <div *ngIf="index === 0">
+            
+              <div class="row border rounded p-2">
+                <div class="col-12 border-bottom">
+                  <b class="text-primary">{{ movType === 1 ? 'Cliente' : movType === 2 ? 'Fornecedor' : '' }}</b>
+                </div>
+
+                <div class="col-9 mt-2">
+                  <label for="Cliente">Nome</label>
+                  <nz-select
+                    class="w-100"
+                    formControlName="Cliente"
+                    nzPlaceHolder="{{ movType === 1 ? 'Cliente' : movType === 2 ? 'Fornecedor' : '' }}"
+                    nzShowSearch
+                    nzAllowClear
+                    [nzDropdownRender]="renderTemplate"
+                    [ngClass]="{ 'is-invalid': isInvalid('Cliente') }"
+                    (ngModelChange)="selectCliente($event)"
+                    >
+                    <nz-option
+                      *ngFor="let item of listClients"
+                      [nzLabel]="item.id + ' - ' + item.nome"
+                      [nzValue]="item.id"
+                    >
+                    </nz-option>
+                  </nz-select>
+                  <div class="invalid-feedback">Nome é obrigatório</div>
+                  <ng-template #renderTemplate>
+                    <div class="dropdown-container">
+                      <div class="options-container">
+                        <nz-option
+                          *ngFor="let item of listClients"
+                          [nzLabel]="item.id + ' - ' + item.nome"
+                          [nzValue]="item.id"
+                        >
+                        </nz-option>
+                      </div>
+                      <div class="footer-container">
+                        <input type="text" nz-input #inputElement />
+                        <button
+                          class="btn btn-sm btn-outline-primary mt-2"
+                          (click)="addPeople(inputElement)"
+                        >
+                          <i class="fa-solid fa-square-plus"></i> Cadastro Rápido
+                        </button>
+                      </div>
+                    </div>
+                  </ng-template>
+                </div>
+
+                <div class="col-3 mt-2">
+                  <label for="Telefone">Telefone</label>
+                  <input
+                    nz-input
+                    name="Telefone"
+                    id="Telefone"
+                    formControlName="Telefone"
+                    type="text"
+                    placeholder="Telefone"
+                  />
+                </div>
+
+                <div class="col-4 mt-2">
+                  <label for="Email">E-mail</label>
+                  <input
+                    nz-input
+                    name="Email"
+                    id="Email"
+                    formControlName="Email"
+                    type="email"
+                    placeholder="Email"
+                  />
+                </div>
+
+                <div class="col-5 mt-2">
+                  <label for="Endereco">Endereço</label>
+                  <input
+                    nz-input
+                    name="Endereco"
+                    id="Endereco"
+                    formControlName="Endereco"
+                    type="text"
+                    placeholder="Endereço"
+                  />
+                </div>
+
+                <div class="col-3 mt-2">
+                  <label for="Cidade">Cidade</label>
+                  <input
+                    nz-input
+                    name="Cidade"
+                    id="Cidade"
+                    formControlName="Cidade"
+                    type="Cidade"
+                    placeholder="Cidade"
+                  />
+                </div>
+
+              </div>
+
+              <div class="row border rounded p-2 mt-2">
+                <div class="col-12 border-bottom">
+                  <b class="text-primary">Entrega</b>
+                </div>
+
+                <div class="col-2 mt-2">
+                  <label for="DataEntrega">Data</label>
+                  <nz-date-picker 
+                    class="w-100" 
+                    [(ngModel)]="date" 
+                    (ngModelChange)="onChange($event)"
+                    nzFormat="dd/MM/YYYY"
+                    formControlName="DataEntrega"
+                  >
+                  </nz-date-picker>
+                </div>
+                
+                <div class="col-2 mt-2">
+                  <br>
+                  <nz-input-group nzAddOnBefore="Frete (R$)">
+                    <input
+                    [readOnly]="isUpdate"
+                    nz-input
+                    name="Frete"
+                    id="Frete"
+                    formControlName="Frete"
+                    type="number"
+                    [ngClass]="{'is-invalid': isInvalid('Frete') }"
+                    placeholder="0,00"
+                  />
+                  </nz-input-group>
+                  <div class="invalid-feedback">Valor é obrigatório</div>
+                </div>
+                
+                <div class="col-5 mt-2">
+                  <label for="EnderecoEntrega">Endereco Para Entrega</label>
+                  <input
+                    nz-input
+                    name="EnderecoEntrega"
+                    id="EnderecoEntrega"
+                    formControlName="EnderecoEntrega"
+                    type="text"
+                    placeholder="Endereco para Entrega"
+                  />
+                </div>
+
+                <div class="col-3 mt-2">
+                  <label for="CidadeEntrega">Cidade Para Entrega</label>
+                  <input
+                    nz-input
+                    name="CidadeEntrega"
+                    id="CidadeEntrega"
+                    formControlName="CidadeEntrega"
+                    type="text"
+                    placeholder="Cidade para Entrega"
+                  />
+                </div>
+              </div>
+
+              <div class="row border rounded p-2 mt-2">
+                <div class="col-12 border-bottom">
+                  <b class="text-primary">Observações</b>
+                </div>
+                <div class="col-12 mt-2">
+                  <textarea class="form-control" id="Observacao" formControlName="Observacao" rows="2"></textarea>
+                </div>
+              </div>
+            
+          </div>
+
+          <div *ngIf="index === 1">
+            <div class="row border rounded p-2">
+                <div class="col-12 border-bottom">
+                  <b class="text-primary">Produto</b>
+                </div>
+
+                <div class="col-12 mt-2">
+                  <label formControlName="CheckFornecedor" nz-checkbox (ngModelChange)="filterFonecedor()" [(ngModel)]="fornecedorChecked">Filtrar somente produtos do fornecedor.</label>
+                </div>
+
+                <div class="col-12 mt-2">
+                  <nz-select
+                    class="w-100"
+                    formControlName="Produto"
+                    nzPlaceHolder="Produto"
+                    nzShowSearch
+                    nzAllowClear
+                    [nzDropdownRender]="renderTemplate2"
+                    [ngClass]="{ 'is-invalid': isInvalid('Produto') }"
+                    [ngModel]="selectProduto"
+                    (ngModelChange)="selectProduto($event)"
+                    >
+                    <nz-option
+                      *ngFor="let item of listProduto"
+                      [nzLabel]="item.id + ' - ' + item.nome"
+                      [nzValue]="item.id"
+                    >
+                    </nz-option>
+                  </nz-select>
+                <ng-template #renderTemplate2>
+                  <div class="dropdown-container">
+                    <div class="options-container">
+                      <nz-option
+                        *ngFor="let item of listProduto"
+                        [nzLabel]="item.id + ' - ' + item.nome"
+                        [nzValue]="item.id"
+                      >
+                      </nz-option>
+                    </div>
+                    <div class="footer-container">
+                      <input placeholder="Informe o nome do Produto para um cadastro rápido" type="text" nz-input #inputElement />
+                      <button
+                        class="btn btn-sm btn-outline-primary mt-2"
+                        (click)="addProduto(inputElement)"
+                      >
+                        <i class="fa-solid fa-square-plus"></i> Cadastro Rápido
+                      </button>
+                    </div>
+                  </div>
+                </ng-template>
+                </div>
+
+                <div class="col-3 mt-2">
+                  <nz-input-group nzAddOnBefore="Valor (R$)">
+                    <input
+                    [readOnly]="isUpdate"
+                    nz-input
+                    name="ValorProduto"
+                    id="ValorProduto"
+                    formControlName="ValorProduto"
+                    type="number"
+                    [ngClass]="{'is-invalid': isInvalid('ValorProduto') }"
+                    placeholder="0,00"
+                  />
+                  </nz-input-group>
+                  <div class="invalid-feedback">Valor é obrigatório</div>
+                </div>
+
+                <div class="col-3 mt-2">
+                  <nz-input-group nzAddOnBefore="Qtde. (Un.)">
+                    <input
+                    [readOnly]="isUpdate"
+                    nz-input
+                    name="QtdeUn"
+                    id="QtdeUn"
+                    formControlName="QtdeUn"
+                    type="number"
+                    placeholder="0,00"
+                    (ngModelChange)="calcQtde('un')"
+                  />
+                  </nz-input-group>
+                </div>
+
+                <div class="col-3 mt-2">
+                  <nz-input-group nzAddOnBefore="Qtde. (Cx.)">
+                    <input
+                    [readOnly]="isUpdate"
+                    nz-input
+                    name="QtdeEmb"
+                    id="QtdeEmb"
+                    formControlName="QtdeEmb"
+                    type="number"
+                    placeholder="0,00"
+                    (ngModelChange)="calcQtde('emb')"
+                  />
+                  </nz-input-group>
+                </div>
+
+                <div class="col-3 mt-2 d-flex align-items-end justify-content-end">
+                  <button class="btn btn-sm btn-primary" (click)="addProdutoList()"><i class="fa-solid fa-square-plus"></i>&nbsp;<span>Adicionar</span></button>
+                </div>
+
+            </div>
+            <div class="row mt-2">
+
+              <div class="col-12">
+                <table class="table table-hover rounded border table-responsive"
+                  [ngClass]="{'table-dark': theme === 'dark','table-light': theme === 'light'}"
+                >
+                  <thead>
+                    <tr>
+                      <th scope="col" class="text-primary">Código</th>
+                      <th scope="col" class="text-primary">Descrição</th>
+                      <th scope="col" class="text-primary">Qtde.</th>
+                      <th scope="col" class="text-primary">Valor Un.</th>
+                      <th scope="col" class="text-primary">Valor Total</th>
+                      <th scope="col" class="text-primary">Excluir</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of listSelectProduto | paginate: { itemsPerPage: 5, currentPage: currentPage }">
+                      <td [ngClass]="{'text-secondary': theme === 'dark','table-light': theme === 'light'}">
+                        {{ item.id}}
+                      </td>
+                      <td [ngClass]="{'text-secondary': theme === 'dark','table-light': theme === 'light'}">
+                        {{ item.nome}}
+                      </td>
+                      <td [ngClass]="{'text-secondary': theme === 'dark','table-light': theme === 'light'}">
+                        {{ item.qtdeUn}}
+                      </td>
+                      <td [ngClass]="{'text-secondary': theme === 'dark','table-light': theme === 'light'}">
+                        {{ item.valorUn | currency : "BRL" : "symbol" : "1.2-2" }}
+                      </td>
+                      <td [ngClass]="{'text-secondary': theme === 'dark','table-light': theme === 'light'}">
+                        {{ item.valorTotal | currency : "BRL" : "symbol" : "1.2-2" }}
+                      </td>
+                      <td>
+                        <button class="btn btn-sm btn-primary" title="Excluir Produto" (click)="removeProdutoList(item.id)"><i class="fa-solid fa-trash-alt"></i></button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+              <div class="d-flex justify-content-center mt-3 text-light">
+                <pagination-controls
+                  (pageChange)="currentPage = $event"
+                  class="text-light"
+                  previousLabel="Anterior"
+                  nextLabel="Próximo"
+                >
+                </pagination-controls>
+              </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div *ngIf="index === 2">
+            <div class="row border rounded p-2">
+
+              <div class="col-12 border-bottom">
+                <b class="text-primary">Detalhes</b>
+              </div>
+
+              <div class="col-2 mt-2">
+                <br>
+                <nz-input-group nzAddOnBefore="Custo Extra (R$)">
+                  <input
+                  [readOnly]="isUpdate"
+                  nz-input
+                  name="CustoExtra"
+                  id="CustoExtra"
+                  formControlName="CustoExtra"
+                  type="number"
+                  [ngClass]="{'is-invalid': isInvalid('CustoExtra') }"
+                  placeholder="0,00"
+                />
+                </nz-input-group>
+                <div class="invalid-feedback">Valor é obrigatório</div>
+              </div>
+
+              <div class="col-4 mt-2">
+                <label for="FormaPagamento">Forma de Pagamento</label>
+                <nz-select
+                  class="w-100"
+                  formControlName="FormaPagamento"
+                  nzPlaceHolder="Selecione a Forma de Pagamento"
+                  nzShowSearch
+                  nzAllowClear
+                  [nzDropdownRender]="renderTemplate3"
+                  [ngClass]="{ 'is-invalid': isInvalid('FormaPagamento') }"
+                  [ngModel]="selectedFormaPagamento"
+                  (ngModelChange)="selectFormaPagamento($event)"
+                  >
+                  <nz-option
+                    *ngFor="let item of listFormaPagamento"
+                    [nzLabel]="item.id + ' - ' + item.nome"
+                    [nzValue]="item.id"
+                  >
+                  </nz-option>
+                </nz-select>
+              <ng-template #renderTemplate3>
+                <div class="dropdown-container">
+                  <div class="options-container">
+                    <nz-option
+                      *ngFor="let item of listFormaPagamento"
+                      [nzLabel]="item.id + ' - ' + item.nome"
+                      [nzValue]="item.id"
+                    >
+                    </nz-option>
+                  </div>
+                </div>
+              </ng-template>
+              </div>
+
+              <div class="col-3 mt-2">
+                <label for="FormaPagamento">Prazo</label>
+                <nz-select
+                  class="w-100"
+                  formControlName="Prazo"
+                  nzPlaceHolder="Selecione o método de prazo"
+                  nzShowSearch
+                  nzAllowClear
+                  [nzDropdownRender]="renderTemplate2"
+                  [ngClass]="{ 'is-invalid': isInvalid('Prazo') }"
+                  [ngModel]="selectedPrazo"
+                  (ngModelChange)="selectPrazo($event)"
+                  >
+                  <nz-option
+                    *ngFor="let item of listPrazo"
+                    [nzLabel]="item.id + ' - ' + item.nome"
+                    [nzValue]="item.id"
+                  >
+                  </nz-option>
+                </nz-select>
+              <ng-template #renderTemplate2>
+                <div class="dropdown-container">
+                  <div class="options-container">
+                    <nz-option
+                      *ngFor="let item of listPrazo"
+                      [nzLabel]="item.id + ' - ' + item.nome"
+                      [nzValue]="item.id"
+                    >
+                    </nz-option>
+                  </div>
+                </div>
+              </ng-template>
+              </div>
+
+              <div class="col-3 mt-2" *ngIf="isVisiblePrazo">
+                <label for="DataVencimento">Data Vencimento</label>
+                <nz-date-picker 
+                  class="w-100" 
+                  [(ngModel)]="date" 
+                  (ngModelChange)="onChange($event)"
+                  nzFormat="dd/MM/YYYY"
+                  formControlName="DataVencimento"
+                >
+                </nz-date-picker>
+              </div>
+
+            </div>
+
+            <div class="row border rounded p-2 mt-2">
+
+              <div class="col-12 border-bottom">
+                <b class="text-primary">Resumo</b>
+              </div>
+
+              <div class="col-4 m-2">
+                <span>Valor Total do Pedido:&nbsp; <b class="text-primary h5">{{formatValor(getTotalPedido(listSelectProduto))}}</b></span>
+              </div>
+
+            </div>
+          </div>
+
+          <div *ngIf="index === 3">
+
+            <div class="row border rounded p-2">
+              <div class="col-12 mb-2 border-bottom">
+                <span class="text-primary"><b>Cliente/Fornecedor</b></span>
+              </div>
+              <div class="col-3">
+                <span class="">Nome</span><br>
+                <span><b>{{getClienteName(pedidosForm.get('Cliente')?.value)}}</b></span>
+              </div>
+              <div class="col-2">
+                <span class="">Telefone</span><br>
+                <span><b>{{pedidosForm.get('Telefone')?.value}}</b></span>
+              </div>
+              <div class="col-2">
+                <span class="">E-mail</span><br>
+                <span><b>{{pedidosForm.get('Email')?.value}}</b></span>
+              </div>
+              <div class="col-3">
+                <span class="">Endereço</span><br>
+                <span><b>{{pedidosForm.get('Endereco')?.value}}</b></span>
+              </div>
+              <div class="col-2">
+                <span class="">Cidade</span><br>
+                <span><b>{{pedidosForm.get('Cidade')?.value}}</b></span>
+              </div>
+            </div>
+
+            <div class="row border rounded p-2 mt-2">
+              <div class="col-12 border-bottom">
+                <span class="text-primary"><b>Entrega</b></span>
+              </div>
+              <div class="col-3">
+                <span class="">Data Entrega</span><br>
+                <span><b>{{formatData(pedidosForm.get('DataEntrega')?.value)}}</b></span>
+              </div>
+              <div class="col-2">
+                <span class="">Frete</span><br>
+                <span><b>{{formatValor(pedidosForm.get('Frete')?.value) || 'R$ 0,00'}}</b></span>
+              </div>
+              <div class="col-4">
+                <span class="">Endereco Entrega</span><br>
+                <span><b>{{formatValor(pedidosForm.get('EnderecoEntrega')?.value)}}</b></span>
+              </div>
+              <div class="col-3">
+                <span class="">Cidade Entrega</span><br>
+                <span><b>{{formatValor(pedidosForm.get('CidadeEntrega')?.value)}}</b></span>
+              </div>
+            </div>
+
+            <div class="row border rounded p-2 mt-2">
+              <div class="col-12 border-bottom">
+                <span class="text-primary"><b>Financeiro</b></span>
+              </div>
+              <div class="col-3 mt-1">
+                <span class="">Total Produtos</span><br>
+                <span><b>{{formatValor(getTotalProduto(listSelectProduto))}}</b></span>
+              </div>
+              <div class="col-3 mt-1">
+                <span class="">Total Frete</span><br>
+                <span><b>{{formatValor(getValue('Frete')) || formatValor(0)}}</b></span>
+              </div>
+              <div class="col-3 mt-1">
+                <span class="">Total Custos</span><br>
+                <span><b>{{formatValor(getValue('CustoExtra')) || formatValor(0)}}</b></span>
+              </div>
+              <div class="col-3 bg-info-subtle rounded mt-1">
+                <span class="">Total Pedido</span><br>
+                <span><b>{{formatValor(getTotalPedido(listSelectProduto))}}</b></span>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="steps-action">
+        <div class="row d-flex align-items-end">
+          <div class="col-12 d-flex align-items-center justify-content-end">
+            <button *ngIf="current > 0" class="btn btn-sm btn-outline-primary" (click)="pre()">
+             <i class="fa-solid fa-chevron-left"></i>&nbsp; <span>Anterior</span>
+            </button>
+          
+            <button *ngIf="current < 3" class="btn btn-sm btn-outline-primary" (click)="next()">
+             <i class="fa-solid fa-chevron-right"></i>&nbsp; <span>Próximo</span>
+            </button>
+          
+            <button *ngIf="current === 3"class="btn btn-sm btn-primary" (click)="done()">
+             <i class="fa-solid fa-floppy-disk"></i>&nbsp; <span>Finalizar</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #header>
+    <div
+      class="row bg-dark p-4"
+      [ngClass]="{
+        'bg-dark  text-secondary': theme === 'dark',
+        'bg-light text-dark': theme === 'light'
+      }"
+    >
+      <div class="col-10 d">Novo Pedido de {{ movType === 1 ? 'Venda' : movType === 2 ? 'Compra' : '' }}</div>
+      <div class="col-2 d-flex justify-content-end pe-0 me-0">
+        <button class="btn btn-danger btn-sm" (click)="handleCancel()">
+          <i class="fa-solid fa-square-xmark"></i>
+        </button>
+      </div>
+    </div>
+  </ng-template>
+  </nz-modal>

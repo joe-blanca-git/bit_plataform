@@ -28,13 +28,43 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { IconsProviderModule } from 'src/app/icons-provider.module';
 import { SideMenuComponent } from './shared/components/layout/side-menu/side-menu.component';
 import { FooterComponent } from './shared/components/layout/footer/footer.component';
+import { MovimentacoesComponent } from './shared/components/financeiro/movimentacoes/movimentacoes.component';
+import { AdminContaComponent } from './pages/admin-financeiro/admin-conta/admin-conta.component';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { AdminMovimentacoesComponent } from './pages/admin-financeiro/admin-movimentacoes/admin-movimentacoes.component';
+import { MovimentacoesGraficoAnoComponent } from './shared/components/financeiro/movimentacoes-grafico-ano/movimentacoes-grafico-ano.component';
+import { PagamentosComponent } from './shared/components/financeiro/pagamentos/pagamentos.component';
+import { NovoPagamentoComponent } from './shared/components/financeiro/novo-pagamento/novo-pagamento.component';
+import { AdminFluxoComponent } from './pages/admin-financeiro/admin-fluxo/admin-fluxo.component';
+import { AdminShopHomeComponent } from './pages/admin-comercial/shop/home/admin-shop-home/admin-shop-home.component';
+import { AdminPedidosComponent } from './pages/admin-comercial/admin-pedidos/admin-pedidos.component';
+import { AdminCadastroPessoasComponent } from './pages/admin-cadastro/admin-cadastro-pessoas/admin-cadastro-pessoas.component';
+import { AdminCadastroProdutosComponent } from './pages/admin-cadastro/admin-cadastro-produtos/admin-cadastro-produtos.component';
+import { AdminEstoqueComponent } from './pages/admin-estoque/admin-estoque.component';
+import { NovoProdutoComponent } from './shared/components/cadastro/novo-produto/novo-produto.component';
+import { PedidoComponent } from './shared/components/comercial/pedido/pedido.component';
+
 
 @NgModule({
   declarations: [
     AdminAppComponent,
     AdminHomeComponent,
     SideMenuComponent,
-    FooterComponent
+    FooterComponent,
+    MovimentacoesComponent,
+    AdminContaComponent,
+    AdminMovimentacoesComponent,
+    MovimentacoesGraficoAnoComponent,
+    PagamentosComponent,
+    NovoPagamentoComponent,
+    AdminFluxoComponent,
+    AdminShopHomeComponent,
+    AdminPedidosComponent,
+    AdminCadastroPessoasComponent,
+    AdminCadastroProdutosComponent,
+    AdminEstoqueComponent,
+    NovoProdutoComponent,
+    PedidoComponent,
   ],
   imports: [
     CommonModule,
@@ -62,6 +92,8 @@ import { FooterComponent } from './shared/components/layout/footer/footer.compon
     NzCheckboxModule,
     NzRadioModule,
     NzSpinModule,    
+    NgxPaginationModule
+    
   ]
 })
 export class AdminModule { }

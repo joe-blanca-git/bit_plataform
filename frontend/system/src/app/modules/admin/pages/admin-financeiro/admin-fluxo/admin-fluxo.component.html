@@ -1,0 +1,291 @@
+<div class="row">
+  <div
+    class="header-container d-flex align-items-center"
+    [ngStyle]="{ 'background-image': 'url(' + getHeader() + ')' }"
+  >
+    <span
+      class="welcome-text"
+      [ngClass]="{
+        'text-light': theme === 'dark',
+        'text-primary': theme === 'light'
+      }"
+    >
+      FLUXO DE CAIXA
+    </span>
+  </div>
+</div>
+<div class="row mt-2">
+  <div class="col-12">
+    <div class="row">
+      <div class="col-xl-2 col-4 text-sm">
+        <div
+          class="card shadow bg-brand-light"
+          [ngClass]="{
+            'text-secondary': theme === 'dark',
+            'text-dark': theme === 'light'
+          }"
+        >
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12 text-success">
+                <b class="mt-1"
+                  ><i class="fa-solid fa-money-bill-wave"></i> Receita
+                  Acumulada</b
+                >
+              </div>
+              <div class="col-12 text-end">
+                <hr class="mt-0" />
+                <span class="">{{ this.formatValor(receitaAcumulada) }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-2 col-4 text-sm">
+        <div
+          class="card shadow bg-brand-light"
+          [ngClass]="{
+            'text-secondary': theme === 'dark',
+            'text-dark': theme === 'light'
+          }"
+        >
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12 text-danger">
+                <b class="mt-1"
+                  ><i class="fa-solid fa-money-bill"></i> Despesa Acumulada</b
+                >
+              </div>
+              <div class="col-12 text-end">
+                <hr class="mt-0" />
+                <span class="">{{ this.formatValor(despesaAcumulada) }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-2 col-4 text-sm">
+        <div
+          class="card shadow bg-brand-light"
+          [ngClass]="{
+            'text-secondary': theme === 'dark',
+            'text-dark': theme === 'light'
+          }"
+        >
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12 text-primary">
+                <b class="mt-1"
+                  ><i class="fa-solid fa-circle-dollar-to-slot"></i>
+                  Resultado</b
+                >
+              </div>
+              <div class="col-12 text-end">
+                <hr class="mt-0" />
+                <span class="">{{ this.formatValor(resultadoAcumulado) }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 hidden-sm"></div>
+    </div>
+  </div>
+  <div class="col-12 mt-0">
+    <hr />
+  </div>
+  <div class="col-12 mt-2 text-sm">
+    <div
+      class="card shadow"
+      [ngClass]="{
+        'bg-dark-light': theme === 'dark',
+        'bg-light': theme === 'light'
+      }"
+    >
+      <div class="card-body">
+        <div class="table-responsive p-0">
+          <table
+            class="table table-hover rounded border border-secondary table-bordered table-responsive"
+            [ngClass]="{
+              'table-dark': theme === 'dark',
+              'table-light': theme === 'light'
+            }"
+          >
+            <thead>
+              <tr>
+                <th scope="col" class="text-primary text-uppercase"></th>
+                <th scope="col" class="text-primary text-uppercase">
+                  {{ formatData("2025-01-01 00:00:00") }}
+                </th>
+                <th scope="col" class="text-primary text-uppercase">
+                  {{ formatData("2025-02-01 00:00:00") }}
+                </th>
+                <th scope="col" class="text-primary text-uppercase">
+                  {{ formatData("2025-03-01 00:00:00") }}
+                </th>
+                <th scope="col" class="text-primary text-uppercase">
+                  {{ formatData("2025-04-01 00:00:00") }}
+                </th>
+                <th scope="col" class="text-primary text-uppercase">
+                  {{ formatData("2025-05-01 00:00:00") }}
+                </th>
+                <th scope="col" class="text-primary text-uppercase">
+                  {{ formatData("2025-06-01 00:00:00") }}
+                </th>
+                <th scope="col" class="text-primary text-uppercase">
+                  {{ formatData("2025-07-01 00:00:00") }}
+                </th>
+                <th scope="col" class="text-primary text-uppercase">
+                  {{ formatData("2025-08-01 00:00:00") }}
+                </th>
+                <th scope="col" class="text-primary text-uppercase">
+                  {{ formatData("2025-09-01 00:00:00") }}
+                </th>
+                <th scope="col" class="text-primary text-uppercase">
+                  {{ formatData("2025-10-01 00:00:00") }}
+                </th>
+                <th scope="col" class="text-primary text-uppercase">
+                  {{ formatData("2025-11-01 00:00:00") }}
+                </th>
+                <th scope="col" class="text-primary text-uppercase">
+                  {{ formatData("2025-12-01 00:00:00") }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of listaParemetros">
+                <td [ngClass]="{
+                  'bg-dark-light-fix': item.name === 'Saldo Inicial',
+                  'bg-success-light-fix': item.name === 'Receitas',
+                  'bg-danger-light-fix': item.name === 'Despesas',
+                  'bg-primary-light-fix': item.name === 'Resultado Mensal' ||  item.name === 'Resultado Acumulado'                  
+                  }">
+                  <span>{{ item.name }}</span>
+                </td>
+                <td *ngFor="let mes of listFluxo"  
+                  [ngClass]="{
+                      'bg-success-light': 
+                        (mes.saldo_inicial > 0 && item.name === 'Saldo Inicial') || 
+                        (mes.receitas > 0 && item.name === 'Receitas') ||
+                        (mes.resultado > 0 && item.name === 'Resultado Mensal') ||
+                        ((mes.resultado + mes.saldo_inicial) > 0 && item.name === 'Resultado Acumulado'),
+                        
+                      'bg-danger-light': 
+                        (mes.saldo_inicial < 0 && item.name === 'Saldo Inicial') || 
+                        (mes.despesas > 0 && item.name === 'Despesas') ||
+                        (mes.receitas < 0 && item.name === 'Receitas') ||
+                        (mes.resultado < 0 && item.name === 'Resultado Mensal') ||
+                        ((mes.resultado + mes.saldo_inicial) < 0 && item.name === 'Resultado Acumulado'),
+                    }"
+                  >
+                  <span
+                   *ngIf="mes.mes_num === 1">
+                    {{  item.name === 'Saldo Inicial' ? formatValor(mes.saldo_inicial) :
+                        item.name === 'Despesas' ? formatValor(mes.despesas) : 
+                        item.name === 'Receitas' ? formatValor(mes.receitas) : 
+                        item.name === 'Resultado Mensal' ? formatValor(mes.resultado) : 
+                        item.name === 'Resultado Acumulado' ? formatValor(mes.resultado) : '0' }}
+                  </span>
+                  <span *ngIf="mes.mes_num === 2">
+                    {{  item.name === 'Saldo Inicial' ? formatValor(mes.saldo_inicial) :
+                        item.name === 'Despesas' ? formatValor(mes.despesas) : 
+                        item.name === 'Receitas' ? formatValor(mes.receitas) : 
+                        item.name === 'Resultado Mensal' ? formatValor(mes.resultado) : 
+                        item.name === 'Resultado Acumulado' ? formatValor(mes.resultado) : '0' }}
+                  </span>
+                  <span *ngIf="mes.mes_num === 3">
+                    {{  item.name === 'Saldo Inicial' ? formatValor(mes.saldo_inicial) :
+                        item.name === 'Despesas' ? formatValor(mes.despesas) : 
+                        item.name === 'Receitas' ? formatValor(mes.receitas) : 
+                        item.name === 'Resultado Mensal' ? formatValor(mes.resultado) : 
+                        item.name === 'Resultado Acumulado' ? formatValor(mes.resultado + mes.saldo_inicial) : '0' }}
+                  </span>
+                  <span *ngIf="mes.mes_num === 4">
+                    {{  item.name === 'Saldo Inicial' ? formatValor(mes.saldo_inicial) :
+                        item.name === 'Despesas' ? formatValor(mes.despesas) : 
+                        item.name === 'Receitas' ? formatValor(mes.receitas) : 
+                        item.name === 'Resultado Mensal' ? formatValor(mes.resultado) : 
+                        item.name === 'Resultado Acumulado' ? formatValor(mes.resultado + mes.saldo_inicial) : '0' }}
+                  </span>
+                  <span *ngIf="mes.mes_num === 5">
+                    {{  item.name === 'Saldo Inicial' ? formatValor(mes.saldo_inicial) :
+                        item.name === 'Despesas' ? formatValor(mes.despesas) : 
+                        item.name === 'Receitas' ? formatValor(mes.receitas) : 
+                        item.name === 'Resultado Mensal' ? formatValor(mes.resultado) : 
+                        item.name === 'Resultado Acumulado' ? formatValor(mes.resultado + mes.saldo_inicial) : '0' }}
+                  </span>
+                  <span *ngIf="mes.mes_num === 6">
+                    {{  item.name === 'Saldo Inicial' ? formatValor(mes.saldo_inicial) :
+                        item.name === 'Despesas' ? formatValor(mes.despesas) : 
+                        item.name === 'Receitas' ? formatValor(mes.receitas) : 
+                        item.name === 'Resultado Mensal' ? formatValor(mes.resultado) : 
+                        item.name === 'Resultado Acumulado' ? formatValor(mes.resultado + mes.saldo_inicial) : '0' }}
+                  </span>
+                  <span *ngIf="mes.mes_num === 7">
+                    {{  item.name === 'Saldo Inicial' ? formatValor(mes.saldo_inicial) :
+                        item.name === 'Despesas' ? formatValor(mes.despesas) : 
+                        item.name === 'Receitas' ? formatValor(mes.receitas) : 
+                        item.name === 'Resultado Mensal' ? formatValor(mes.resultado) : 
+                        item.name === 'Resultado Acumulado' ? formatValor(mes.resultado + mes.saldo_inicial) : '0' }}
+                  </span>
+                  <span *ngIf="mes.mes_num === 8">
+                    {{  item.name === 'Saldo Inicial' ? formatValor(mes.saldo_inicial) :
+                        item.name === 'Despesas' ? formatValor(mes.despesas) : 
+                        item.name === 'Receitas' ? formatValor(mes.receitas) : 
+                        item.name === 'Resultado Mensal' ? formatValor(mes.resultado) : 
+                        item.name === 'Resultado Acumulado' ? formatValor(mes.resultado + mes.saldo_inicial) : '0' }}
+                  </span>
+                  <span *ngIf="mes.mes_num === 9">
+                    {{  item.name === 'Saldo Inicial' ? formatValor(mes.saldo_inicial) :
+                        item.name === 'Despesas' ? formatValor(mes.despesas) : 
+                        item.name === 'Receitas' ? formatValor(mes.receitas) : 
+                        item.name === 'Resultado Mensal' ? formatValor(mes.resultado) : 
+                        item.name === 'Resultado Acumulado' ? formatValor(mes.resultado + mes.saldo_inicial) : '0' }}
+                  </span>
+                  <span *ngIf="mes.mes_num === 10">
+                    {{  item.name === 'Saldo Inicial' ? formatValor(mes.saldo_inicial) :
+                        item.name === 'Despesas' ? formatValor(mes.despesas) : 
+                        item.name === 'Receitas' ? formatValor(mes.receitas) : 
+                        item.name === 'Resultado Mensal' ? formatValor(mes.resultado) : 
+                        item.name === 'Resultado Acumulado' ? formatValor(mes.resultado + mes.saldo_inicial) : '0' }}
+                  </span>
+                  <span *ngIf="mes.mes_num === 11">
+                    {{  item.name === 'Saldo Inicial' ? formatValor(mes.saldo_inicial) :
+                        item.name === 'Despesas' ? formatValor(mes.despesas) : 
+                        item.name === 'Receitas' ? formatValor(mes.receitas) : 
+                        item.name === 'Resultado Mensal' ? formatValor(mes.resultado) : 
+                        item.name === 'Resultado Acumulado' ? formatValor(mes.resultado + mes.saldo_inicial) : '0' }}
+                  </span>
+                  <span *ngIf="mes.mes_num === 12">
+                    {{  item.name === 'Saldo Inicial' ? formatValor(mes.saldo_inicial) :
+                        item.name === 'Despesas' ? formatValor(mes.despesas) : 
+                        item.name === 'Receitas' ? formatValor(mes.receitas) : 
+                        item.name === 'Resultado Mensal' ? formatValor(mes.resultado) : 
+                        item.name === 'Resultado Acumulado' ? formatValor(mes.resultado + mes.saldo_inicial) : '0' }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-12 col-12 mt-4 text-sm">
+    <div
+      class="card shadow bg-brand-light"
+      [ngClass]="{
+        'text-secondary': theme === 'dark',
+        'text-dark': theme === 'light'
+      }"
+    >
+      <div class="card-body">
+        <app-movimentacoes-grafico-ano
+          *ngIf="listMovimentacoes.length > 0" 
+          [data]="listMovimentacoes"
+          [isShowInfo]="true"
+        ></app-movimentacoes-grafico-ano>
+      </div>
+    </div>
+  </div>
+</div>

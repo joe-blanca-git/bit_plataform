@@ -25,9 +25,8 @@
             ></span>
           </div>
           <div class="col-3">
-            <div class="row">
-              <div class="col-6">
-                
+            <div class="row h-100">
+              <div class="col-10 d-flex align-items-center justify-content-end">
                 <button class="btn btn-sm btn-outline-secondary" nz-dropdown [nzDropdownMenu]="menu">
                   <i class="fa fa-user" aria-hidden="true"></i>&nbsp;&nbsp;{{user}}
                 </button>
@@ -38,7 +37,7 @@
                   </ul>
                 </nz-dropdown-menu>
               </div>
-              <div class="col-6">
+              <div class="col-2 d-flex align-items-center justify-content-end">
                 <button
                   class="btn btn-sm btn-outline-secondary"
                   (click)="changeTheme()"

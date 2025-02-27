@@ -1,0 +1,211 @@
+<div class="row">
+    <div
+      class="header-container d-flex align-items-center"
+      [ngStyle]="{ 'background-image': 'url(' + getHeader() + ')' }"
+    >
+      <span
+        class="welcome-text"
+        [ngClass]="{
+          'text-light': theme === 'dark',
+          'text-primary': theme === 'light'
+        }"
+      >
+        CADASTRO DE PRODUTOS
+      </span>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col-12">
+      <div class="row">
+        <div class="col-xl-6 col-12">
+          <div class="row">
+            <div class="col-xl-4 col-4 text-sm">
+              <div
+                class="card shadow bg-brand-light"
+                [ngClass]="{
+                  'text-secondary': theme === 'dark',
+                  'text-dark': theme === 'light'
+                }"
+              >
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-12 text-primary">
+                      <b class="mt-1"
+                        ><i class="fa-solid fa-boxes-packing"></i>&nbsp;<span class="hidden-sm">Produtos</span> Cadastrados</b
+                      >
+                    </div>
+                    <div class="col-12 text-end">
+                      <hr class="mt-0" />
+                      <span class="">{{ produtosTotal }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 hidden-sm">
+        </div>
+      </div>
+    </div>
+    <div class="col-12 mt-0">
+      <hr />
+    </div>
+    <div class="col-xl-4 col-12 d-flex justify-content-end align-items-center">
+      <!-- <nz-select
+        class="w-100 bg-dark"
+        nzSize="large"
+        nzPlaceHolder="Selecionar Fornecedor"
+        nzShowSearch
+        nzAllowClear
+        [nzDropdownRender]="renderTemplate"
+        [ngModel]="selectedFornecedor"
+      >
+        <nz-option
+          *ngFor="let item of listFornecedor"
+          [nzLabel]="item.id + ' - ' + item.nome"
+          [nzValue]="item.id"
+        >
+        </nz-option>
+    </nz-select>
+    <ng-template #renderTemplate>
+      <div class="dropdown-container">
+        <div class="options-container">
+          <nz-option
+            *ngFor="let item of listFornecedor"
+            [nzLabel]="item.id + ' - ' + item.nome"
+            [nzValue]="item.id"
+          >
+          </nz-option>
+        </div>
+        <div class="footer-container">
+          <input type="text" nz-input #inputElement />
+          <button
+            class="btn btn-sm btn-outline-primary mt-2 ms-1"
+            (click)="addPeople(inputElement)"
+          >
+            <i class="fa-solid fa-square-plus"></i> Cadastrar
+          </button>
+        </div>
+      </div>
+    </ng-template> -->
+    </div>
+    <div class="col-xl-2"></div>
+    <div class="col-xl-6 col-12 d-flex justify-content-end align-items-center">
+      <div class="input-group me-2 group-search">
+        <span
+          class="input-group-text"
+          id="basic-addon1"
+          [ngClass]="{
+            'bg-dark-light text-secondary': theme === 'dark',
+            'bg-light': theme === 'light'
+          }"
+        >
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </span>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Pesquisar"
+          [ngClass]="{
+            'bg-dark-light text-secondary': theme === 'dark',
+            'bg-light': theme === 'light'
+          }"
+          aria-label="Pesquisar"
+          aria-describedby="basic-addon1"
+          
+        />
+      </div>
+      <button class="btn btn-sm btn-primary hidden-sm" title="Cadastrar novo produto!" (click)="showNovoProduto()">
+        <i class="fa-solid fa-square-plus">&nbsp;</i>Novo
+      </button>
+    </div>
+    <div class="col-12 mt-2 text-sm">
+      <div
+        class="card"
+        [ngClass]="{
+          'bg-dark-light': theme === 'dark',
+          'bg-light': theme === 'light'
+        }"
+      >
+        <div class="card-body">
+          <div class="table-responsive p-2">
+            <table
+            class="table table-hover rounded border"
+            [ngClass]="{
+              'table-dark': theme === 'dark',
+              'table-light': theme === 'light'
+            }"
+          >
+            <thead>
+              <tr>
+                <th scope="col" class="text-primary hidden-sm">Fornecedor</th>
+                <th scope="col" class="text-primary hidden-sm">Categoria</th>
+                <th scope="col" class="text-primary hidden-sm">EAN</th>
+                <th scope="col" class="text-primary">Nome</th>
+                <th scope="col" class="text-primary hidden-sm">Un. Medida</th>
+                <th scope="col" class="text-primary hidden-sm">Custo</th>
+                <th scope="col" class="text-primary hidden-sm">Custo Extra</th>
+                <th scope="col" class="text-primary">Venda</th>
+                <th scope="col" class="text-primary hidden-sm">Margem</th>
+                <th scope="col" class="text-primary"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of listProduto">
+                <td class="hidden-sm">{{item.fornecedor_nome}}</td>
+                <td class="hidden-sm">{{item.categoria}}</td>
+                <td class="hidden-sm">{{item.EAN}}</td>
+                <td>{{item.nome}}</td>
+                <td class="hidden-sm">{{item.un_medida}}</td>
+                <td class="hidden-sm">{{formatValor(item.valor_custo)}}</td>
+                <td class="hidden-sm">{{formatValor(0)}}</td>
+                <td>{{formatValor(item.valor_venda)}}</td>
+                <td class="hidden-sm">{{formatValor(item.valor_venda - item.valor_custo)}}</td>
+                <td>
+                  <div class="row">
+                    <div class="col-auto m-0 p-0">
+                      <button class="btn btn-sm btn-outline-primary btn-size-table" 
+                        title="Excluir Produto" 
+                        (click)="deleteProduto(item.id)">
+                        <i class="fa-solid fa-trash-alt"></i>
+                      </button>
+                    </div>
+                    <div class="col-auto m-0 p-0 ms-2">
+                      <button class="btn btn-sm btn-outline-primary btn-size-table" (click)="showUpdate(item)" title="Editar Produto">
+                        <i class="fa-solid fa-pen" ></i>
+                      </button>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+          <div class="row mt-2">
+            <div class="col-6">
+              <div class="input-group group-show-table">
+                <span [ngClass]="{'bg-dark-light text-secondary': theme === 'dark', 'bg-light ': theme === 'light'}" class="input-group-text text-sm">Mostrar:</span>
+                <select [ngClass]="{'bg-dark-light text-secondary': theme === 'dark', 'bg-light ': theme === 'light'}" class="form-select text-sm" id="current" (change)="changeQtde($event)">
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-xl-6 col-12 mt-4 mt-xl-0">
+              <pagination-controls
+                (pageChange)="currentPage = $event"
+                class="text-light text-center"
+                previousLabel="Anterior"
+                nextLabel="Próximo"
+              >
+              </pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-novo-produto  (saveSuccess)="loadProduto()" (closeEvent)="closeNovoProduto()" [dadoProduto]="dataForUpdate" [snUpdate]="isUpdate" [statusModal]="isVisibleNovo"></app-novo-produto>
