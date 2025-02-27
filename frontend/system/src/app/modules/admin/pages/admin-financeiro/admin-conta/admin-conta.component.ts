@@ -45,8 +45,6 @@ export class AdminContaComponent {
     private formateValueService: ValorFormatterService,
     private formateDateService: DataFormatterService,
     private movimentacoesService: MovimentacoesService,
-    private router: Router,
-    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -57,9 +55,7 @@ export class AdminContaComponent {
     this.loadMovimentacoes();
   }
 
-  movPagamento(data: any){
-    console.log(data);
-    
+  movPagamento(data: any){    
     this.dadosPagamento = data;
     this.showPagto();
   }

@@ -308,9 +308,9 @@ export class MovimentacoesComponent implements OnChanges {
       return;
     }
     const currentUrl = this.router.url;
-    const tipoMov = currentUrl.endsWith('receita')
+    const tipoMov = currentUrl.endsWith('receitas')
       ? '1'
-      : currentUrl.endsWith('despesa')
+      : currentUrl.endsWith('despesas')
       ? '2'
       : '';
 

@@ -20,6 +20,9 @@ export class AdminCadastroProdutosComponent {
   theme: 'dark' | 'light' = 'light';
 
   isVisibleNovo = false;
+  isUpdate = false;
+
+  dataForUpdate: any;
 
   selectedFornecedor = null;
 
@@ -50,6 +53,36 @@ export class AdminCadastroProdutosComponent {
       this.theme = theme;
     });
     this.loadData();
+  }
+
+  deleteProduto(idProduto: number): void {   
+    if (idProduto) {
+      this.produtoService.deleteProduto(idProduto).subscribe({
+        next: (response) => {
+          this.notification.createBasicNotification(
+            'success',
+            'bg-success',
+            'text-light',
+            response.message
+          );
+          this.loadProduto();
+        },
+        error: (error) => {
+          this.notification.createBasicNotification(
+            'error',
+            'bg-danger',
+            'text-light',
+            error.error
+          );
+        }
+      });
+    }
+  }
+
+  showUpdate(data:any){
+    this.isUpdate = true;
+    this.dataForUpdate = data;
+    this.isVisibleNovo = true;
   }
 
   loadData(){
@@ -158,7 +191,7 @@ export class AdminCadastroProdutosComponent {
     this.currentQtde = Number(selectElement.value);
   }
 
-  filtrarEstoque(event: Event): void {
+  filtrarCadastro(event: Event): void {
     //   const input = (event.target as HTMLInputElement).value.toLowerCase().trim();
     //   this.listaFiltrada = this.listMovimentacoes.filter(mov => {
     //     const tipoTexto = mov.Tipo === '1' ? 'receita' : 'despesa';

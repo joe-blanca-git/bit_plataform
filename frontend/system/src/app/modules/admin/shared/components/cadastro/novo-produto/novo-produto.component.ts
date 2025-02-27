@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataFormatterService } from 'src/app/shared/services/data-formatter-service.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
@@ -8,7 +8,7 @@ import { FornecedorService } from '../../../services/fornecedor.service';
 import { ProdutoService } from '../../../services/produto.service';
 import { FornecedorModel } from '../../../models/fornecedor.model';
 import { ListaService } from '../../../services/lista.service';
-import { ProdutoCategoriaModel } from '../../../models/produto.model';
+import { ProdutoCategoriaModel, ProdutoModel } from '../../../models/produto.model';
 
 @Component({
   selector: 'app-novo-produto',
@@ -18,6 +18,7 @@ import { ProdutoCategoriaModel } from '../../../models/produto.model';
 export class NovoProdutoComponent {
   @Input('statusModal') isVisible: boolean = false;
   @Input('dadoProduto') dadoProduto!: any;
+  @Input('snUpdate') isUpdate: boolean = false;
   @Output() closeEvent = new EventEmitter<boolean>();
   @Output() saveSuccess = new EventEmitter<boolean>();
 
@@ -67,6 +68,7 @@ export class NovoProdutoComponent {
     private listaService: ListaService
   ) {
     this.novoProdutoForm = this._fb.group({
+      Id: [null],
       EAN: [null, Validators.required],
       Nome: [null],
       Custo: [null, Validators.required],
@@ -88,7 +90,32 @@ export class NovoProdutoComponent {
     this.loadCategoria();
   }
 
-  addProduto() {
+    ngOnChanges(changes: SimpleChanges): void {
+      console.log(changes);
+      
+      if (changes['isUpdate'] && changes['isUpdate'].currentValue !== undefined && changes['dadoProduto'].currentValue !== undefined) {
+        if (this.isUpdate === true) {   
+          console.log(this.dadoProduto);
+                     
+          this.selectedCategoriaProduto = this.dadoProduto.id_categoria;
+          this.selectedFornecedor = this.dadoProduto.id_fornecedor;
+          this.selectedUnMedida = this.dadoProduto.un_medida;
+          this.novoProdutoForm.patchValue({
+            Id: this.dadoProduto.id,
+            EAN: this.dadoProduto.EAN,
+            Nome: this.dadoProduto.nome,
+            Custo: this.dadoProduto.valor_custo,
+            Venda: this.dadoProduto.valor_venda,
+            QtdePCaixa: this.dadoProduto.qtde_embalagem,
+            EstoqueMin: this.dadoProduto.qtde_estoque_min,
+            EstoqueMax: this.dadoProduto.qtde_estoque_max,
+          });
+        }
+      }
+  
+    }
+
+  saveProduto() {
     const bodyJson = this.novoProdutoForm.value;
     bodyJson.Fornecedores = this.listSelectedFornecedor.map(fornecedor => ({ id: fornecedor.id }));
     
@@ -97,30 +124,59 @@ export class NovoProdutoComponent {
     };
 
     if (this.novoProdutoForm.valid) {
-      this.produtoService.postProduto(bodyJson).subscribe({
-        next: (response) => {
-          this.notification.createBasicNotification(
-            'success',
-            'bg-success',
-            'text-light',
-            response.message
-          );
-          this.saveSuccess.emit(true);
-        },
-        error: (error) => {
-          this.notification.createBasicNotification(
-            'error',
-            'bg-danger',
-            'text-light',
-            error.error
-          );
-          this.saveSuccess.emit(false);
-        },
-        complete: () => {
-          this.clear();
-          this.closeEvent.emit(false);
-        },
-      })
+      if (this.isUpdate) {
+        this.produtoService.putProduto(bodyJson).subscribe({
+          next: (response) => {
+            this.notification.createBasicNotification(
+              'success',
+              'bg-success',
+              'text-light',
+              response.message
+            );
+            this.clear();
+            this.saveSuccess.emit(true);
+          },
+          error: (error) => {
+            this.notification.createBasicNotification(
+              'error',
+              'bg-danger',
+              'text-light',
+              error.error
+            );
+            this.clear();
+            this.saveSuccess.emit(false);
+          },
+          complete: () => {
+            this.isVisible = false;
+            this.closeEvent.emit(false);
+          },
+        });
+      } else {
+        this.produtoService.postProduto(bodyJson).subscribe({
+          next: (response) => {
+            this.notification.createBasicNotification(
+              'success',
+              'bg-success',
+              'text-light',
+              response.message
+            );
+            this.saveSuccess.emit(true);
+          },
+          error: (error) => {
+            this.notification.createBasicNotification(
+              'error',
+              'bg-danger',
+              'text-light',
+              error.error
+            );
+            this.saveSuccess.emit(false);
+          },
+          complete: () => {
+            this.clear();
+            this.closeEvent.emit(false);
+          },
+        });
+      }
     } else {
       this.novoProdutoForm.markAllAsTouched();
       this.notification.createBasicNotification('error','bg-danger', 'text-light', 'Preencha todas as informações obrigatórias!')

@@ -33,7 +33,8 @@ export  class BaseService{
     public urlGetProduto = this.UrlServiceV1 + 'admin/cadastro/produto/getProduto.php?user={{idUser}}&empresa={{idEmpresa}}&fornecedor={{idFornecedor}}&produto={{idProduto}}'
     public urlGetCategoriaProduto = this.UrlServiceV1 + 'admin/cadastro/produto/getCategoriaProduto.php?user={{idUser}}&empresa={{idEmpresa}}&fornecedor={{idFornecedor}}&produto={{idProduto}}'
     public urlPostProduto = this.UrlServiceV1 + 'admin/cadastro/produto/postProduto.php';
-
+    public urlPutProduto = this.UrlServiceV1 + 'admin/cadastro/produto/putProduto.php';
+    public urlDeleteProduto = this.UrlServiceV1 + 'admin/cadastro/produto/deleteProduto.php?user={{idUser}}&empresa={{idEmpresa}}&idProduto={{idProduto}}';
 
     //financeiro
     public urlPostNewMov = this.UrlServiceV1 + 'admin/financeiro/mov/postMov.php';

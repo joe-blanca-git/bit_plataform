@@ -42,6 +42,8 @@ import { AdminCadastroPessoasComponent } from './pages/admin-cadastro/admin-cada
 import { AdminCadastroProdutosComponent } from './pages/admin-cadastro/admin-cadastro-produtos/admin-cadastro-produtos.component';
 import { AdminEstoqueComponent } from './pages/admin-estoque/admin-estoque.component';
 import { NovoProdutoComponent } from './shared/components/cadastro/novo-produto/novo-produto.component';
+import { PedidoComponent } from './shared/components/comercial/pedido/pedido.component';
+
 
 @NgModule({
   declarations: [
@@ -62,6 +64,7 @@ import { NovoProdutoComponent } from './shared/components/cadastro/novo-produto/
     AdminCadastroProdutosComponent,
     AdminEstoqueComponent,
     NovoProdutoComponent,
+    PedidoComponent,
   ],
   imports: [
     CommonModule,

@@ -6,6 +6,7 @@ export class ClienteModel  {
     nome!: string;
     email!: string;
     cidade!: string;
+    endereco!: string;
     cep!: number;
     contato!: number;
     estado!: string;

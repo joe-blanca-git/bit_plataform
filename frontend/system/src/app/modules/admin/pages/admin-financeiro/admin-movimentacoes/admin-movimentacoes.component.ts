@@ -20,6 +20,7 @@ export class AdminMovimentacoesComponent {
   isVisibleMov = false;
   isVisibleGraf = false;
   isUpdate = false;
+  isVisibleModal = false;
   catType = 1; //1 = simples, 2 = completa
   movType = ''; //1 = receita, 2 = despesa
   currentPage = 1;
@@ -30,6 +31,8 @@ export class AdminMovimentacoesComponent {
   totalReceber = 0;
   totalPagar = 0;
   previsto = 0;
+
+  dadosPagamento: any [] = [];
 
   listMenuUser = [
     {
@@ -76,6 +79,15 @@ export class AdminMovimentacoesComponent {
       error: (e) => this.processarErro(e),
       complete: () => {this.calcTotais();} 
     });
+  }
+
+  movPagamento(data: any){    
+    this.dadosPagamento = data;
+    this.showPagto();
+  }
+
+  showPagto(){
+    this.isVisibleModal = true;
   }
 
   onChange(result: Date[]): void {
@@ -152,7 +164,6 @@ export class AdminMovimentacoesComponent {
     this.isUpdate = true;
     this.dataForUpdate = data;
     this.isVisibleMov = true;
-    
   }
 
   showMov(cat: number){
@@ -172,6 +183,10 @@ export class AdminMovimentacoesComponent {
       this.clearVariables();
     }
 
+  }
+
+  closePagto(){
+    this.isVisibleModal = false;
   }
 
   changeTheme() {

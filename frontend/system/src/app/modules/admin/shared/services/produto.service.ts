@@ -13,35 +13,7 @@ export class ProdutoService extends BaseService {
     super(router);
   }
 
-  postProduto(body: any) {
-    const userData = localStorage.getItem('BIT.user');
 
-    if (!userData) {
-      throw new Error('Dados do usuário não encontrados');
-    }
-
-    const parsedData = JSON.parse(userData);
-    const { id, empresa } = parsedData;
-
-    if (!id || !empresa) {
-      throw new Error('Usuário ou empresa não definidos no objeto armazenado.');
-    }
-
-    const updatedBody = {
-      ...body,
-      id_user_inc: id,
-      id_empresa: empresa,
-    };
-
-    const url = this.urlPostProduto;
-
-    return this.httpClient
-      .post(url, updatedBody, this.ObterAuthHeaderJson())
-      .pipe(
-        map((data) => this.extractData(data)),
-        catchError(this.serviceError)
-      );
-  }
 
   getProduto(produto: any, fornecedor: any): Observable<ProdutoModel[]> | null {
     const userData = localStorage.getItem('BIT.user');
@@ -113,4 +85,96 @@ export class ProdutoService extends BaseService {
       return null;
     }
   }
+
+  postProduto(body: any) {
+    const userData = localStorage.getItem('BIT.user');
+
+    if (!userData) {
+      throw new Error('Dados do usuário não encontrados');
+    }
+
+    const parsedData = JSON.parse(userData);
+    const { id, empresa } = parsedData;
+
+    if (!id || !empresa) {
+      throw new Error('Usuário ou empresa não definidos no objeto armazenado.');
+    }
+
+    const updatedBody = {
+      ...body,
+      id_user_inc: id,
+      id_empresa: empresa,
+    };
+
+    const url = this.urlPostProduto;
+
+    return this.httpClient
+      .post(url, updatedBody, this.ObterAuthHeaderJson())
+      .pipe(
+        map((data) => this.extractData(data)),
+        catchError(this.serviceError)
+      );
+  }
+
+  putProduto(body:any){
+    const userData = localStorage.getItem('BIT.user');
+  
+    if (!userData) {
+      throw new Error('Dados do usuário não encontrados');
+    }
+  
+    const parsedData = JSON.parse(userData);
+    const { id, empresa } = parsedData;
+  
+    if (!id || !empresa) {
+      throw new Error('Usuário ou empresa não definidos no objeto armazenado.');
+    }
+  
+    const updatedBody = {
+      ...body,
+      id_user_inc: id,
+      id_empresa: empresa
+    };
+  
+    const url = this.urlPutProduto;
+ 
+    return this.httpClient
+      .put(url, updatedBody, this.ObterAuthHeaderJson())
+      .pipe(
+        map((data) => this.extractData(data)),
+        catchError(this.serviceError)
+      );
+  }
+
+  deleteProduto(idProduto: number){
+    const userData = localStorage.getItem('BIT.user');
+  
+    if (!userData) {
+      throw new Error('Dados do usuário não encontrados');
+    }
+  
+    const parsedData = JSON.parse(userData);
+    const { id, empresa } = parsedData;
+  
+    if (!id || !empresa) {
+      throw new Error('Usuário ou empresa não definidos no objeto armazenado.');
+    }
+    
+    const url = this.urlDeleteProduto
+    .replace('{{idUser}}', encodeURIComponent(id))
+    .replace('{{idEmpresa}}', encodeURIComponent(empresa))
+    .replace('{{idProduto}}', encodeURIComponent(idProduto))
+    ;
+ 
+    return this.httpClient
+      .delete(url, this.ObterAuthHeaderJson())
+      .pipe(
+        map((data) => this.extractData(data)),
+        catchError(this.serviceError)
+      );
+  }
+
+
+
+
 }

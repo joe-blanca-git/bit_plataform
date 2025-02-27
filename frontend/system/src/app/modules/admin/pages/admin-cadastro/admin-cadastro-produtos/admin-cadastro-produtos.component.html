@@ -165,12 +165,14 @@
                 <td>
                   <div class="row">
                     <div class="col-auto m-0 p-0">
-                      <button class="btn btn-sm btn-outline-danger btn-size-table">
+                      <button class="btn btn-sm btn-outline-primary btn-size-table" 
+                        title="Excluir Produto" 
+                        (click)="deleteProduto(item.id)">
                         <i class="fa-solid fa-trash-alt"></i>
                       </button>
                     </div>
                     <div class="col-auto m-0 p-0 ms-2">
-                      <button class="btn btn-sm btn-outline-primary btn-size-table">
+                      <button class="btn btn-sm btn-outline-primary btn-size-table" (click)="showUpdate(item)" title="Editar Produto">
                         <i class="fa-solid fa-pen" ></i>
                       </button>
                     </div>
@@ -206,4 +208,4 @@
       </div>
     </div>
   </div>
-  <app-novo-produto (saveSuccess)="loadProduto()" (closeEvent)="closeNovoProduto()" [statusModal]="isVisibleNovo"></app-novo-produto>
+  <app-novo-produto  (saveSuccess)="loadProduto()" (closeEvent)="closeNovoProduto()" [dadoProduto]="dataForUpdate" [snUpdate]="isUpdate" [statusModal]="isVisibleNovo"></app-novo-produto>
